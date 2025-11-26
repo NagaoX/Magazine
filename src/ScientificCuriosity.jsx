@@ -130,7 +130,7 @@ export default function ScientificCuriosityMagazine() {
 
   /**
    * SISTEMA DE BUSCA COM MÚLTIPLAS TENTATIVAS
-   * Tenta: Gemini 1.5 Flash -> Gemini 1.5 Flash 8b -> Gemini Pro (1.0)
+   * Tenta: Gemini 1.5 Flash -> Gemini 1.5 Flash 8b -> Gemini 1.0 Pro (Explicit)
    */
   const fetchGeminiArticle = async () => {
     setView('loading');
@@ -192,14 +192,14 @@ export default function ScientificCuriosityMagazine() {
             // TENTATIVA 2: Flash 8b (Mais novo e leve)
             generatedText = await tryModel('gemini-1.5-flash-8b');
         } catch (e2) {
-            console.warn("Falha no Flash 8b, tentando Pro Legacy...", e2);
+            console.warn("Falha no Flash 8b, tentando 1.0 Pro Legacy...", e2);
             try {
-                // TENTATIVA 3: Gemini Pro (Legacy/1.0) - O mais compatível
+                // TENTATIVA 3: Gemini 1.0 Pro (Explicitamente a versão antiga)
                 // Adicionamos reforço no prompt pois ele não suporta mime_type json nativo
-                generatedText = await tryModel('gemini-pro', prompt + " Responda APENAS O JSON, sem introdução.");
+                generatedText = await tryModel('gemini-1.0-pro', prompt + " Responda APENAS O JSON, sem introdução.");
             } catch (e3) {
-                 // Se todos falharem, mostra o erro do Flash (que geralmente é o mais descritivo sobre a chave)
-                 throw new Error(`Falha em todos os modelos. Erro principal: ${e1.message}`);
+                 // MOSTRA O ERRO DA ÚLTIMA TENTATIVA PARA SABERMOS O MOTIVO REAL
+                 throw new Error(`Todos falharam. Erro final (1.0 Pro): ${e3.message}. Verifique se sua chave tem a API 'Generative Language' ativa.`);
             }
         }
       }
@@ -213,6 +213,7 @@ export default function ScientificCuriosityMagazine() {
       const fallback = getRandomFallback();
       setCurrentArticle(fallback);
       setView('article');
+      // Exibe o erro na interface
       setErrorMsg(`Erro: ${err.message}`); 
     }
   };
