@@ -191,9 +191,9 @@ export default function ScientificCuriosityMagazine() {
       const fallback = getRandomFallback();
       setCurrentArticle(fallback);
       setView('article');
-      setErrorMsg("Ocorreu um erro ao conectar com a IA. Exibindo artigo do arquivo.");
-    }
-  };
+      // MUDANÇA AQUI: Mostra o erro técnico na tela para te ajudar a debugar
+      setErrorMsg(`Erro: ${err.message}`); 
+    };
 
   /**
    * TELA DE LOADING
