@@ -3,7 +3,6 @@ import { BookOpen, Atom, ArrowLeft, RefreshCw, Settings, Sparkles, Brain, Dna, R
 
 /**
  * CONFIGURAÇÃO E DADOS DE FALLBACK (O "CÉREBRO" DE BACKUP)
- * Estes artigos são usados quando a API falha ou não há chave configurada.
  */
 const FALLBACK_ARTICLES = [
   {
@@ -100,11 +99,6 @@ const getRandomFallback = () => {
   return FALLBACK_ARTICLES[randomIndex];
 };
 
-const cleanJsonString = (str) => {
-  // Remove markdown code blocks se o Gemini colocar
-  return str.replace(/```json/g, '').replace(/```/g, '').trim();
-};
-
 /**
  * COMPONENTE PRINCIPAL
  */
@@ -131,69 +125,64 @@ export default function ScientificCuriosityMagazine() {
     setView('loading');
     setErrorMsg(null);
 
-    // Se não tiver chave, usa fallback com delay para simular "processamento"
+    // Se não tiver chave, usa fallback com delay
     if (!apiKey) {
       setTimeout(() => {
         const fallback = getRandomFallback();
-        // Fallback: garante URL de imagem válida
         setCurrentArticle(fallback);
         setView('article');
-        setErrorMsg("Modo de Demonstração (Sem API Key). Adicione sua chave na capa para gerar conteúdo inédito.");
+        setErrorMsg("Modo Demo: Adicione sua API Key nas configurações para gerar conteúdo inédito.");
       }, 2000);
       return;
     }
 
     try {
-      const prompt = `Gere um artigo de curiosidade científica curto, fascinante e educativo sobre um tema aleatório (Física, Biologia, Química, Astronomia ou Tecnologia). 
-      Responda APENAS com um JSON válido. Não use markdown.
-      Estrutura do JSON:
-      {
-        "title": "Título chamativo estilo revista",
-        "author": "Nome fictício de autoridade",
-        "category": "Área da ciência",
-        "content": "Texto do artigo com 3 a 4 parágrafos. Use \\n\\n para quebras de linha.",
-        "fact": "Uma curiosidade rápida e surpreendente (fato 'Você sabia?')",
-        "image_keyword": "uma única palavra chave em INGLÊS para buscar imagem (ex: 'galaxy', 'microscope', 'robot')"
-      }`;
+      const prompt = `Você é um editor de revista científica. Escreva um artigo curto e fascinante sobre um tema aleatório (Física, Biologia, Química, Astronomia ou Tecnologia).
+      O formato DEVE ser um JSON puro com os campos: title, author, category, content (3 parágrafos usando \\n\\n), fact (curiosidade one-liner) e image_keyword (uma palavra em inglês para busca).`;
 
       const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          contents: [{ parts: [{ text: prompt }] }]
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: {
+            response_mime_type: "application/json"
+          }
         })
       });
 
-      const data = await response.json();
-      
-      if (data.error) {
-        throw new Error(data.error.message);
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error?.message || `Erro HTTP: ${response.status}`);
       }
 
+      const data = await response.json();
       const generatedText = data.candidates[0].content.parts[0].text;
-      const parsedArticle = JSON.parse(cleanJsonString(generatedText));
+      
+      const parsedArticle = JSON.parse(generatedText);
 
-      // Construct image URL based on keyword
-      // Using source.unsplash.com with random sig to prevent caching same image for same keyword
-      const imageUrl = `https://source.unsplash.com/1600x900/?${parsedArticle.image_keyword}&sig=${Math.floor(Math.random() * 1000)}`;
+      // Nova URL de imagem mais estável usando pollinations
+      const imageUrl = `https://image.pollinations.ai/prompt/${parsedArticle.image_keyword}%20scientific%20realistic%20high%20quality?width=1600&height=900&nologo=true`;
 
       setCurrentArticle({
         ...parsedArticle,
         imageUrl: imageUrl, 
-        // Fallback image if unsplash source fails (handled in image onError, but good to have logical backup structure)
         isGenerated: true
       });
       setView('article');
 
     } catch (err) {
-      console.error("Erro na API:", err);
-      // Fallback gracioso
+      console.error("Erro detalhado:", err);
+      
+      // Fallback
       const fallback = getRandomFallback();
       setCurrentArticle(fallback);
       setView('article');
-      // MUDANÇA AQUI: Mostra o erro técnico na tela para te ajudar a debugar
-      setErrorMsg(`Erro: ${err.message}`); 
-    };
+      
+      // Mostra o erro real na tela
+      setErrorMsg(`FALHA NA API: ${err.message}`); 
+    }
+  }; // <--- AQUI ESTAVA O ERRO! Faltava fechar essa chave da função.
 
   /**
    * TELA DE LOADING
@@ -241,7 +230,6 @@ export default function ScientificCuriosityMagazine() {
             alt={currentArticle.imageKeyword}
             className="w-full h-full object-cover"
             onError={(e) => {
-                // Fallback de imagem robusto se a URL dinâmica falhar
                 e.target.src = "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=1600";
             }}
           />
