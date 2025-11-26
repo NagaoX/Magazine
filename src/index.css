@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Estilos extras opcionais para a barra de rolagem */
+body {
+    background-color: #fdfbf7;
+}
