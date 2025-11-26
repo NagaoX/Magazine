@@ -99,6 +99,11 @@ const getRandomFallback = () => {
   return FALLBACK_ARTICLES[randomIndex];
 };
 
+const cleanJsonString = (str) => {
+  // Remove blocos de código markdown caso o modelo os inclua
+  return str.replace(/```json/g, '').replace(/```/g, '').trim();
+};
+
 /**
  * COMPONENTE PRINCIPAL
  */
@@ -121,6 +126,10 @@ export default function ScientificCuriosityMagazine() {
     setShowSettings(false);
   };
 
+  /**
+   * FUNÇÃO DE BUSCA COM FALLBACK DE MODELO
+   * Tenta Gemini 1.5 Flash -> Se falhar -> Tenta Gemini Pro
+   */
   const fetchGeminiArticle = async () => {
     setView('loading');
     setErrorMsg(null);
@@ -136,53 +145,77 @@ export default function ScientificCuriosityMagazine() {
       return;
     }
 
-    try {
-      const prompt = `Você é um editor de revista científica. Escreva um artigo curto e fascinante sobre um tema aleatório (Física, Biologia, Química, Astronomia ou Tecnologia).
-      O formato DEVE ser um JSON puro com os campos: title, author, category, content (3 parágrafos usando \\n\\n), fact (curiosidade one-liner) e image_keyword (uma palavra em inglês para busca).`;
+    const prompt = `Você é um editor de revista científica. Escreva um artigo curto e fascinante sobre um tema aleatório (Física, Biologia, Química, Astronomia ou Tecnologia).
+    O formato DEVE ser um JSON puro (sem markdown) com os campos: title, author, category, content (3 parágrafos usando \\n\\n), fact (curiosidade one-liner) e image_keyword (uma palavra em inglês para busca).`;
 
+    // Função auxiliar para processar a resposta
+    const processResponse = async (response) => {
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error?.message || `Erro HTTP: ${response.status}`);
+      }
+      const data = await response.json();
+      return data.candidates[0].content.parts[0].text;
+    };
+
+    try {
+      // TENTATIVA 1: Gemini 1.5 Flash (Mais rápido)
+      console.log("Tentando Gemini 1.5 Flash...");
       const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           contents: [{ parts: [{ text: prompt }] }],
-          generationConfig: {
-            response_mime_type: "application/json"
-          }
+          generationConfig: { response_mime_type: "application/json" }
         })
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error?.message || `Erro HTTP: ${response.status}`);
-      }
-
-      const data = await response.json();
-      const generatedText = data.candidates[0].content.parts[0].text;
-      
+      const generatedText = await processResponse(response);
       const parsedArticle = JSON.parse(generatedText);
+      finishLoading(parsedArticle);
 
-      // Nova URL de imagem mais estável usando pollinations
-      const imageUrl = `https://image.pollinations.ai/prompt/${parsedArticle.image_keyword}%20scientific%20realistic%20high%20quality?width=1600&height=900&nologo=true`;
-
-      setCurrentArticle({
-        ...parsedArticle,
-        imageUrl: imageUrl, 
-        isGenerated: true
-      });
-      setView('article');
-
-    } catch (err) {
-      console.error("Erro detalhado:", err);
+    } catch (errFlash) {
+      console.warn("Falha no Flash, tentando Gemini Pro...", errFlash);
       
-      // Fallback
-      const fallback = getRandomFallback();
-      setCurrentArticle(fallback);
-      setView('article');
-      
-      // Mostra o erro real na tela
-      setErrorMsg(`FALHA NA API: ${err.message}`); 
+      // TENTATIVA 2: Gemini Pro (Mais compatível)
+      try {
+        const responsePro = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt }] }]
+            // Nota: gemini-pro (1.0) as vezes não aceita response_mime_type, então removemos
+          })
+        });
+
+        const textPro = await processResponse(responsePro);
+        // Limpeza manual do JSON pois o Gemini Pro pode mandar Markdown
+        const cleanText = cleanJsonString(textPro);
+        const parsedArticle = JSON.parse(cleanText);
+        finishLoading(parsedArticle);
+
+      } catch (errPro) {
+        console.error("Erro final:", errPro);
+        // Fallback final para artigo local
+        const fallback = getRandomFallback();
+        setCurrentArticle(fallback);
+        setView('article');
+        setErrorMsg(`Não foi possível gerar. Erro: ${errFlash.message || errPro.message}`); 
+      }
     }
-  }; // <--- AQUI ESTAVA O ERRO! Faltava fechar essa chave da função.
+  };
+
+  const finishLoading = (parsedArticle) => {
+    // Nova URL de imagem mais estável usando pollinations
+    const imageUrl = `https://image.pollinations.ai/prompt/${parsedArticle.image_keyword}%20scientific%20realistic%20high%20quality?width=1600&height=900&nologo=true`;
+
+    setCurrentArticle({
+      ...parsedArticle,
+      imageUrl: imageUrl, 
+      isGenerated: true
+    });
+    setView('article');
+  };
 
   /**
    * TELA DE LOADING
