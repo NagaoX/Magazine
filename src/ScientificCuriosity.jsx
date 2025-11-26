@@ -193,13 +193,14 @@ export default function ScientificCuriosityMagazine() {
             generatedText = await tryModel('gemini-1.5-flash-8b');
         } catch (e2) {
             console.warn("Falha no Flash 8b, tentando 1.0 Pro Legacy...", e2);
-            try {
-                // TENTATIVA 3: Gemini 1.0 Pro (Explicitamente a versão antiga)
-                // Adicionamos reforço no prompt pois ele não suporta mime_type json nativo
-                generatedText = await tryModel('gemini-1.0-pro', prompt + " Responda APENAS O JSON, sem introdução.");
+           try {
+                // TENTATIVA 3: Gemini 1.5 Pro (Modelo mais robusto, caso o Flash falhe)
+                // O 1.5 Pro suporta JSON nativo, então simplificamos a chamada
+                generatedText = await tryModel('gemini-1.5-pro'); 
             } catch (e3) {
-                 // MOSTRA O ERRO DA ÚLTIMA TENTATIVA PARA SABERMOS O MOTIVO REAL
-                 throw new Error(`Todos falharam. Erro final (1.0 Pro): ${e3.message}. Verifique se sua chave tem a API 'Generative Language' ativa.`);
+                 // MOSTRA O ERRO REAL DA PRIMEIRA TENTATIVA (e1) PARA AJUDAR NO DEBUG
+                 // Em vez de mostrar o erro do e3, vamos mostrar o e1 que é o mais importante
+                 throw new Error(`Erro de conexão API. Detalhe da primeira tentativa: ${e1.message || e1}`);
             }
         }
       }
