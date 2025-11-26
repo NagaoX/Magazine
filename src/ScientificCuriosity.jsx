@@ -100,8 +100,15 @@ const getRandomFallback = () => {
 };
 
 const cleanJsonString = (str) => {
-  // Remove blocos de código markdown caso o modelo os inclua
-  return str.replace(/```json/g, '').replace(/```/g, '').trim();
+  // Encontra o primeiro '{' e o último '}' para garantir que pegamos apenas o objeto JSON
+  const jsonStart = str.indexOf('{');
+  const jsonEnd = str.lastIndexOf('}');
+  
+  if (jsonStart === -1 || jsonEnd === -1) {
+    return str;
+  }
+  
+  return str.substring(jsonStart, jsonEnd + 1);
 };
 
 /**
@@ -171,25 +178,29 @@ export default function ScientificCuriosityMagazine() {
       });
 
       const generatedText = await processResponse(response);
-      const parsedArticle = JSON.parse(generatedText);
+      const cleanText = cleanJsonString(generatedText); // Limpeza preventiva mesmo no Flash
+      const parsedArticle = JSON.parse(cleanText);
       finishLoading(parsedArticle);
 
     } catch (errFlash) {
       console.warn("Falha no Flash, tentando Gemini Pro...", errFlash);
       
-      // TENTATIVA 2: Gemini Pro (Mais compatível)
+      // TENTATIVA 2: Gemini Pro (Mais compatível, Fallback)
       try {
+        // Reforçamos o prompt para o modelo Pro que pode ser mais teimoso com JSON
+        const fallbackPrompt = prompt + " Responda APENAS com o JSON, sem introdução.";
+        
         const responsePro = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            contents: [{ parts: [{ text: prompt }] }]
+            contents: [{ parts: [{ text: fallbackPrompt }] }]
             // Nota: gemini-pro (1.0) as vezes não aceita response_mime_type, então removemos
           })
         });
 
         const textPro = await processResponse(responsePro);
-        // Limpeza manual do JSON pois o Gemini Pro pode mandar Markdown
+        // Limpeza robusta do JSON pois o Gemini Pro costuma mandar Markdown ou texto antes
         const cleanText = cleanJsonString(textPro);
         const parsedArticle = JSON.parse(cleanText);
         finishLoading(parsedArticle);
@@ -200,7 +211,8 @@ export default function ScientificCuriosityMagazine() {
         const fallback = getRandomFallback();
         setCurrentArticle(fallback);
         setView('article');
-        setErrorMsg(`Não foi possível gerar. Erro: ${errFlash.message || errPro.message}`); 
+        // MOSTRA O ERRO DA ULTIMA TENTATIVA (errPro), pois é o motivo real de não ter funcionado o backup
+        setErrorMsg(`Não foi possível gerar. Erro: ${errPro.message || errFlash.message}`); 
       }
     }
   };
