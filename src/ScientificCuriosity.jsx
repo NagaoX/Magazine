@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BookOpen, Atom, ArrowLeft, RefreshCw, Settings, Sparkles, Brain, Dna, Rocket, Microscope, Info, AlertTriangle, Globe, Cpu, Leaf, FlaskConical, History, ChevronRight, Palette, Key } from 'lucide-react';
+import { BookOpen, Atom, ArrowLeft, RefreshCw, Settings, Sparkles, Brain, Dna, Rocket, Microscope, Info, AlertTriangle, Globe, Cpu, Leaf, FlaskConical, History, ChevronRight, Palette, Key, ExternalLink } from 'lucide-react';
 
 /**
  * 🎨 TEMAS DE CAPA (MAGAZINE COVERS)
@@ -199,6 +199,7 @@ export default function ScientificCuriosityMagazine() {
   const [apiKey, setApiKey] = useState('');
   const [showSettings, setShowSettings] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
+  const [isApiError, setIsApiError] = useState(false); // Novo estado para saber se o erro é de API
   
   // NOVO: Estado para controlar o tema da capa
   const [coverTheme, setCoverTheme] = useState(MAGAZINE_COVERS[0]);
@@ -217,6 +218,8 @@ export default function ScientificCuriosityMagazine() {
     setApiKey(key);
     localStorage.setItem('gemini_api_key', key);
     setShowSettings(false);
+    setIsApiError(false);
+    setErrorMsg(null);
   };
 
   // Função para alternar a capa manualmente
@@ -232,6 +235,7 @@ export default function ScientificCuriosityMagazine() {
   const fetchGeminiArticle = async () => {
     setView('loading');
     setErrorMsg(null);
+    setIsApiError(false);
 
     if (!apiKey) {
       setTimeout(() => {
@@ -282,11 +286,18 @@ export default function ScientificCuriosityMagazine() {
         try {
             generatedText = await tryModel('gemini-1.5-flash-8b');
         } catch (e2) {
-            console.warn("Falha no Flash 8b, tentando 1.0 Pro Legacy...", e2);
+            console.warn("Falha no Flash 8b, tentando Pro Legacy...", e2);
             try {
-                generatedText = await tryModel('gemini-1.0-pro', prompt + " Responda APENAS O JSON, sem introdução.");
+                // MUDANÇA: Usando apelido genérico 'gemini-pro' que é mais estável para contas antigas
+                generatedText = await tryModel('gemini-pro', prompt + " Responda APENAS O JSON, sem introdução.");
             } catch (e3) {
-                 throw new Error(`Todos falharam. Erro final: ${e3.message}. Verifique a ativação da API.`);
+                 // Detecta erro de permissão especificamente
+                 const msg = e3.message || "";
+                 if (msg.includes("not found") || msg.includes("not supported")) {
+                     setIsApiError(true);
+                     throw new Error("PERMISSÃO NEGADA: Sua chave API existe, mas a 'Generative Language API' não foi ativada na sua conta Google Cloud.");
+                 }
+                 throw new Error(`Todos falharam. Erro final: ${msg}`);
             }
         }
       }
@@ -300,7 +311,10 @@ export default function ScientificCuriosityMagazine() {
       const fallback = getRandomFallback();
       setCurrentArticle(fallback);
       setView('article');
-      setErrorMsg(`Erro: ${err.message}`); 
+      setErrorMsg(err.message);
+      if (err.message.includes("PERMISSÃO") || err.message.includes("not found")) {
+          setIsApiError(true);
+      }
     }
   };
 
@@ -363,8 +377,22 @@ export default function ScientificCuriosityMagazine() {
 
         <main className="max-w-3xl mx-auto px-6 py-12 relative">
             {errorMsg && (
-                <div className="bg-amber-50 border-l-4 border-amber-500 p-4 mb-8 text-amber-800 text-sm flex gap-2 items-center">
-                    <AlertTriangle size={16} /> {errorMsg}
+                <div className={`border-l-4 p-4 mb-8 text-sm flex flex-col gap-2 ${isApiError ? 'bg-red-50 border-red-500 text-red-900' : 'bg-amber-50 border-amber-500 text-amber-800'}`}>
+                    <div className="flex items-center gap-2 font-bold">
+                        <AlertTriangle size={16} /> 
+                        {isApiError ? "Atenção: A API do Google está desativada" : "Erro na Geração"}
+                    </div>
+                    <p>{errorMsg}</p>
+                    {isApiError && (
+                        <a 
+                            href="https://console.cloud.google.com/apis/library/generativelanguage.googleapis.com" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 font-bold underline mt-1 hover:text-red-700"
+                        >
+                            Clique aqui para ATIVAR a API no Google Cloud <ExternalLink size={12} />
+                        </a>
+                    )}
                 </div>
             )}
             <div className="prose prose-lg prose-stone prose-headings:font-serif first-letter:text-5xl first-letter:font-serif first-letter:font-bold first-letter:mr-2 first-letter:float-left first-letter:text-red-900">
@@ -406,6 +434,14 @@ export default function ScientificCuriosityMagazine() {
             <div className="flex justify-end gap-2">
               <button onClick={() => setShowSettings(false)} className="px-4 py-2 text-sm text-slate-600 hover:bg-stone-100">Cancelar</button>
               <button onClick={() => handleSaveKey(apiKey)} className="px-4 py-2 bg-red-900 text-white text-sm font-bold">Salvar Editor</button>
+            </div>
+            <div className="mt-4 pt-4 border-t border-stone-200">
+                <p className="text-xs text-stone-500 mb-2 font-bold">Problemas comuns:</p>
+                <ul className="text-xs text-stone-500 list-disc pl-4 space-y-1">
+                    <li>Erro "Not Found": API não ativada na conta Google.</li>
+                    <li>Chave inválida: Verifique se copiou todo o código.</li>
+                    <li><a href="https://aistudio.google.com/app/apikey" target="_blank" className="underline text-blue-600">Criar nova chave (Recomendado)</a></li>
+                </ul>
             </div>
           </div>
         </div>
