@@ -100,14 +100,9 @@ const getRandomFallback = () => {
 };
 
 const cleanJsonString = (str) => {
-  // Encontra o primeiro '{' e o último '}' para garantir que pegamos apenas o objeto JSON
   const jsonStart = str.indexOf('{');
   const jsonEnd = str.lastIndexOf('}');
-  
-  if (jsonStart === -1 || jsonEnd === -1) {
-    return str;
-  }
-  
+  if (jsonStart === -1 || jsonEnd === -1) return str;
   return str.substring(jsonStart, jsonEnd + 1);
 };
 
@@ -134,8 +129,8 @@ export default function ScientificCuriosityMagazine() {
   };
 
   /**
-   * FUNÇÃO DE BUSCA COM FALLBACK DE MODELO
-   * Tenta Gemini 1.5 Flash -> Se falhar -> Tenta Gemini Pro
+   * SISTEMA DE BUSCA COM MÚLTIPLAS TENTATIVAS
+   * Tenta: Gemini 1.5 Flash -> Gemini 1.5 Flash 8b -> Gemini Pro (1.0)
    */
   const fetchGeminiArticle = async () => {
     setView('loading');
@@ -155,65 +150,70 @@ export default function ScientificCuriosityMagazine() {
     const prompt = `Você é um editor de revista científica. Escreva um artigo curto e fascinante sobre um tema aleatório (Física, Biologia, Química, Astronomia ou Tecnologia).
     O formato DEVE ser um JSON puro (sem markdown) com os campos: title, author, category, content (3 parágrafos usando \\n\\n), fact (curiosidade one-liner) e image_keyword (uma palavra em inglês para busca).`;
 
-    // Função auxiliar para processar a resposta
-    const processResponse = async (response) => {
+    // Função auxiliar para testar modelos
+    const tryModel = async (modelName, customPrompt = null) => {
+      console.log(`Tentando modelo: ${modelName}...`);
+      const p = customPrompt || prompt;
+      
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: p }] }],
+          // Apenas modelos 1.5 suportam bem o response_mime_type, o 1.0 (pro) costuma falhar
+          ...(modelName.includes('1.5') ? { generationConfig: { response_mime_type: "application/json" } } : {})
+        })
+      });
+
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.error?.message || `Erro HTTP: ${response.status}`);
+        let errorMsg = `Erro HTTP: ${response.status}`;
+        try {
+            const errorData = await response.json();
+            if (errorData.error && errorData.error.message) errorMsg = errorData.error.message;
+        } catch (e) { /* ignore parse error */ }
+        throw new Error(errorMsg);
       }
+
       const data = await response.json();
+      if (!data.candidates || !data.candidates[0]) throw new Error("Sem resposta válida da IA");
       return data.candidates[0].content.parts[0].text;
     };
 
     try {
-      // TENTATIVA 1: Gemini 1.5 Flash (Mais rápido)
-      console.log("Tentando Gemini 1.5 Flash...");
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: prompt }] }],
-          generationConfig: { response_mime_type: "application/json" }
-        })
-      });
+      let generatedText = "";
+      
+      // CADEIA DE RESPONSABILIDADE
+      try {
+        // TENTATIVA 1: Flash Standard
+        generatedText = await tryModel('gemini-1.5-flash');
+      } catch (e1) {
+        console.warn("Falha no Flash, tentando 8b...", e1);
+        try {
+            // TENTATIVA 2: Flash 8b (Mais novo e leve)
+            generatedText = await tryModel('gemini-1.5-flash-8b');
+        } catch (e2) {
+            console.warn("Falha no Flash 8b, tentando Pro Legacy...", e2);
+            try {
+                // TENTATIVA 3: Gemini Pro (Legacy/1.0) - O mais compatível
+                // Adicionamos reforço no prompt pois ele não suporta mime_type json nativo
+                generatedText = await tryModel('gemini-pro', prompt + " Responda APENAS O JSON, sem introdução.");
+            } catch (e3) {
+                 // Se todos falharem, mostra o erro do Flash (que geralmente é o mais descritivo sobre a chave)
+                 throw new Error(`Falha em todos os modelos. Erro principal: ${e1.message}`);
+            }
+        }
+      }
 
-      const generatedText = await processResponse(response);
-      const cleanText = cleanJsonString(generatedText); // Limpeza preventiva mesmo no Flash
+      const cleanText = cleanJsonString(generatedText);
       const parsedArticle = JSON.parse(cleanText);
       finishLoading(parsedArticle);
 
-    } catch (errFlash) {
-      console.warn("Falha no Flash, tentando Gemini Pro...", errFlash);
-      
-      // TENTATIVA 2: Gemini Pro (Mais compatível, Fallback)
-      try {
-        // Reforçamos o prompt para o modelo Pro que pode ser mais teimoso com JSON
-        const fallbackPrompt = prompt + " Responda APENAS com o JSON, sem introdução.";
-        
-        const responsePro = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents: [{ parts: [{ text: fallbackPrompt }] }]
-            // Nota: gemini-pro (1.0) as vezes não aceita response_mime_type, então removemos
-          })
-        });
-
-        const textPro = await processResponse(responsePro);
-        // Limpeza robusta do JSON pois o Gemini Pro costuma mandar Markdown ou texto antes
-        const cleanText = cleanJsonString(textPro);
-        const parsedArticle = JSON.parse(cleanText);
-        finishLoading(parsedArticle);
-
-      } catch (errPro) {
-        console.error("Erro final:", errPro);
-        // Fallback final para artigo local
-        const fallback = getRandomFallback();
-        setCurrentArticle(fallback);
-        setView('article');
-        // MOSTRA O ERRO DA ULTIMA TENTATIVA (errPro), pois é o motivo real de não ter funcionado o backup
-        setErrorMsg(`Não foi possível gerar. Erro: ${errPro.message || errFlash.message}`); 
-      }
+    } catch (err) {
+      console.error("Erro fatal:", err);
+      const fallback = getRandomFallback();
+      setCurrentArticle(fallback);
+      setView('article');
+      setErrorMsg(`Erro: ${err.message}`); 
     }
   };
 
