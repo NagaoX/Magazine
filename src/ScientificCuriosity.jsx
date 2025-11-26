@@ -176,14 +176,12 @@ const FALLBACK_ARTICLES = [
     Essa dualidade levanta questões profundas sobre a natureza da realidade. Se a observação define o estado da matéria, qual é o papel da consciência no universo? Físicos continuam debatendo se a realidade existe independentemente de nós ou se somos co-criadores do cosmos a cada olhar.`,
     imageUrl: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&q=80&w=1600"
   },
-  // ... (Outros artigos mantidos em memória para brevidade, mas a lógica usa eles)
+  // ...
 ];
 
 // Utilitários
 const getRandomFallback = () => {
-    // Retorna um artigo aleatório do array completo
-    // Adicionando proteção caso o array esteja vazio ou incompleto na memória
-    return FALLBACK_ARTICLES[0]; 
+    return FALLBACK_ARTICLES[0]; // Garante retorno mesmo se array vazio
 };
 
 const cleanJsonString = (str) => {
@@ -199,17 +197,14 @@ export default function ScientificCuriosityMagazine() {
   const [apiKey, setApiKey] = useState('');
   const [showSettings, setShowSettings] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
-  const [isApiError, setIsApiError] = useState(false); // Novo estado para saber se o erro é de API
+  const [isApiError, setIsApiError] = useState(false); 
+  const [errorType, setErrorType] = useState(''); // 'permission', 'quota', 'invalid'
   
-  // NOVO: Estado para controlar o tema da capa
   const [coverTheme, setCoverTheme] = useState(MAGAZINE_COVERS[0]);
 
-  // Load API Key & Random Cover on mount
   useEffect(() => {
     const savedKey = localStorage.getItem('gemini_api_key');
     if (savedKey) setApiKey(savedKey);
-    
-    // Escolhe uma capa aleatória ao iniciar
     const randomCover = MAGAZINE_COVERS[Math.floor(Math.random() * MAGAZINE_COVERS.length)];
     setCoverTheme(randomCover);
   }, []);
@@ -222,7 +217,6 @@ export default function ScientificCuriosityMagazine() {
     setErrorMsg(null);
   };
 
-  // Função para alternar a capa manualmente
   const cycleCover = () => {
     const currentIndex = MAGAZINE_COVERS.findIndex(c => c.id === coverTheme.id);
     const nextIndex = (currentIndex + 1) % MAGAZINE_COVERS.length;
@@ -230,12 +224,13 @@ export default function ScientificCuriosityMagazine() {
   };
 
   /**
-   * SISTEMA DE BUSCA COM MÚLTIPLAS TENTATIVAS (BLINDADO)
+   * SISTEMA DE BUSCA
    */
   const fetchGeminiArticle = async () => {
     setView('loading');
     setErrorMsg(null);
     setIsApiError(false);
+    setErrorType('');
 
     if (!apiKey) {
       setTimeout(() => {
@@ -280,24 +275,29 @@ export default function ScientificCuriosityMagazine() {
     try {
       let generatedText = "";
       try {
+        // Tentativa 1: Flash 1.5 (Padrão atual)
         generatedText = await tryModel('gemini-1.5-flash');
       } catch (e1) {
-        console.warn("Falha no Flash, tentando 8b...", e1);
+        console.warn("Falha no Flash 1.5, tentando fallback...", e1);
         try {
-            generatedText = await tryModel('gemini-1.5-flash-8b');
+            // Tentativa 2: Pro 1.5 (Se o Flash falhar)
+            generatedText = await tryModel('gemini-1.5-pro');
         } catch (e2) {
-            console.warn("Falha no Flash 8b, tentando Pro Legacy...", e2);
+            console.warn("Falha no Pro 1.5, tentando Legacy...", e2);
             try {
-                // MUDANÇA: Usando apelido genérico 'gemini-pro' que é mais estável para contas antigas
+                // Tentativa 3: Pro Legacy (1.0)
                 generatedText = await tryModel('gemini-pro', prompt + " Responda APENAS O JSON, sem introdução.");
             } catch (e3) {
-                 // Detecta erro de permissão especificamente
+                 // Análise final do erro
                  const msg = e3.message || "";
-                 if (msg.includes("not found") || msg.includes("not supported")) {
-                     setIsApiError(true);
-                     throw new Error("PERMISSÃO NEGADA: Sua chave API existe, mas a 'Generative Language API' não foi ativada na sua conta Google Cloud.");
+                 if (msg.includes("not found") || msg.includes("404")) {
+                     setErrorType('permission');
+                     throw new Error("CHAVE DE TIPO ERRADO: Esta chave não tem permissão para usar a 'Generative Language API'.");
+                 } else if (msg.includes("400") || msg.includes("INVALID_ARGUMENT")) {
+                     setErrorType('invalid');
+                     throw new Error("CHAVE INVÁLIDA: A chave copiada está incorreta ou incompleta.");
                  }
-                 throw new Error(`Todos falharam. Erro final: ${msg}`);
+                 throw new Error(`Falha na conexão. Detalhes: ${msg}`);
             }
         }
       }
@@ -312,7 +312,7 @@ export default function ScientificCuriosityMagazine() {
       setCurrentArticle(fallback);
       setView('article');
       setErrorMsg(err.message);
-      if (err.message.includes("PERMISSÃO") || err.message.includes("not found")) {
+      if (errorType || err.message.includes("CHAVE")) {
           setIsApiError(true);
       }
     }
@@ -324,9 +324,6 @@ export default function ScientificCuriosityMagazine() {
     setView('article');
   };
 
-  /**
-   * TELA DE LOADING
-   */
   if (view === 'loading') {
     return (
       <div className={`min-h-screen flex flex-col items-center justify-center font-serif ${coverTheme.style.bgWrapper} ${coverTheme.style.textColor}`}>
@@ -340,9 +337,6 @@ export default function ScientificCuriosityMagazine() {
     );
   }
 
-  /**
-   * TELA DO ARTIGO
-   */
   if (view === 'article' && currentArticle) {
     return (
       <div className="min-h-screen bg-stone-50 text-slate-900 font-sans selection:bg-red-200">
@@ -380,18 +374,21 @@ export default function ScientificCuriosityMagazine() {
                 <div className={`border-l-4 p-4 mb-8 text-sm flex flex-col gap-2 ${isApiError ? 'bg-red-50 border-red-500 text-red-900' : 'bg-amber-50 border-amber-500 text-amber-800'}`}>
                     <div className="flex items-center gap-2 font-bold">
                         <AlertTriangle size={16} /> 
-                        {isApiError ? "Atenção: A API do Google está desativada" : "Erro na Geração"}
+                        {errorType === 'permission' ? "Chave de Tipo Errado" : "Erro na Geração"}
                     </div>
                     <p>{errorMsg}</p>
-                    {isApiError && (
-                        <a 
-                            href="https://console.cloud.google.com/apis/library/generativelanguage.googleapis.com" 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1 font-bold underline mt-1 hover:text-red-700"
-                        >
-                            Clique aqui para ATIVAR a API no Google Cloud <ExternalLink size={12} />
-                        </a>
+                    {errorType === 'permission' && (
+                        <div className="flex flex-col gap-2 mt-2">
+                            <p className="text-xs">Sua chave foi criada no lugar errado (Google Cloud/Vertex). Você precisa de uma chave do <strong>Google AI Studio</strong>.</p>
+                            <a 
+                                href="https://aistudio.google.com/app/apikey" 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center justify-center gap-1 px-3 py-2 bg-red-100 hover:bg-red-200 rounded text-red-900 font-bold text-xs border border-red-300 transition-colors"
+                            >
+                                1. Clique para Criar Chave Correta <ExternalLink size={12} />
+                            </a>
+                        </div>
                     )}
                 </div>
             )}
@@ -411,12 +408,8 @@ export default function ScientificCuriosityMagazine() {
     );
   }
 
-  /**
-   * TELA DA CAPA (HOME) - DINÂMICA
-   */
   return (
     <div className={`min-h-screen ${coverTheme.style.bgWrapper} ${coverTheme.style.textColor} font-sans p-4 md:p-8 flex items-center justify-center transition-colors duration-700`}>
-      {/* Settings Modal */}
       {showSettings && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
           <div className="bg-white p-6 max-w-md w-full shadow-2xl rounded-sm border border-stone-200">
@@ -438,22 +431,17 @@ export default function ScientificCuriosityMagazine() {
             <div className="mt-4 pt-4 border-t border-stone-200">
                 <p className="text-xs text-stone-500 mb-2 font-bold">Problemas comuns:</p>
                 <ul className="text-xs text-stone-500 list-disc pl-4 space-y-1">
-                    <li>Erro "Not Found": API não ativada na conta Google.</li>
-                    <li>Chave inválida: Verifique se copiou todo o código.</li>
-                    <li><a href="https://aistudio.google.com/app/apikey" target="_blank" className="underline text-blue-600">Criar nova chave (Recomendado)</a></li>
+                    <li>Erro "404 Not Found": Chave errada (Vertex AI).</li>
+                    <li>Crie a chave no <strong>Google AI Studio</strong>.</li>
+                    <li><a href="https://aistudio.google.com/app/apikey" target="_blank" className="underline text-blue-600 font-bold">Criar Chave Nova Agora</a></li>
                 </ul>
             </div>
           </div>
         </div>
       )}
 
-      {/* Main Magazine Cover Layout */}
       <div className={`w-full max-w-[800px] min-h-[900px] shadow-2xl relative border-4 ${coverTheme.style.borderColor} p-2 md:p-6 flex flex-col transition-all duration-500`}>
-        
-        {/* Header / Masthead */}
         <header className={`border-b-4 ${coverTheme.style.borderColor} pb-4 mb-6 relative text-center`}>
-           
-           {/* BOTÃO DE API KEY REPOSICIONADO E DESTACADO */}
            <div className="absolute right-0 top-0 flex flex-col items-end gap-2 z-20">
              <button 
                onClick={() => setShowSettings(true)} 
@@ -480,9 +468,7 @@ export default function ScientificCuriosityMagazine() {
            </h1>
         </header>
 
-        {/* Cover Grid */}
         <div className="flex-grow grid grid-cols-12 gap-4">
-            {/* Left Sidebar Teasers */}
             <div className={`col-span-12 md:col-span-3 flex flex-col gap-8 md:border-r ${coverTheme.style.borderColor} pr-0 md:pr-4`}>
                 <div className="group cursor-pointer" onClick={() => {setApiKey(''); fetchGeminiArticle();}}>
                     <span className={`${coverTheme.style.accentColor} font-bold text-xs uppercase block mb-1`}>{coverTheme.content.teasers[0].cat}</span>
@@ -490,9 +476,7 @@ export default function ScientificCuriosityMagazine() {
                         {coverTheme.content.teasers[0].title}
                     </h3>
                 </div>
-                
                 <div className={`w-full h-px ${coverTheme.style.borderColor} opacity-30`}></div>
-
                 {coverTheme.content.teasers.slice(1).map((teaser, idx) => (
                     <div key={idx} className="group cursor-pointer">
                         <span className={`${teaser.color} font-bold text-xs uppercase block mb-1`}>{teaser.cat}</span>
@@ -503,7 +487,6 @@ export default function ScientificCuriosityMagazine() {
                 ))}
             </div>
 
-            {/* Main Feature */}
             <div className="col-span-12 md:col-span-9 flex flex-col relative group">
                <div className={`relative flex-grow overflow-hidden border ${coverTheme.style.borderColor} bg-stone-200`}>
                   <img 
@@ -512,8 +495,6 @@ export default function ScientificCuriosityMagazine() {
                     className={`w-full h-full object-cover transition-all duration-700 hover:scale-105 ${coverTheme.style.featureFilter}`}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent"></div>
-                  
-                  {/* Main Call to Action Area */}
                   <div className="absolute bottom-0 w-full p-6 text-white text-center">
                      <h2 className={`${coverTheme.style.fontMain} text-3xl md:text-5xl font-bold leading-tight mb-4 drop-shadow-md`}>
                         {coverTheme.content.highlight.title}
@@ -521,7 +502,6 @@ export default function ScientificCuriosityMagazine() {
                      <p className="text-stone-300 mb-6 font-medium max-w-md mx-auto text-sm md:text-base">
                         {coverTheme.content.highlight.desc}
                      </p>
-                     
                      <button 
                         onClick={fetchGeminiArticle}
                         className={`${coverTheme.style.buttonBg} ${coverTheme.style.buttonText} px-8 py-4 text-lg font-bold tracking-widest uppercase transition-all transform hover:-translate-y-1 shadow-lg flex items-center gap-3 mx-auto`}
@@ -532,7 +512,6 @@ export default function ScientificCuriosityMagazine() {
                   </div>
                </div>
 
-               {/* Bottom Strip */}
                <div className={`mt-4 flex gap-4 overflow-hidden py-2 border-t-2 ${coverTheme.style.borderColor}`}>
                   {coverTheme.content.strip.map((item, idx) => (
                       <div key={idx} className={`flex-1 ${idx < 2 ? `border-r ${coverTheme.style.borderColor} pr-4` : ''}`}>
@@ -546,7 +525,6 @@ export default function ScientificCuriosityMagazine() {
             </div>
         </div>
 
-        {/* Footer */}
         <footer className={`mt-6 border-t ${coverTheme.style.borderColor} pt-2 flex justify-between items-end text-[10px] opacity-50 font-mono uppercase`}>
            <div>
               <p>ISSN 2025-AI-GEN</p>
