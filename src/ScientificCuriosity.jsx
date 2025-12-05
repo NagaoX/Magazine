@@ -199,7 +199,7 @@ export default function ScientificCuriosityMagazine() {
   const [errorMsg, setErrorMsg] = useState(null);
   const [isApiError, setIsApiError] = useState(false); 
   const [errorType, setErrorType] = useState(''); 
-  const [testStatus, setTestStatus] = useState('idle'); // idle, testing, success, error
+  const [testStatus, setTestStatus] = useState('idle');
   const [testMessage, setTestMessage] = useState('');
   
   const [coverTheme, setCoverTheme] = useState(MAGAZINE_COVERS[0]);
@@ -217,7 +217,7 @@ export default function ScientificCuriosityMagazine() {
     setShowSettings(false);
     setIsApiError(false);
     setErrorMsg(null);
-    setTestStatus('idle'); // Reset test on close
+    setTestStatus('idle');
   };
 
   const cycleCover = () => {
@@ -226,7 +226,6 @@ export default function ScientificCuriosityMagazine() {
     setCoverTheme(MAGAZINE_COVERS[nextIndex]);
   };
 
-  // NOVA FUNÇÃO: Testa a conexão sem gerar artigo completo
   const testConnection = async () => {
     if (!apiKey) {
         setTestStatus('error');
@@ -235,7 +234,6 @@ export default function ScientificCuriosityMagazine() {
     }
     setTestStatus('testing');
     try {
-        // Tenta um "ping" simples no modelo mais básico
         const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -247,16 +245,13 @@ export default function ScientificCuriosityMagazine() {
             throw new Error(errorData.error?.message || `Erro ${response.status}`);
         }
         setTestStatus('success');
-        setTestMessage("Conexão OK! Sua chave está funcionando.");
+        setTestMessage("Conexão OK!");
     } catch (e) {
         setTestStatus('error');
         setTestMessage(e.message);
     }
   };
 
-  /**
-   * SISTEMA DE BUSCA
-   */
   const fetchGeminiArticle = async () => {
     setView('loading');
     setErrorMsg(null);
@@ -306,24 +301,20 @@ export default function ScientificCuriosityMagazine() {
     try {
       let generatedText = "";
       try {
-        // Tentativa 1: Flash 1.5 (Padrão atual)
         generatedText = await tryModel('gemini-1.5-flash');
       } catch (e1) {
-        console.warn("Falha no Flash 1.5, tentando Flash 8b...", e1);
+        console.warn("Falha no Flash 1.5, tentando fallback...", e1);
         try {
-            // Tentativa 2: Flash 1.5 8b (Mais novo e leve)
-            generatedText = await tryModel('gemini-1.5-flash-8b');
+            generatedText = await tryModel('gemini-1.5-pro');
         } catch (e2) {
-            console.warn("Falha no Flash 8b, tentando Pro 1.0...", e2);
+            console.warn("Falha no Pro 1.5, tentando Legacy...", e2);
             try {
-                // Tentativa 3: Pro Legacy (1.0)
-                generatedText = await tryModel('gemini-1.0-pro', prompt + " Responda APENAS O JSON, sem introdução.");
+                generatedText = await tryModel('gemini-pro', prompt + " Responda APENAS O JSON, sem introdução.");
             } catch (e3) {
-                 // Análise final do erro
                  const msg = e3.message || "";
                  if (msg.includes("not found") || msg.includes("404")) {
                      setErrorType('permission');
-                     throw new Error("CHAVE DE TIPO ERRADO: Esta chave não tem permissão (API não ativada ou endpoint errado).");
+                     throw new Error("CHAVE DE TIPO ERRADO: Esta chave não tem permissão para usar a 'Generative Language API'.");
                  } else if (msg.includes("400") || msg.includes("INVALID_ARGUMENT")) {
                      setErrorType('invalid');
                      throw new Error("CHAVE INVÁLIDA: A chave copiada está incorreta.");
@@ -362,7 +353,7 @@ export default function ScientificCuriosityMagazine() {
           <div className={`absolute inset-0 animate-ping rounded-full opacity-20 ${coverTheme.style.buttonBg}`}></div>
           <Atom size={64} className={`animate-spin-slow duration-3000 ${coverTheme.style.accentColor}`} />
         </div>
-        <h2 className="mt-8 text-2xl font-bold tracking-widest uppercase">Pesquisando nos Arquivos</h2>
+        <h2 className="mt-8 text-xl md:text-2xl font-bold tracking-widest uppercase">Pesquisando nos Arquivos</h2>
         <p className="mt-2 opacity-60 italic">Consultando a inteligência artificial...</p>
       </div>
     );
@@ -381,7 +372,7 @@ export default function ScientificCuriosityMagazine() {
           </button>
         </nav>
 
-        <div className="relative w-full h-[60vh] mt-0">
+        <div className="relative w-full h-[50vh] md:h-[60vh] mt-0">
           <img 
             src={currentArticle.imageUrl} 
             alt={currentArticle.imageKeyword}
@@ -389,18 +380,18 @@ export default function ScientificCuriosityMagazine() {
             onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=1600"; }}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-stone-50 via-transparent to-black/30"></div>
-          <div className="absolute bottom-0 left-0 w-full p-6 md:p-12 md:max-w-4xl">
+          <div className="absolute bottom-0 left-0 w-full p-4 md:p-12 md:max-w-4xl">
             <span className="bg-red-900 text-white px-3 py-1 text-xs font-bold uppercase tracking-widest mb-4 inline-block">
               {currentArticle.category}
             </span>
-            <h1 className="text-4xl md:text-6xl font-serif font-bold leading-tight mb-4 drop-shadow-lg text-slate-900">
+            <h1 className="text-3xl md:text-6xl font-serif font-bold leading-tight mb-2 md:mb-4 drop-shadow-lg text-slate-900">
               {currentArticle.title}
             </h1>
-            <p className="text-stone-700 italic font-serif text-lg">Por {currentArticle.author}</p>
+            <p className="text-stone-700 italic font-serif text-base md:text-lg">Por {currentArticle.author}</p>
           </div>
         </div>
 
-        <main className="max-w-3xl mx-auto px-6 py-12 relative">
+        <main className="max-w-3xl mx-auto px-4 py-8 md:px-6 md:py-12 relative">
             {errorMsg && (
                 <div className={`border-l-4 p-4 mb-8 text-sm flex flex-col gap-2 ${isApiError ? 'bg-red-50 border-red-500 text-red-900' : 'bg-amber-50 border-amber-500 text-amber-800'}`}>
                     <div className="flex items-center gap-2 font-bold">
@@ -423,16 +414,16 @@ export default function ScientificCuriosityMagazine() {
                     )}
                 </div>
             )}
-            <div className="prose prose-lg prose-stone prose-headings:font-serif first-letter:text-5xl first-letter:font-serif first-letter:font-bold first-letter:mr-2 first-letter:float-left first-letter:text-red-900">
+            <div className="prose prose-base md:prose-lg prose-stone prose-headings:font-serif first-letter:text-5xl first-letter:font-serif first-letter:font-bold first-letter:mr-2 first-letter:float-left first-letter:text-red-900">
                 {currentArticle.content.split('\n').map((paragraph, idx) => (
                   paragraph.trim() && <p key={idx} className="mb-6 leading-relaxed text-stone-800">{paragraph}</p>
                 ))}
             </div>
             
-            <div className="my-12 bg-stone-200 p-8 border-l-4 border-red-900 rounded-r-lg relative overflow-hidden">
+            <div className="my-8 md:my-12 bg-stone-200 p-6 md:p-8 border-l-4 border-red-900 rounded-r-lg relative overflow-hidden">
                <div className="absolute -right-4 -top-4 opacity-5 rotate-12"><Brain size={128} /></div>
-               <h3 className="font-serif font-bold text-xl mb-2 text-red-900 flex items-center gap-2"><Sparkles size={18} /> Fato Rápido</h3>
-               <p className="font-medium text-lg italic text-slate-800 relative z-10">"{currentArticle.fact}"</p>
+               <h3 className="font-serif font-bold text-lg md:text-xl mb-2 text-red-900 flex items-center gap-2"><Sparkles size={18} /> Fato Rápido</h3>
+               <p className="font-medium text-base md:text-lg italic text-slate-800 relative z-10">"{currentArticle.fact}"</p>
             </div>
         </main>
       </div>
@@ -440,10 +431,10 @@ export default function ScientificCuriosityMagazine() {
   }
 
   return (
-    <div className={`min-h-screen ${coverTheme.style.bgWrapper} ${coverTheme.style.textColor} font-sans p-4 md:p-8 flex items-center justify-center transition-colors duration-700`}>
+    <div className={`min-h-screen ${coverTheme.style.bgWrapper} ${coverTheme.style.textColor} font-sans p-0 md:p-8 flex items-center justify-center transition-colors duration-700`}>
       {showSettings && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white p-6 max-w-md w-full shadow-2xl rounded-sm border border-stone-200">
+          <div className="bg-white p-6 max-w-md w-full shadow-2xl rounded-sm border border-stone-200 m-4">
             <h3 className="font-serif font-bold text-xl mb-4 text-slate-900 flex items-center gap-2">
               <Key size={20} /> Configurar API
             </h3>
@@ -454,7 +445,7 @@ export default function ScientificCuriosityMagazine() {
                 type="password" 
                 placeholder="Cole sua API Key aqui..."
                 defaultValue={apiKey}
-                className="flex-1 border border-stone-300 text-slate-900 p-3 focus:outline-none focus:border-red-900 font-mono text-sm"
+                className="flex-1 border border-stone-300 text-slate-900 p-3 focus:outline-none focus:border-red-900 font-mono text-sm w-full"
                 onChange={(e) => {setApiKey(e.target.value); setTestStatus('idle');}}
                 />
                 <button 
@@ -493,15 +484,15 @@ export default function ScientificCuriosityMagazine() {
         </div>
       )}
 
-      <div className={`w-full max-w-[800px] min-h-[900px] shadow-2xl relative border-4 ${coverTheme.style.borderColor} p-2 md:p-6 flex flex-col transition-all duration-500`}>
+      <div className={`w-full max-w-[800px] min-h-screen md:min-h-[900px] shadow-2xl relative border-y-0 border-x-0 md:border-4 ${coverTheme.style.borderColor} p-4 md:p-6 flex flex-col transition-all duration-500`}>
         <header className={`border-b-4 ${coverTheme.style.borderColor} pb-4 mb-6 relative text-center`}>
            <div className="absolute right-0 top-0 flex flex-col items-end gap-2 z-20">
              <button 
                onClick={() => setShowSettings(true)} 
-               className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest shadow-md transition-all hover:scale-105 ${!apiKey ? 'animate-pulse' : ''} ${coverTheme.style.buttonBg} ${coverTheme.style.buttonText}`}
+               className={`flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-widest shadow-md transition-all hover:scale-105 ${!apiKey ? 'animate-pulse' : ''} ${coverTheme.style.buttonBg} ${coverTheme.style.buttonText}`}
              >
-               <Key size={14} />
-               {apiKey ? "Configurar API" : "🔑 Inserir API Key"}
+               <Key size={12} className="md:w-3.5 md:h-3.5" />
+               {apiKey ? "Configurar" : "Inserir Key"}
              </button>
              
              <button onClick={cycleCover} className={`flex items-center gap-1 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider hover:bg-black/5 transition-colors ${coverTheme.style.mastheadColor} opacity-70`}>
@@ -509,20 +500,20 @@ export default function ScientificCuriosityMagazine() {
              </button>
            </div>
            
-           <div className={`flex justify-between text-xs font-bold uppercase tracking-widest ${coverTheme.style.mastheadSub} mb-2 border-b ${coverTheme.style.borderColor.replace('4', '1')} pb-1 opacity-80`}>
+           <div className={`flex justify-between text-[10px] md:text-xs font-bold uppercase tracking-widest ${coverTheme.style.mastheadSub} mb-2 border-b ${coverTheme.style.borderColor.replace('4', '1')} pb-1 opacity-80 pt-8 md:pt-0`}>
               <span>Edição Infinita</span>
               <span>{coverTheme.content.vol}</span>
               <span>{new Date().getFullYear()}</span>
            </div>
            
-           <h1 className={`${coverTheme.style.fontMain} text-5xl md:text-7xl font-black tracking-tighter ${coverTheme.style.mastheadColor} scale-y-110 mb-2`}>
+           <h1 className={`${coverTheme.style.fontMain} text-4xl sm:text-5xl md:text-7xl font-black tracking-tighter ${coverTheme.style.mastheadColor} scale-y-110 mb-2 mt-4 md:mt-0`}>
              CURIOSIDADE
-             <span className={`block text-2xl md:text-4xl font-normal tracking-widest mt-1 ${coverTheme.style.mastheadSub}`}>CIENTÍFICA</span>
+             <span className={`block text-xl md:text-4xl font-normal tracking-widest mt-1 ${coverTheme.style.mastheadSub}`}>CIENTÍFICA</span>
            </h1>
         </header>
 
         <div className="flex-grow grid grid-cols-12 gap-4">
-            <div className={`col-span-12 md:col-span-3 flex flex-col gap-8 md:border-r ${coverTheme.style.borderColor} pr-0 md:pr-4`}>
+            <div className={`col-span-12 md:col-span-3 flex flex-col gap-6 md:gap-8 md:border-r ${coverTheme.style.borderColor} pr-0 md:pr-4 order-2 md:order-1`}>
                 <div className="group cursor-pointer" onClick={() => {setApiKey(''); fetchGeminiArticle();}}>
                     <span className={`${coverTheme.style.accentColor} font-bold text-xs uppercase block mb-1`}>{coverTheme.content.teasers[0].cat}</span>
                     <h3 className={`${coverTheme.style.fontMain} font-bold text-lg leading-tight hover:opacity-70 transition-opacity`}>
@@ -530,18 +521,21 @@ export default function ScientificCuriosityMagazine() {
                     </h3>
                 </div>
                 <div className={`w-full h-px ${coverTheme.style.borderColor} opacity-30`}></div>
-                {coverTheme.content.teasers.slice(1).map((teaser, idx) => (
-                    <div key={idx} className="group cursor-pointer">
-                        <span className={`${teaser.color} font-bold text-xs uppercase block mb-1`}>{teaser.cat}</span>
-                        <h3 className={`${coverTheme.style.fontMain} font-bold text-lg leading-tight`}>
-                            {teaser.title}
-                        </h3>
-                    </div>
-                ))}
+                
+                <div className="grid grid-cols-2 md:grid-cols-1 gap-6">
+                    {coverTheme.content.teasers.slice(1).map((teaser, idx) => (
+                        <div key={idx} className="group cursor-pointer">
+                            <span className={`${teaser.color} font-bold text-xs uppercase block mb-1`}>{teaser.cat}</span>
+                            <h3 className={`${coverTheme.style.fontMain} font-bold text-lg leading-tight`}>
+                                {teaser.title}
+                            </h3>
+                        </div>
+                    ))}
+                </div>
             </div>
 
-            <div className="col-span-12 md:col-span-9 flex flex-col relative group">
-               <div className={`relative flex-grow overflow-hidden border ${coverTheme.style.borderColor} bg-stone-200`}>
+            <div className="col-span-12 md:col-span-9 flex flex-col relative group order-1 md:order-2">
+               <div className={`relative flex-grow min-h-[400px] md:min-h-auto overflow-hidden border ${coverTheme.style.borderColor} bg-stone-200`}>
                   <img 
                     src={coverTheme.content.highlight.image}
                     alt="Main Feature"
@@ -549,25 +543,25 @@ export default function ScientificCuriosityMagazine() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent"></div>
                   <div className="absolute bottom-0 w-full p-6 text-white text-center">
-                     <h2 className={`${coverTheme.style.fontMain} text-3xl md:text-5xl font-bold leading-tight mb-4 drop-shadow-md`}>
+                     <h2 className={`${coverTheme.style.fontMain} text-2xl md:text-5xl font-bold leading-tight mb-2 md:mb-4 drop-shadow-md`}>
                         {coverTheme.content.highlight.title}
                      </h2>
-                     <p className="text-stone-300 mb-6 font-medium max-w-md mx-auto text-sm md:text-base">
+                     <p className="text-stone-300 mb-6 font-medium max-w-md mx-auto text-sm md:text-base line-clamp-3 md:line-clamp-none">
                         {coverTheme.content.highlight.desc}
                      </p>
                      <button 
                         onClick={fetchGeminiArticle}
-                        className={`${coverTheme.style.buttonBg} ${coverTheme.style.buttonText} px-8 py-4 text-lg font-bold tracking-widest uppercase transition-all transform hover:-translate-y-1 shadow-lg flex items-center gap-3 mx-auto`}
+                        className={`${coverTheme.style.buttonBg} ${coverTheme.style.buttonText} px-6 py-3 md:px-8 md:py-4 text-base md:text-lg font-bold tracking-widest uppercase transition-all transform hover:-translate-y-1 shadow-lg flex items-center gap-3 mx-auto`}
                      >
-                        <Sparkles size={20} />
+                        <Sparkles size={18} />
                         Gerar Edição
                      </button>
                   </div>
                </div>
 
-               <div className={`mt-4 flex gap-4 overflow-hidden py-2 border-t-2 ${coverTheme.style.borderColor}`}>
+               <div className={`mt-4 grid grid-cols-1 sm:grid-cols-3 gap-4 py-2 border-t-2 ${coverTheme.style.borderColor}`}>
                   {coverTheme.content.strip.map((item, idx) => (
-                      <div key={idx} className={`flex-1 ${idx < 2 ? `border-r ${coverTheme.style.borderColor} pr-4` : ''}`}>
+                      <div key={idx} className={`flex-1 ${idx < 2 ? `sm:border-r ${coverTheme.style.borderColor} sm:pr-4` : ''} border-b sm:border-b-0 border-dashed pb-2 sm:pb-0 ${coverTheme.style.borderColor} opacity-80`}>
                          <div className={`flex items-center gap-2 text-xs font-bold uppercase opacity-60 mb-1`}>
                             <item.icon size={14} /> {item.cat}
                          </div>
@@ -578,7 +572,7 @@ export default function ScientificCuriosityMagazine() {
             </div>
         </div>
 
-        <footer className={`mt-6 border-t ${coverTheme.style.borderColor} pt-2 flex justify-between items-end text-[10px] opacity-50 font-mono uppercase`}>
+        <footer className={`mt-6 border-t ${coverTheme.style.borderColor} pt-2 flex justify-between items-end text-[10px] opacity-50 font-mono uppercase pb-safe`}>
            <div>
               <p>ISSN 2025-AI-GEN</p>
               <p>{coverTheme.name}</p>
