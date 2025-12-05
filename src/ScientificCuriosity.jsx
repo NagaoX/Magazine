@@ -27,12 +27,14 @@ export default function ScientificCuriosityMagazine() {
   
   const [coverTheme, setCoverTheme] = useState(MAGAZINE_COVERS[0]);
 
+  // Carregar API Key e Tema Inicial
   useEffect(() => {
     const savedKey = localStorage.getItem('gemini_api_key');
     if (savedKey) setApiKey(savedKey);
-    // Inicia com a capa clássica (Cérebro Quântico) para garantir que você veja a correção primeiro, 
-    // ou pode manter aleatório se preferir.
-    setCoverTheme(MAGAZINE_COVERS[0]); 
+    
+    // Escolhe uma capa aleatória ao iniciar
+    const randomCover = MAGAZINE_COVERS[Math.floor(Math.random() * MAGAZINE_COVERS.length)];
+    setCoverTheme(randomCover);
   }, []);
 
   const handleSaveKey = (key) => {
@@ -50,7 +52,11 @@ export default function ScientificCuriosityMagazine() {
     setCoverTheme(MAGAZINE_COVERS[nextIndex]);
   };
 
+  /**
+   * ABRE UM ARTIGO DA BIBLIOTECA ESTÁTICA
+   */
   const handleOpenStaticArticle = (title) => {
+    // Busca flexível
     const articleKey = Object.keys(STATIC_CONTENT_LIBRARY).find(key => 
         title.toLowerCase().includes(key.toLowerCase()) || key.toLowerCase().includes(title.toLowerCase())
     );
@@ -68,6 +74,7 @@ export default function ScientificCuriosityMagazine() {
         if(apiKey) {
             fetchGeminiArticle();
         } else {
+            // CORREÇÃO: Sorteia um artigo aleatório em vez de pegar sempre o primeiro [0]
             const articlesArray = Object.values(STATIC_CONTENT_LIBRARY);
             const randomArt = articlesArray[Math.floor(Math.random() * articlesArray.length)];
             setCurrentArticle({ ...randomArt, isGenerated: false });
@@ -102,6 +109,9 @@ export default function ScientificCuriosityMagazine() {
     }
   };
 
+  /**
+   * GERA UM ARTIGO NOVO COM IA
+   */
   const fetchGeminiArticle = async () => {
     setView('loading');
     setErrorMsg(null);
@@ -110,6 +120,7 @@ export default function ScientificCuriosityMagazine() {
 
     if (!apiKey) {
       setTimeout(() => {
+        // CORREÇÃO: Fallback aleatório
         const articlesArray = Object.values(STATIC_CONTENT_LIBRARY);
         const fallback = articlesArray[Math.floor(Math.random() * articlesArray.length)];
         setCurrentArticle(fallback);
@@ -181,8 +192,9 @@ export default function ScientificCuriosityMagazine() {
 
     } catch (err) {
       console.error("Erro fatal:", err);
+      // CORREÇÃO: Fallback aleatório em caso de erro fatal
       const articlesArray = Object.values(STATIC_CONTENT_LIBRARY);
-      const fallback = articlesArray[0];
+      const fallback = articlesArray[Math.floor(Math.random() * articlesArray.length)];
       setCurrentArticle(fallback);
       setView('article');
       setErrorMsg(err.message);
@@ -214,6 +226,30 @@ export default function ScientificCuriosityMagazine() {
 
   // --- RENDERIZAÇÃO: ARTIGO ---
   if (view === 'article' && currentArticle) {
+    // Helper para renderizar imagem embutida
+    const renderInlineImage = (imgIndex) => {
+        if (currentArticle.additionalImages && currentArticle.additionalImages[imgIndex]) {
+            const img = currentArticle.additionalImages[imgIndex];
+            return (
+                <figure className="my-8 md:my-10 w-full">
+                    <div className="overflow-hidden rounded-lg shadow-lg aspect-video bg-stone-200">
+                        <img 
+                            src={img.url} 
+                            alt={img.caption || "Ilustração do artigo"} 
+                            className="w-full h-full object-cover"
+                        />
+                    </div>
+                    {img.caption && (
+                        <figcaption className="mt-2 text-xs md:text-sm text-stone-500 italic border-l-4 border-red-900 pl-3">
+                            {img.caption}
+                        </figcaption>
+                    )}
+                </figure>
+            );
+        }
+        return null;
+    };
+
     return (
       <div className="min-h-screen bg-stone-50 text-slate-900 font-sans selection:bg-red-200">
         <nav className="fixed top-0 w-full bg-white/90 backdrop-blur-sm border-b border-stone-200 z-50 px-4 py-3 flex justify-between items-center shadow-sm">
@@ -269,36 +305,26 @@ export default function ScientificCuriosityMagazine() {
                 </div>
             )}
             
+            {/* CORREÇÃO DE LAYOUT: Imagens intercaladas no texto */}
             <div className="prose prose-base md:prose-lg prose-stone prose-headings:font-serif first-letter:text-5xl first-letter:font-serif first-letter:font-bold first-letter:mr-2 first-letter:float-left first-letter:text-red-900 mb-12">
-                {currentArticle.content.split('\n').map((paragraph, idx) => (
-                  paragraph.trim() && <p key={idx} className="mb-6 leading-relaxed text-stone-800">{paragraph}</p>
-                ))}
+                {currentArticle.content.split('\n').map((paragraph, idx) => {
+                    if (!paragraph.trim()) return null;
+                    
+                    return (
+                        <React.Fragment key={idx}>
+                            <p className="mb-6 leading-relaxed text-stone-800">{paragraph}</p>
+                            
+                            {/* Insere imagem 1 após o primeiro parágrafo */}
+                            {idx === 0 && renderInlineImage(0)}
+                            
+                            {/* Insere imagem 2 após o terceiro parágrafo (ou segundo se for curto) */}
+                            {idx === 2 && renderInlineImage(1)}
+                        </React.Fragment>
+                    );
+                })}
             </div>
-
-            {currentArticle.additionalImages && currentArticle.additionalImages.length > 0 && (
-                <div className="my-12">
-                    <h3 className="font-serif font-bold text-2xl mb-6 text-slate-900 flex items-center gap-2">
-                        <ImageIcon size={24} /> Galeria Visual
-                    </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {currentArticle.additionalImages.map((img, idx) => (
-                            <div key={idx} className="flex flex-col gap-2">
-                                <div className="overflow-hidden rounded-lg shadow-md aspect-video bg-stone-200">
-                                    <img 
-                                        src={img.url} 
-                                        alt={`Imagem ${idx + 1}`} 
-                                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-                                    />
-                                </div>
-                                <p className="text-xs text-stone-500 italic border-l-2 border-red-900 pl-2">
-                                    {img.caption}
-                                </p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            )}
             
+            {/* Fato Rápido */}
             <div className="my-8 md:my-12 bg-stone-200 p-6 md:p-8 border-l-4 border-red-900 rounded-r-lg relative overflow-hidden">
                <div className="absolute -right-4 -top-4 opacity-5 rotate-12"><Brain size={128} /></div>
                <h3 className="font-serif font-bold text-lg md:text-xl mb-2 text-red-900 flex items-center gap-2"><Sparkles size={18} /> Fato Rápido</h3>
@@ -418,7 +444,7 @@ export default function ScientificCuriosityMagazine() {
             </div>
 
             <div className="col-span-12 md:col-span-9 flex flex-col relative group order-1 md:order-2">
-               {/* Destaque Principal - Dimensionamento Corrigido */}
+               {/* Destaque Principal */}
                <div className={`relative flex-grow min-h-[50vh] md:min-h-auto overflow-hidden border ${coverTheme.style.borderColor} bg-stone-200 cursor-pointer`} onClick={() => handleOpenStaticArticle(coverTheme.content.highlight.title)}>
                   <img 
                     src={coverTheme.content.highlight.image}
@@ -427,7 +453,6 @@ export default function ScientificCuriosityMagazine() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent"></div>
                   <div className="absolute bottom-0 w-full p-6 text-white text-center">
-                     {/* Fonte aumentada para mobile (text-3xl) e desktop (text-6xl) */}
                      <h2 className={`${coverTheme.style.fontMain} text-3xl sm:text-4xl md:text-6xl font-bold leading-tight mb-2 md:mb-4 drop-shadow-md`}>
                         {coverTheme.content.highlight.title}
                      </h2>
