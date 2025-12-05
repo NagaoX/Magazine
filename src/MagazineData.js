@@ -1,62 +1,126 @@
-import { BookOpen, Atom, Sparkles, Brain, Rocket, Microscope, Globe, Cpu, Leaf, FlaskConical, History, Zap } from 'lucide-react';
+import { Brain, Atom, Globe, Leaf, Cpu, Rocket, History, Zap, FlaskConical } from 'lucide-react';
 
 /**
- * 📚 BIBLIOTECA DE CONTEÚDO ESTÁTICO (COMPLETA)
- * Contém os artigos para TODAS as manchetes de TODAS as capas.
+ * 📚 BIBLIOTECA DE CONTEÚDO ESTÁTICO (COMPLETA E EXPANDIDA)
  */
 export const STATIC_CONTENT_LIBRARY = {
-  // --- CAPA AUTO (Veículos) ---
-  "Revolução Elétrica": {
-    title: "Eletromagnetismo Aplicado: O Fim da Combustão",
-    author: "Eng. Carlos Pista",
-    category: "Física Automotiva",
-    fact: "Motores elétricos superam 90% de eficiência térmica, enquanto motores a combustão desperdiçam cerca de 70% da energia química em calor.",
-    imageKeyword: "electric car motor cutaway",
-    imageUrl: "https://images.unsplash.com/photo-1593941707882-a5bba14938c7?auto=format&fit=crop&q=80&w=1600",
-    additionalImages: [
-        { url: "https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&q=80&w=1600", caption: "Plataforma skate: baterias no assoalho baixam o centro de gravidade." },
-        { url: "https://images.unsplash.com/photo-1620882352829-216972626243?auto=format&fit=crop&q=80&w=1600", caption: "Inversores de frequência convertem DC da bateria em AC para o motor." }
-    ],
-    content: `A transição para veículos elétricos é uma mudança de princípios físicos. O motor de combustão interna opera sob o Ciclo de Otto, dependendo de explosões controladas. É um processo ineficiente, limitado pelo Princípio de Carnot, onde a maior parte da energia vira calor.
-
-    Em contraste, o motor elétrico opera baseado na Força de Lorentz. Quando corrente elétrica passa por uma bobina num campo magnético, força física é gerada instantaneamente. Não há conversão complexa de movimento linear para rotacional; a energia elétrica vira rotação pura. Isso explica o "torque instantâneo".
-
-    O desafio científico atual é a Eletroquímica. Células de íon-lítio usam eletrólito líquido inflamável. A próxima fronteira, Baterias de Estado Sólido, substitui o líquido por cerâmica sólida, aumentando a segurança e densidade energética, prometendo dobrar a autonomia dos veículos.`
-  },
-  "O Retorno do Prelude": { title: "Honda Prelude: Hibridização", author: "Jornal do Carro", category: "Engenharia", fact: "Sistemas híbridos usam frenagem regenerativa para converter energia cinética em elétrica.", imageUrl: "https://images.unsplash.com/photo-1621262973736-6b22c7eb4634?auto=format&fit=crop&q=80&w=1600", content: "O novo Prelude não é apenas nostalgia; é gestão eficiente de energia. Diferente de carros comuns que desperdiçam energia ao frear (aquecendo os discos), o sistema híbrido transforma o motor elétrico em gerador nas desacelerações, recarregando a bateria. O design aerodinâmico reduz o arrasto (Cd), essencial para a eficiência em rodovias." },
-  "Pequeno Gigante: GR Yaris": { title: "Toyota GR Yaris: Termodinâmica", author: "Gazoo Racing", category: "Física", fact: "O motor de 3 cilindros mais potente do mundo usa pressões de turbo extremas.", imageUrl: "https://images.unsplash.com/photo-1629897850409-a764722da2b7?auto=format&fit=crop&q=80&w=1600", content: "Para extrair 260cv de um motor 1.6L, a Toyota aplicou a Lei dos Gases Ideais no limite. O turbo comprime o ar para aumentar a densidade de oxigênio na câmara. O uso de teto de fibra de carbono reduz o momento de inércia polar, permitindo curvas mais rápidas." },
-  "Mentes de Silício": { title: "Visão Computacional: LIDAR", author: "Dra. Sarah Conner", category: "AI", fact: "O LIDAR mede a distância disparando lasers e calculando o tempo de retorno da luz.", imageUrl: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&q=80&w=1600", content: "Carros autônomos veem o mundo através de nuvens de pontos 3D geradas por lasers. Redes Neurais Convolucionais (CNNs) processam esses dados para identificar 'pedestre' ou 'carro'. O desafio é a predição probabilística: adivinhar o que o humano fará a seguir." },
-  "Baterias Sólidas": { title: "Eletroquímica de Estado Sólido", author: "Lab Tech", category: "Química", fact: "Eletrólitos sólidos previnem dendritos que causam curtos em baterias comuns.", content: "Substituir o líquido da bateria por cerâmica permite usar anodos de lítio puro, dobrando a energia armazenada e eliminando risco de incêndio." },
-  "Hidrogênio": { title: "Célula de Combustível", author: "Energia H2", category: "Físico-Química", fact: "O único escape de um carro a hidrogênio é vapor de água pura.", content: "Eles não queimam hidrogênio. Eles fazem uma 'queima fria' eletroquímica onde o H2 perde elétrons para gerar corrente, se unindo ao oxigênio para formar água." },
-  "Carros Voadores": { title: "eVTOLs: Física do Voo", author: "AeroDynamics", category: "Engenharia", fact: "A propulsão elétrica distribuída permite redundância: se um motor falha, outros compensam.", content: "eVTOLs dependem de alta densidade de potência para decolar verticalmente. Motores elétricos pequenos permitem ajustes finos de atitude sem a complexidade mecânica de helicópteros." },
-
   // --- CAPA CLASSIC (Scientific American) ---
   "O Cérebro Quântico": {
     title: "Consciência: Colapso da Função de Onda?",
     author: "Dr. Roger Penrose",
     category: "Física Quântica",
-    fact: "Microtúbulos no cérebro podem manter coerência quântica, protegendo o sistema do 'ruído' térmico.",
+    fact: "Microtúbulos possuem simetria e ressonância compatíveis com a manutenção de coerência quântica, protegendo o sistema do 'ruído' térmico do cérebro.",
     imageKeyword: "quantum brain neural network",
     imageUrl: "https://images.unsplash.com/photo-1555679427-1f6dfcce943b?auto=format&fit=crop&q=80&w=1600",
     additionalImages: [
-        { url: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&q=80&w=1600", caption: "Microtúbulos: a estrutura celular onde a magia quântica pode ocorrer." },
-        { url: "https://images.unsplash.com/photo-1507413245164-6160d8298b31?auto=format&fit=crop&q=80&w=1600", caption: "A complexidade neural vai muito além das simples sinapses elétricas." }
+        { url: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&q=80&w=1600", caption: "Estrutura dos microtúbulos: reticulados de proteína tubulina." },
+        { url: "https://images.unsplash.com/photo-1507413245164-6160d8298b31?auto=format&fit=crop&q=80&w=1600", caption: "A rede neural clássica vs a rede quântica proposta." }
     ],
-    content: `A teoria "Orch-OR" propõe que a computação quântica ocorre dentro dos microtúbulos celulares. Penrose sugere que o "colapso" da função de onda dentro do cérebro gera momentos de consciência. Novas descobertas em biologia quântica (como na fotossíntese) tornam essa teoria biologicamente plausível, desafiando a visão de que o cérebro é apenas um computador clássico.`
+    content: `A teoria clássica da neurociência trata o cérebro como um sistema determinístico de potenciais de ação eletroquímicos. Porém, o físico Roger Penrose argumenta que a consciência possui características "não-computáveis" que um sistema binário clássico não pode replicar.
+
+    A hipótese "Orch-OR" (Redução Objetiva Orquestrada) propõe que a computação quântica ocorre dentro dos microtúbulos, estruturas do citoesqueleto dos neurônios. Em um computador quântico, a informação existe em superposição (0 e 1 ao mesmo tempo) até que uma medição cause o colapso da função de onda. Penrose sugere que esse "colapso" dentro do cérebro gera os momentos discretos de experiência consciente ("qualia").
+
+    A maior crítica sempre foi a "decoerência": sistemas quânticos geralmente exigem zero absoluto (-273°C) para funcionar, e o cérebro é quente e úmido. No entanto, novas descobertas em biologia quântica (como o tunelamento quântico em enzimas e na fotossíntese) mostram que a vida desenvolveu mecanismos para proteger estados quânticos do ruído térmico, tornando a teoria de Penrose biologicamente plausível.`
   },
-  "O Fim do Tempo": { title: "Entropia e a Seta do Tempo", author: "Julian Barbour", category: "Termodinâmica", fact: "A Segunda Lei da Termodinâmica cria a distinção entre passado e futuro.", imageUrl: "https://images.unsplash.com/photo-1502134249126-9f3755a50d78?auto=format&fit=crop&q=80&w=1600", content: "Na física microscópica, o tempo é reversível. A sensação de tempo fluindo vem do aumento da Entropia (desordem). Se o universo atingir o equilíbrio térmico máximo, onde nada muda, o tempo deixará de existir fisicamente." },
+  "O Fim do Tempo": {
+    title: "Entropia e a Seta do Tempo",
+    author: "Julian Barbour",
+    category: "Termodinâmica",
+    fact: "A Segunda Lei da Termodinâmica é a única lei fundamental da física que não é reversível no tempo, criando a distinção entre passado e futuro.",
+    imageKeyword: "surreal clock melting",
+    imageUrl: "https://images.unsplash.com/photo-1502134249126-9f3755a50d78?auto=format&fit=crop&q=80&w=1600",
+    additionalImages: [
+        { url: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=1600", caption: "O Big Bang: o estado de mínima entropia inicial." },
+        { url: "https://images.unsplash.com/photo-1484589065579-248aad0d8b13?auto=format&fit=crop&q=80&w=1600", caption: "Morte Térmica: o destino de máxima entropia do universo." }
+    ],
+    content: `Na escala microscópica, as leis da física são simétricas no tempo. Um filme de dois átomos colidindo faz sentido tanto rodando para frente quanto para trás. Então, por que lembramos do passado e não do futuro? Por que um copo quebrado nunca se remonta espontaneamente?
+
+    A resposta reside na Termodinâmica e no conceito de Entropia (uma medida estatística de desordem). O universo começou em um estado de entropia extremamente baixa (alta ordem) no Big Bang. Desde então, a entropia só aumenta. Essa transição do ordenado para o desordenado é o que percebemos como a "seta do tempo".
+
+    Julian Barbour leva isso além, propondo que o tempo é uma ilusão criada pela nossa mente ao processar "snapshots" estáticos do universo (o "Universo Bloco"). Se o universo atingir o equilíbrio térmico (Morte Térmica), onde a entropia é máxima e nada mais muda, a dimensão do tempo efetivamente deixará de existir, pois não haverá eventos para marcar sua passagem. O tempo é, portanto, uma propriedade emergente da mudança, não uma dimensão fundamental.`
+  },
   "Cura pelo Som": { title: "Ultrassom Focado (HIFU)", author: "Medicina", category: "Biofísica", fact: "O som pode gerar calor intenso em um ponto preciso dentro do corpo.", content: "Ondas sonoras são energia mecânica. Ao focar feixes de ultrassom em um ponto, a energia cozinha tumores sem cortes, uma cirurgia não-invasiva revolucionária." },
   "DNA Digital": { title: "Armazenamento em DNA", author: "Bio-Tech", category: "Genética", fact: "1 grama de DNA pode armazenar 215 petabytes de dados.", content: "O DNA é o disco rígido da natureza. Cientistas já codificaram filmes em bases nitrogenadas (A,C,T,G). É o futuro do arquivamento de dados de longo prazo." },
   "Sonhos Lúcidos": { title: "Consciência no Sono REM", author: "Neurociência", category: "Sono", fact: "O córtex pré-frontal lógico ativa-se durante sonhos lúcidos.", content: "É um estado híbrido entre vigília e sono. Estudos mostram ondas gama (40Hz) típicas de foco mental ocorrendo enquanto o corpo dorme." },
   "Fusão Fria": { title: "Reações Nucleares LENR", author: "Física", category: "Energia", fact: "Efeitos quânticos podem permitir fusão sem calor extremo.", content: "A fusão a frio busca usar catalisadores para fundir átomos em temperatura ambiente, prometendo energia infinita e limpa, embora ainda seja controversa." },
   "Núcleo Parou?": { title: "Oscilação do Núcleo Terrestre", author: "Geofísica", category: "Terra", fact: "O núcleo interno da Terra gira em velocidade diferente da crosta.", content: "Dados sísmicos mostram que a rotação do núcleo interno oscila em ciclos de 70 anos, afetando a duração do dia em milissegundos." },
 
+  // --- CAPA AUTO (Veículos) ---
+  "Revolução Elétrica": {
+    title: "Eletromagnetismo Aplicado: O Fim da Combustão",
+    author: "Eng. Carlos Pista",
+    category: "Física Automotiva",
+    fact: "Motores elétricos superam 90% de eficiência térmica, enquanto motores a combustão desperdiçam cerca de 70% da energia química em calor (Segunda Lei da Termodinâmica).",
+    imageKeyword: "electric car motor cutaway",
+    imageUrl: "https://images.unsplash.com/photo-1593941707882-a5bba14938c7?auto=format&fit=crop&q=80&w=1600",
+    additionalImages: [
+        { url: "https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&q=80&w=1600", caption: "Plataforma skate: baterias no assoalho baixam o centro de gravidade." },
+        { url: "https://images.unsplash.com/photo-1620882352829-216972626243?auto=format&fit=crop&q=80&w=1600", caption: "Inversores de frequência convertem DC da bateria em AC para o motor." }
+    ],
+    content: `A transição para veículos elétricos não é apenas uma mudança de combustível, é uma mudança de princípios físicos. O motor de combustão interna opera sob o Ciclo de Otto (ou Diesel), dependendo de explosões controladas para empurrar pistões. É um processo termodinamicamente ineficiente, limitado pelo Princípio de Carnot, onde a maior parte da energia potencial da gasolina é perdida como calor residual e vibração.
+
+    Em contraste, o motor elétrico opera baseado na Força de Lorentz. Quando uma corrente elétrica passa por uma bobina dentro de um campo magnético, uma força física é gerada instantaneamente. Não há conversão de movimento linear (pistão) para rotacional (virabrequim); a energia elétrica vira rotação pura. Isso explica o "torque instantâneo": não é necessário esperar a pressão dos gases de escape girar uma turbina ou o motor atingir certas rotações. O campo magnético age na velocidade da luz (limitado apenas pela indutância das bobinas).
+
+    O desafio científico atual reside na Eletroquímica das baterias. As células de íon-lítio funcionam movendo íons do cátodo para o ânodo através de um eletrólito líquido. O problema é a formação de "dendritos" (estruturas metálicas em forma de agulha) que podem crescer dentro da célula, causando curtos-circuitos. A próxima fronteira, as Baterias de Estado Sólido, substituem o líquido por cerâmica sólida, aumentando a condutividade iônica e a segurança térmica, permitindo densidades energéticas que desafiam os limites atuais da química.`
+  },
+  "O Retorno do Prelude": { 
+    title: "Honda Prelude: Hibridização e Recuperação Cinética", 
+    author: "Jornal do Carro", 
+    category: "Engenharia Mecânica", 
+    fact: "Sistemas híbridos utilizam a frenagem regenerativa para converter energia cinética, que seria dissipada como calor nos discos de freio, em energia potencial química na bateria.", 
+    imageUrl: "https://images.unsplash.com/photo-1621262973736-6b22c7eb4634?auto=format&fit=crop&q=80&w=1600", 
+    additionalImages: [
+        { url: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&q=80&w=1600", caption: "Aerodinâmica ativa: reduzindo o coeficiente de arrasto (Cd)." },
+        { url: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&q=80&w=1600", caption: "O motor elétrico atua como gerador nas desacelerações." }
+    ],
+    content: `O novo Honda Prelude não é apenas um exercício de nostalgia, é uma aplicação prática de gerenciamento eficiente de energia. Diferente de um veículo puramente a combustão, onde a energia cinética acumulada durante a aceleração é desperdiçada como calor nos freios ao parar, o sistema híbrido e:HEV atua como um sistema de recuperação de energia (KERS, similar à Fórmula 1).
+
+    O princípio fundamental aqui é a reversibilidade dos motores elétricos. Quando você tira o pé do acelerador, o motor elétrico inverte sua polaridade, tornando-se um gerador. A inércia do carro gira o eixo do motor, que induz corrente elétrica, carregando a bateria e criando resistência magnética que freia o carro. Isso aumenta a eficiência termodinâmica global do sistema drasticamente.
+
+    Além disso, o Prelude foca na redução do Coeficiente de Arrasto (Cd). A resistência do ar aumenta com o quadrado da velocidade. O design baixo e fluido do cupê não é apenas estético; é físico. Menor área frontal e fluxo de ar laminar significam que menos energia é necessária para "furar" a atmosfera, permitindo que o trem de força híbrido opere em sua faixa de eficiência máxima por mais tempo.` 
+  },
+  "Pequeno Gigante: GR Yaris": { 
+    title: "Toyota GR Yaris: Termodinâmica de Alta Pressão", 
+    author: "Gazoo Racing Tech", 
+    category: "Física de Fluídos", 
+    fact: "Para extrair 260cv de um motor 1.6L, o turbocompressor opera com pressões extremas, forçando mais moléculas de oxigênio na câmara para queimar mais combustível por ciclo.", 
+    imageUrl: "https://images.unsplash.com/photo-1629897850409-a764722da2b7?auto=format&fit=crop&q=80&w=1600", 
+    additionalImages: [
+        { url: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&q=80&w=1600", caption: "Downsizing: Menor volume, maior pressão interna e eficiência térmica." },
+        { url: "https://images.unsplash.com/photo-1542282088-fe8426682b8f?auto=format&fit=crop&q=80&w=1600", caption: "Diferenciais Torsen distribuem torque mecanicamente." }
+    ],
+    content: `O motor G16E-GTS do GR Yaris é uma aula de eficiência volumétrica. Normalmente, a potência de um motor é limitada pela quantidade de ar que ele consegue aspirar naturalmente (pressão atmosférica de 1 bar). O Yaris usa um turbocompressor para comprimir o ar antes da admissão, aumentando drasticamente a densidade de oxigênio na câmara de combustão.
+
+    Fisicamente, isso é descrito pela Lei dos Gases Ideais (PV=nRT). Ao aumentar a pressão (P), aumentamos a quantidade de mols de oxigênio (n) disponíveis para a reação de combustão exotérmica. No entanto, comprimir ar gera calor (T), o que diminui a densidade. Por isso, o carro usa um intercooler (trocador de calor) para resfriar o ar comprimido antes de entrar no motor, maximizando a densidade.
+
+    Outro destaque é o uso de materiais leves como fibra de carbono forjada no teto. Na dinâmica veicular, isso reduz o Momento de Inércia Polar. Ao baixar o centro de gravidade e concentrar a massa no centro, o carro precisa de menos força lateral para mudar de direção, resultando em uma resposta de curva muito mais rápida e precisa, essencial para o WRC.` 
+  },
+  "Mentes de Silício": { 
+    title: "LIDAR e Redes Neurais: A Visão da Máquina", 
+    author: "Dra. Sarah Conner", 
+    category: "Óptica e Computação", 
+    fact: "O LIDAR funciona medindo o 'Tempo de Voo' (ToF) de fótons laser: ele dispara luz e calcula a distância baseada no tempo exato que a luz demora para bater num objeto e voltar.", 
+    imageUrl: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&q=80&w=1600",
+    additionalImages: [
+        { url: "https://images.unsplash.com/photo-1555255707-c07966088b7b?auto=format&fit=crop&q=80&w=1600", caption: "Nuvem de Pontos: A representação vetorial 3D do mundo." },
+        { url: "https://images.unsplash.com/photo-1535732759880-bbd5c7265e3f?auto=format&fit=crop&q=80&w=1600", caption: "Inferência Bayesiana: O carro calcula probabilidades constantes de colisão." }
+    ],
+    content: `Como um carro "vê"? Diferente de nós, que interpretamos fótons passivamente, um carro autônomo usa sensoriamento ativo. O sensor LIDAR (Light Detection and Ranging) dispara milhões de pulsos de laser infravermelho por segundo. Usando a velocidade da luz como constante (c ≈ 300.000 km/s), o computador calcula a distância exata de cada obstáculo medindo o tempo de retorno do pulso (d = c * t / 2).
+
+    Isso gera uma "nuvem de pontos" 3D de alta precisão. Mas ver não é entender. É aqui que entram as Redes Neurais Convolucionais (CNNs). Inspiradas no córtex visual humano, essas estruturas matemáticas aplicam filtros em camadas para identificar padrões: bordas, formas e, finalmente, objetos complexos como "pedestre" ou "semáforo".
+
+    O grande desafio científico não é a percepção, mas a predição. O carro usa Inferência Bayesiana para calcular probabilidades: "Qual a chance estatística daquele ciclista virar à esquerda?". É um problema de física estocástica em tempo real, onde o computador precisa modelar o comportamento caótico humano dentro de leis de movimento determinísticas.` 
+  },
+  "Baterias Sólidas": { title: "Eletroquímica de Estado Sólido", author: "Lab Tech", category: "Química", fact: "Eletrólitos sólidos de cerâmica ou polímero previnem a formação de dendritos de lítio, que são os causadores de curtos-circuitos internos e incêndios em baterias líquidas.", content: "A bateria de estado sólido substitui o solvente orgânico líquido inflamável por um condutor iônico sólido. Isso aumenta a janela de estabilidade eletroquímica, permitindo o uso de anodos de lítio metálico puro em vez de grafite, o que pode dobrar a densidade energética (Wh/kg)." },
+  "Hidrogênio": { title: "Célula de Combustível: Eletrólise Reversa", author: "Energia H2", category: "Físico-Química", fact: "A reação na célula de combustível (2H2 + O2 → 2H2O) libera elétrons que formam a corrente elétrica, tendo como único subproduto vapor de água.", content: "Carros a hidrogênio (FCEV) não queimam o gás. Eles realizam uma 'queima fria' eletroquímica. O hidrogênio passa pelo ânodo e perde elétrons (oxidação). Esses elétrons são forçados a passar por um circuito externo (motor), enquanto os prótons H+ atravessam uma membrana polimérica (PEM) para se reencontrar com o oxigênio no cátodo, formando água." },
+  "Carros Voadores": { title: "eVTOLs e a Física do Voo Distribuído", author: "AeroDynamics", category: "Engenharia Aeroespacial", fact: "O uso de múltiplos rotores elétricos pequenos permite controle de atitude instantâneo variando o torque de cada motor, eliminando a complexidade mecânica dos helicópteros (prato oscilante).", content: "eVTOLs (Electric Vertical Take-off and Landing) dependem de alta densidade de potência. Diferente de aviões que usam asas para sustentação eficiente (L/D ratio), a decolagem vertical exige empuxo bruto maior que o peso (T/W > 1). A propulsão elétrica distribuída (DEP) aumenta a redundância e segurança: se um motor falha, os outros compensam eletronicamente em milissegundos." },
+
   // --- CAPA NATURE (NatGeo) ---
   "O Último Santuário": {
     title: "Quimiossíntese: Vida Sem Sol",
     author: "Sylvia Earle",
     category: "Bioquímica",
-    fact: "Bactérias transformam minerais tóxicos em energia na escuridão total.",
+    fact: "Bactérias oxidam sulfeto de hidrogênio (H₂S) tóxico para gerar energia (ATP) e fixar carbono, sustentando ecossistemas inteiros na escuridão total.",
     imageKeyword: "deep ocean bioluminescence",
     imageUrl: "https://images.unsplash.com/photo-1581337204873-ef36aa186caa?auto=format&fit=crop&q=80&w=1600",
     additionalImages: [
@@ -76,8 +140,8 @@ export const STATIC_CONTENT_LIBRARY = {
   "A Singularidade": {
     title: "Lei dos Retornos Acelerados",
     author: "Ray Kurzweil",
-    category: "Futurismo",
-    fact: "O progresso tecnológico é exponencial. O século XXI terá o equivalente a 20.000 anos de progresso.",
+    category: "Futurismo Matemático",
+    fact: "O progresso tecnológico não é linear, é exponencial. Avançaremos no século XXI o equivalente a 20.000 anos de progresso no ritmo de hoje.",
     imageKeyword: "artificial intelligence cyborg",
     imageUrl: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=1600",
     additionalImages: [
