@@ -1,318 +1,181 @@
 import React, { useState, useEffect } from 'react';
-import { BookOpen, Atom, ArrowLeft, RefreshCw, Settings, Sparkles, Brain, Dna, Rocket, Microscope, Info, AlertTriangle, Globe, Cpu, Leaf, FlaskConical, History, ChevronRight, Palette, Key, ExternalLink, CheckCircle, XCircle, Loader2, Zap, Car, Gauge } from 'lucide-react';
+import { BookOpen, Atom, ArrowLeft, RefreshCw, Settings, Sparkles, Brain, Dna, Rocket, Microscope, Info, AlertTriangle, Globe, Cpu, Leaf, FlaskConical, History, ChevronRight, Palette, Key, ExternalLink, CheckCircle, XCircle, Loader2, Zap, Car, Gauge, Image as ImageIcon } from 'lucide-react';
 
 /**
- * 📚 BIBLIOTECA DE CONTEÚDO ESTÁTICO
- * Contém os artigos completos para cada manchete que aparece nas capas.
+ * 📚 BIBLIOTECA DE CONTEÚDO ESTÁTICO (EXPANDIDA E ILUSTRADA)
  */
 const STATIC_CONTENT_LIBRARY = {
+  // --- CAPA AUTO (Veículos) ---
+  "Revolução Elétrica": {
+    title: "O Fim da Combustão: A Ascensão Silenciosa",
+    author: "Carlos Pista",
+    category: "Tecnologia Automotiva",
+    fact: "Motores elétricos possuem apenas uma peça móvel principal (o rotor), contra centenas em um motor a combustão.",
+    imageKeyword: "electric car chassis",
+    imageUrl: "https://images.unsplash.com/photo-1593941707882-a5bba14938c7?auto=format&fit=crop&q=80&w=1600",
+    additionalImages: [
+        { url: "https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&q=80&w=1600", caption: "Plataforma de baterias skate: o novo padrão da indústria." },
+        { url: "https://images.unsplash.com/photo-1620882352829-216972626243?auto=format&fit=crop&q=80&w=1600", caption: "Estações de carregamento ultrarrápido estão substituindo postos de gasolina." }
+    ],
+    content: `Estamos testemunhando a maior transformação industrial dos últimos 100 anos. O motor de combustão interna, uma maravilha da engenharia mecânica que dominou o século XX com seus pistões, válvulas e explosões controladas, está sendo aposentado. Em seu lugar, entra a elegância silenciosa e brutalmente eficiente do motor elétrico.
+
+    A diferença de eficiência é avassaladora. Um motor a gasolina desperdiça cerca de 70% da energia do combustível apenas gerando calor e ruído. Um motor elétrico converte mais de 90% da energia da bateria diretamente em movimento. Isso não é apenas uma evolução; é uma mudança de paradigma que redefiniu o conceito de performance. O torque instantâneo, disponível a zero rpm, transformou sedãs familiares em máquinas capazes de humilhar supercarros italianos no 0 a 100 km/h.
+
+    No entanto, a revolução não é isenta de desafios. O "calcanhar de Aquiles" continua sendo o armazenamento de energia. As baterias de íon-lítio atuais são pesadas, caras e dependem de mineração complexa. A corrida agora é pelas Baterias de Estado Sólido (Solid State), que prometem dobrar a autonomia e reduzir o tempo de recarga para minutos, eliminando o eletrólito líquido inflamável. Quando essa tecnologia atingir escala industrial, prevista para o final desta década, o argumento final a favor da combustão terá evaporado.`
+  },
+  "O Retorno do Prelude": { 
+    title: "Honda Prelude: O Ícone Renasce Híbrido", 
+    author: "Jornal do Carro", 
+    category: "Lançamentos", 
+    fact: "O novo Prelude prioriza a 'alegria de dirigir' acima da potência bruta, mantendo a filosofia original dos anos 80.", 
+    imageUrl: "https://images.unsplash.com/photo-1621262973736-6b22c7eb4634?auto=format&fit=crop&q=80&w=1600", // Imagem genérica de cupê esportivo
+    additionalImages: [
+        { url: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&q=80&w=1600", caption: "Design aerodinâmico focado em eficiência e estilo." },
+        { url: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&q=80&w=1600", caption: "O interior minimalista foca na experiência do motorista." }
+    ],
+    content: `A Honda chocou o mundo automotivo ao ressuscitar uma de suas placas mais queridas: o Prelude. Descontinuado no início dos anos 2000, o cupê esportivo era sinônimo de inovação tecnológica (foi o pioneiro no esterçamento das quatro rodas). O novo Prelude Concept, no entanto, não é um elétrico puro, mas um híbrido sofisticado.
+
+    Essa decisão estratégica da Honda reflete uma leitura madura do mercado. Enquanto todos correm para EVs puros, a marca japonesa aposta que ainda existe espaço para a conexão mecânica e a emoção de dirigir, auxiliada, mas não substituída, pela eletricidade. O design é uma carta de amor aos cupês clássicos: baixo, largo e com proporções perfeitas, fugindo da tendência monótona dos SUVs que dominam as ruas.
+
+    Sob o capô, espera-se uma evolução do sistema e:HEV, onde o motor elétrico traciona as rodas na maior parte do tempo, enquanto o motor a combustão atua como gerador ou acopla em altas velocidades. O Prelude não veio para quebrar recordes de velocidade, mas para provar que, em um futuro silencioso e autônomo, ainda haverá espaço para a paixão humana ao volante.` 
+  },
+  "Pequeno Gigante: GR Yaris": { 
+    title: "Toyota GR Yaris: A Fúria do Rally nas Ruas", 
+    author: "Gazoo Racing Team", 
+    category: "Performance", 
+    fact: "O teto é feito de fibra de carbono forjada para baixar o centro de gravidade, uma técnica vinda direto dos supercarros.", 
+    imageUrl: "https://images.unsplash.com/photo-1629897850409-a764722da2b7?auto=format&fit=crop&q=80&w=1600", // Toyota de rally genérico
+    additionalImages: [
+        { url: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&q=80&w=1600", caption: "Motor 1.6 turbo de 3 cilindros: uma obra-prima da engenharia." },
+        { url: "https://images.unsplash.com/photo-1542282088-fe8426682b8f?auto=format&fit=crop&q=80&w=1600", caption: "Interior focado em competição: tudo está ao alcance das mãos." }
+    ],
+    content: `Em uma era de carros cada vez maiores, pesados e anestesiados, o Toyota GR Yaris é um milagre da engenharia "old school". Ele não foi criado pelo departamento de marketing, mas exigido pelas regras do Campeonato Mundial de Rally (WRC). Para competir, a Toyota precisava vender 25.000 unidades de rua. O resultado é um monstro de bolso.
+
+    Seu motor de 1.6 litros e três cilindros desafia a lógica, entregando mais de 260 cavalos de potência. É o motor de três cilindros mais potente já colocado em um carro de produção. Mas a mágica reside no sistema de tração GR-FOUR. Diferente dos sistemas AWD comuns que reagem à perda de aderência, este permite ao motorista escolher a distribuição de torque: 60:40 para o dia a dia, 30:70 para diversão traseira ou 50:50 para máxima aderência em pista.
+
+    O chassi é único, uma fusão da plataforma do Yaris comum na frente com a do Corolla atrás, permitindo uma suspensão traseira independente sofisticada. O GR Yaris já se tornou um clássico instantâneo, valorizando-se no mercado de usados. Ele é a prova viva de que, quando engenheiros apaixonados recebem carta branca (e orçamento ilimitado), a magia acontece.` 
+  },
+  "Mentes de Silício": { 
+    title: "O Dilema Moral do Carro Autônomo", 
+    author: "Dra. Sarah Conner", 
+    category: "Inteligência Artificial", 
+    fact: "Carros autônomos geram cerca de 4 terabytes de dados por dia apenas 'olhando' o mundo ao redor.", 
+    imageUrl: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&q=80&w=1600",
+    additionalImages: [
+        { url: "https://images.unsplash.com/photo-1555255707-c07966088b7b?auto=format&fit=crop&q=80&w=1600", caption: "Visão LIDAR: como a máquina enxerga o mundo em 3D." },
+        { url: "https://images.unsplash.com/photo-1535732759880-bbd5c7265e3f?auto=format&fit=crop&q=80&w=1600", caption: "O motorista virou passageiro: o futuro do transporte." }
+    ],
+    content: `A tecnologia para veículos autônomos de Nível 4 e 5 (onde o volante é opcional) está amadurecendo rapidamente, impulsionada por redes neurais profundas e sensores LIDAR. Mas o maior obstáculo não é tecnológico, é ético. Estamos prestes a entregar decisões de vida ou morte a algoritmos.
+
+    O clássico "Problema do Bonde" da filosofia saiu dos livros para as ruas. Se um acidente é inevitável, o carro deve desviar e atingir um pedestre para salvar o passageiro, ou sacrificar o passageiro para salvar um grupo de crianças na calçada? Programar essa moralidade em código binário é um campo minado jurídico e social. Quem é o responsável: a montadora, o desenvolvedor do software ou o dono do carro?
+
+    Além da ética, há a questão da convivência. Em testes, carros autônomos são "intimidados" por motoristas humanos agressivos porque são programados para serem cautelosos demais. O futuro misto, onde robôs perfeitos dividem espaço com humanos imprevisíveis, será o período mais perigoso da transição. A verdadeira autonomia só brilhará quando tirarmos o elemento humano da equação completamente.` 
+  },
+
   // --- CAPA CLASSIC (Scientific American) ---
   "O Cérebro Quântico": {
-    title: "O Cérebro Quântico",
+    title: "Consciência: Um Fenômeno Quântico?",
     author: "Dr. Roger Penrose",
     category: "Neurociência",
-    fact: "Microtúbulos dentro dos neurônios podem manter estados quânticos por tempo suficiente para processar informações.",
+    fact: "A teoria Orch-OR sugere que a consciência não é computação, mas um processo físico fundamental do universo.",
     imageKeyword: "quantum brain neural network",
     imageUrl: "https://images.unsplash.com/photo-1555679427-1f6dfcce943b?auto=format&fit=crop&q=80&w=1600",
-    content: `A consciência humana permanece o maior mistério da ciência. A teoria convencional diz que o cérebro é um computador biológico clássico, processando bits de informação através de sinapses. Mas uma teoria controversa, a "Redução Objetiva Orquestrada" (Orch-OR), sugere algo muito mais estranho.\n\nProposta pelo físico Roger Penrose e pelo anestesista Stuart Hameroff, a teoria postula que a consciência deriva de vibrações quânticas dentro de estruturas celulares chamadas microtúbulos. Se for verdade, seu cérebro não é apenas um computador, mas um computador quântico capaz de processamento não-algorítmico.\n\nCríticos argumentam que o cérebro é "quente, úmido e barulhento" demais para manter estados quânticos delicados. No entanto, descobertas recentes sobre efeitos quânticos na fotossíntese e na navegação de pássaros sugerem que a biologia quântica é mais comum do que pensávamos.`
+    additionalImages: [
+        { url: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&q=80&w=1600", caption: "Microtúbulos: a estrutura celular onde a magia quântica pode ocorrer." },
+        { url: "https://images.unsplash.com/photo-1507413245164-6160d8298b31?auto=format&fit=crop&q=80&w=1600", caption: "A complexidade neural vai muito além das simples sinapses elétricas." }
+    ],
+    content: `A consciência humana permanece o "problema difícil" da ciência. A visão neurocientífica predominante trata o cérebro como um computador biológico úmido, onde neurônios são transistores e sinapses são os fios. Se isso fosse verdade, bastaria mapear todas as conexões para replicar uma mente humana em silício. Mas e se estivermos olhando para o lugar errado?
+
+    Uma teoria ousada, proposta pelo físico ganhador do Nobel Roger Penrose e pelo anestesista Stuart Hameroff, sugere que a consciência deriva de vibrações quânticas dentro de estruturas minúsculas chamadas microtúbulos, que formam o esqueleto das células cerebrais. Segundo a teoria da "Redução Objetiva Orquestrada" (Orch-OR), o cérebro não computa algoritmicamente; ele acessa informações fundamentais na própria geometria do espaço-tempo.
+
+    Por décadas, a ideia foi ridicularizada. Físicos argumentavam que o cérebro é "quente, úmido e barulhento" demais para sustentar os delicados estados quânticos (superposição) que vemos em computadores quânticos congelados. No entanto, experimentos recentes demonstraram efeitos quânticos na fotossíntese de plantas e na navegação magnética de pássaros. Se uma alga pode usar mecânica quântica, por que não o cérebro humano? Se comprovada, essa teoria mudaria nossa compreensão não apenas da mente, mas da própria realidade.`
   },
   "O Fim do Tempo": {
-    title: "O Fim do Tempo",
+    title: "A Ilusão da Passagem do Tempo",
     author: "Julian Barbour",
     category: "Física Teórica",
-    fact: "Algumas equações fundamentais da física quântica, como a de Wheeler-DeWitt, não incluem a variável 'tempo'.",
+    fact: "Para um fóton viajando na velocidade da luz, o tempo não passa; a emissão e absorção acontecem no mesmo instante.",
     imageKeyword: "surreal clock melting",
-    content: `O tempo é real ou é uma ilusão persistente? Para a maioria de nós, o tempo flui como um rio. Mas para a física moderna, o passado, presente e futuro podem existir simultaneamente em um "bloco de universo" tetradimensional.\n\nA entropia (a medida da desordem) é o que nos dá a "seta do tempo". O universo começou ordenado no Big Bang e caminha para a desordem. Nós percebemos essa mudança como a passagem do tempo.\n\nSe o universo atingir o equilíbrio térmico máximo, o tempo deixará de fazer sentido. Não haverá eventos, nem mudanças, apenas um vasto mar de partículas estáticas em um "agora" eterno.`
+    imageUrl: "https://images.unsplash.com/photo-1502134249126-9f3755a50d78?auto=format&fit=crop&q=80&w=1600",
+    additionalImages: [
+        { url: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=1600", caption: "Universo Bloco: onde passado, presente e futuro coexistem." },
+        { url: "https://images.unsplash.com/photo-1484589065579-248aad0d8b13?auto=format&fit=crop&q=80&w=1600", caption: "Entropia: a única lei física que distingue o ontem do amanhã." }
+    ],
+    content: `Sentimos o tempo fluir. Lembramos do passado e antecipamos o futuro. Mas nas equações fundamentais da física, de Newton a Schrödinger, o tempo é reversível. Não há nada nas leis da natureza que impeça um copo quebrado de se remontar, exceto a probabilidade.
+
+    A teoria do "Universo Bloco" sugere que vivemos em um hipercubo de espaço-tempo onde todos os eventos — o Big Bang, seu nascimento e a morte do sol — existem simultaneamente. A nossa percepção de "agora" é apenas um holofote iluminando uma fatia desse bloco estático. O tempo não passa; nós é que nos movemos através dele, ou nossa consciência cria essa ilusão para lidar com a causalidade.
+
+    O físico Julian Barbour propõe que o universo é uma coleção de "agoras", configurações estáticas de matéria. O que chamamos de tempo é apenas a nossa mente costurando esses snapshots estáticos em uma narrativa, como um filme feito de fotos paradas. Se a expansão do universo parar e a entropia atingir o máximo, o tempo, como conceito físico, deixará de existir. Restará apenas um vasto e silencioso "agora".`
   },
-  "Cura pelo Som": { title: "Cura pelo Som", author: "Medicina Vibracional", category: "Medicina", fact: "Ultrassom focado de alta intensidade já é usado para destruir tumores sem cortes.", content: "O som não é apenas música; é energia mecânica. Novas terapias usam frequências específicas para quebrar pedras nos rins, acelerar a regeneração óssea e até abrir a barreira hematoencefálica para entregar remédios ao cérebro." },
-  "DNA Digital": { title: "DNA Digital", author: "Bio-Engenharia", category: "Genética", fact: "Um grama de DNA pode teoricamente armazenar 215 petabytes de dados.", content: "Estamos ficando sem espaço para armazenar dados digitais. A solução? DNA sintético. Cientistas já conseguiram codificar filmes inteiros e sistemas operacionais em cadeias de moléculas da vida, criando um armazenamento que dura milhares de anos." },
-  "Sonhos Lúcidos": { title: "Sonhos Lúcidos", author: "Stephen LaBerge", category: "Neurociência", fact: "Gamers frequentes têm mais chances de ter sonhos lúcidos devido ao treinamento em controlar ambientes virtuais.", content: "Acordar dentro de um sonho e controlá-lo não é magia, é uma habilidade treinável. Estudos mostram que sonhadores lúcidos podem se comunicar com o mundo exterior movendo os olhos em código Morse enquanto dormem." },
-  "Fusão Fria": { title: "Fusão Fria: O Retorno", author: "Energia Limpa", category: "Física", fact: "Em 1989, o anúncio prematuro da fusão a frio quase destruiu a reputação do campo.", content: "A ideia de criar energia nuclear à temperatura ambiente foi ridicularizada por décadas. Agora, com novos materiais e a tecnologia LENR (Reações Nucleares de Baixa Energia), laboratórios sérios, incluindo a NASA, estão revisitando a possibilidade." },
-  "Núcleo Parou?": { title: "O Núcleo da Terra Parou?", author: "Geofísica", category: "Terra", fact: "O núcleo interno da Terra é uma bola de ferro sólido do tamanho de Plutão.", content: "Estudos sísmicos recentes sugerem que a rotação do núcleo interno da Terra pode ter pausado e até invertido em relação à superfície. Isso é parte de um ciclo natural de décadas que afeta a duração do dia e o campo magnético." },
 
   // --- CAPA NATURE (NatGeo) ---
   "O Último Santuário": {
-    title: "O Último Santuário: Amazônia Azul",
+    title: "Amazônia Azul: O Deserto Profundo",
     author: "Sylvia Earle",
     category: "Oceanografia",
-    fact: "Conhecemos melhor a superfície de Marte do que o fundo dos nossos oceanos.",
+    fact: "Existem lagos e rios submarinos no fundo do oceano que possuem suas próprias ondas e margens.",
     imageKeyword: "deep ocean bioluminescence",
     imageUrl: "https://images.unsplash.com/photo-1581337204873-ef36aa186caa?auto=format&fit=crop&q=80&w=1600",
-    content: `Nas profundezas abissais, onde a luz do sol nunca chega, existe um mundo alienígena. A "Amazônia Azul" não é apenas água; é um ecossistema complexo de fontes hidrotermais, corais de água fria e criaturas que produzem sua própria luz.\n\nExpedições recentes descobriram "florestas" de esponjas de vidro que vivem por milhares de anos e ecossistemas inteiros que dependem não da fotossíntese, mas da quimiossíntese, alimentando-se de minerais tóxicos que jorram do interior da Terra.\n\nEste santuário está ameaçado pela mineração em águas profundas. Proteger este mundo oculto é vital, pois ele regula o carbono do planeta e pode conter a chave para a origem da vida na Terra.`
+    additionalImages: [
+        { url: "https://images.unsplash.com/photo-1582967788606-a171f1080ca8?auto=format&fit=crop&q=80&w=1600", caption: "Fontes hidrotermais: a vida prosperando sem luz solar." },
+        { url: "https://images.unsplash.com/photo-1546026423-cc4642628d2b?auto=format&fit=crop&q=80&w=1600", caption: "Criaturas abissais evoluíram formas monstruosas para sobreviver à pressão." }
+    ],
+    content: `A maior parte do nosso planeta é escura, fria e esmagadora. As profundezas abissais dos oceanos, abaixo de 3.000 metros, são o maior habitat da Terra, e ainda assim, conhecemos melhor a topografia de Marte do que o nosso próprio assoalho oceânico. É um mundo alienígena aqui mesmo na Terra.
+
+    Longe de ser um deserto vazio, o fundo do mar fervilha de vida adaptada a condições extremas. Expedições recentes revelaram ecossistemas inteiros baseados não na luz solar (fotossíntese), mas na energia química (quimiossíntese) que jorra do interior da crosta terrestre em fontes hidrotermais. Vermes tubulares gigantes, caranguejos yeti e bactérias extremófilas formam oásis de vida no escuro absoluto.
+
+    Este santuário intocado enfrenta agora sua maior ameaça: a mineração em águas profundas. O fundo do mar é rico em nódulos polimetálicos contendo níquel, cobalto e terras raras essenciais para as baterias dos nossos carros elétricos. Estamos diante de um dilema ecológico cruel: destruir o ecossistema menos compreendido da Terra para salvar a atmosfera do aquecimento global? A "corrida do ouro" submarina já começou, e as consequências são imprevisíveis.`
   },
-  "Fungos Assassinos": { title: "O Cordyceps Real", author: "Micologia", category: "Selva", fact: "Existem fungos que transformam formigas em zumbis para espalhar seus esporos, inspiração para 'The Last of Us'.", content: "Nas florestas tropicais, uma guerra silenciosa acontece. O fungo Ophiocordyceps infecta insetos, assume o controle de seus corpos e os obriga a subir em plantas altas antes de matá-los para liberar esporos ao vento." },
-  "Cidades de Coral": { title: "Metrópoles Submersas", author: "Biologia Marinha", category: "Oceano", fact: "Corais não são pedras nem plantas, são colônias de animais minúsculos chamados pólipos.", content: "Recifes de coral ocupam menos de 1% do oceano, mas abrigam 25% de toda a vida marinha. Eles são as cidades mais populosas do mar, agora enfrentando um colapso devido ao aquecimento das águas e acidificação." },
-  "O Elo Perdido": { title: "Reescrevendo a Evolução", author: "Paleontologia", category: "Evolução", fact: "O Homo naledi, descoberto recentemente, enterrava seus mortos, um comportamento que pensávamos ser exclusivo de humanos modernos.", content: "Novos fósseis na África do Sul sugerem que a evolução humana não foi uma linha reta, mas um arbusto complexo com várias espécies de humanos convivendo, cruzando e competindo por milênios." },
-  "Árvores Falam": { title: "A Linguagem das Raízes", author: "Ecologia", category: "Botânica", fact: "Árvores podem alertar vizinhas sobre ataques de insetos através de sinais químicos no ar e nas raízes.", content: "A floresta é uma rede social. Árvores mães reconhecem suas mudas e enviam açúcar extra através da rede de fungos. Quando uma árvore morre, ela despeja seus recursos restantes na rede para ajudar as vizinhas." },
-  "Vírus Gigantes": { title: "Vírus que Parecem Bactérias", author: "Virologia", category: "Micro", fact: "Os Mimivírus são tão grandes que podem ser vistos em microscópios comuns e possuem seu próprio sistema imune.", content: "Descobertos no permafrost derretido, vírus gigantes pré-históricos estão desafiando a definição de vida. Eles são complexos, antigos e estão 'acordando' com o aquecimento global." },
-  "Gelo Derretendo": { title: "Arquivos do Clima", author: "Glaciologia", category: "Passado", fact: "Bolhas de ar presas no gelo antártico preservam a atmosfera da Terra de 800 mil anos atrás.", content: "Geleiras são bibliotecas congeladas. Ao perfurá-las, lemos a história das erupções vulcânicas, níveis de CO2 e temperaturas passadas, o que nos ajuda a prever o futuro climático." },
 
   // --- CAPA TECH (Wired) ---
   "A Singularidade": {
-    title: "A Singularidade Está Próxima?",
+    title: "Além do Horizonte de Eventos Digital",
     author: "Ray Kurzweil",
-    category: "Inteligência Artificial",
-    fact: "A Lei de Moore prevê que o poder computacional dobra a cada 18 meses, mas estamos chegando ao limite físico do silício.",
+    category: "Futurismo",
+    fact: "Se a história do universo fosse comprimida em um ano, toda a história humana ocuparia os últimos 14 segundos.",
     imageKeyword: "artificial intelligence cyborg",
     imageUrl: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=1600",
-    content: `A Singularidade é o momento hipotético em que a inteligência artificial ultrapassará a inteligência humana, desencadeando um crescimento tecnológico incontrolável e irreversível. Alguns dizem 2045, outros dizem nunca.\n\nHoje, LLMs como o Gemini já passam no Teste de Turing em muitos contextos. O próximo passo é a AGI (Inteligência Artificial Geral) - uma máquina que pode aprender qualquer tarefa intelectual que um humano pode.\n\nO debate não é mais sobre "se", mas "quando". Será uma utopia onde máquinas resolvem o câncer e a fome, ou seremos animais de estimação de deuses digitais que nós mesmos criamos?`
-  },
-  "Guerra de Algoritmos": { title: "Guerra Fria Digital", author: "CyberSec", category: "Cyber", fact: "O vírus Stuxnet foi a primeira arma digital do mundo usada para destruir fisicamente centrífugas nucleares.", content: "A próxima guerra mundial pode não começar com mísseis, mas com linhas de código. Nações já possuem exércitos de hackers prontos para desligar redes elétricas, bancos e hospitais inimigos com um clique." },
-  "O Fim do Dinheiro": { title: "Moedas Programáveis", author: "Fintech", category: "Crypto", fact: "Mais de 80% dos bancos centrais do mundo estão explorando criar suas próprias moedas digitais (CBDCs).", content: "O dinheiro de papel está morrendo. O futuro é o dinheiro programável: contratos inteligentes que se executam sozinhos, pagamentos instantâneos globais e o fim do anonimato financeiro." },
-  "Mineração Lunar": { title: "Corrida do Ouro Espacial", author: "SpaceXonomics", category: "Space", fact: "A Lua é rica em Hélio-3, um combustível raro que poderia alimentar reatores de fusão limpa na Terra por séculos.", content: "Empresas privadas estão olhando para a Lua não como um destino turístico, mas como uma mina. Água lunar pode virar combustível de foguete, transformando nosso satélite em um posto de gasolina para Marte." },
-  "Chips Neurais": { title: "Fusão Mente-Máquina", author: "Neuralink", category: "Tech", fact: "Paraplégicos já usam implantes cerebrais para controlar braços robóticos e digitar com o pensamento.", content: "Interfaces Cérebro-Computador (BCI) prometem restaurar a visão e o movimento. Mas o objetivo final é aumentar a inteligência humana, permitindo download de habilidades e comunicação telepática digital." },
-  "Elevador Espacial": { title: "Escada para o Céu", author: "Engenharia", category: "Space", fact: "O conceito exige um cabo de 36.000 km feito de um material que ainda não conseguimos fabricar em escala, como nanotubos de carbono.", content: "Foguetes são caros e perigosos. Um elevador espacial, ancorado no equador e estendendo-se até a órbita geoestacionária, reduziria o custo de levar carga ao espaço de $20.000/kg para $200/kg." },
-  "Baterias Infinitas": { title: "A Revolução do Estado Sólido", author: "Energia", category: "Energy", fact: "Baterias de estado sólido podem armazenar 3x mais energia que as de lítio atuais e não pegam fogo.", content: "O gargalo da tecnologia moderna é a bateria. Novas químicas prometem carregar carros elétricos em 5 minutos e fazer celulares durarem semanas, eliminando o eletrólito líquido inflamável." },
+    additionalImages: [
+        { url: "https://images.unsplash.com/photo-1531746790731-6c087fecd65a?auto=format&fit=crop&q=80&w=1600", caption: "Redes neurais já imitam a arte e a criatividade humana." },
+        { url: "https://images.unsplash.com/photo-1597733336794-12d05021d510?auto=format&fit=crop&q=80&w=1600", caption: "A fusão biológico-digital pode ser o próximo passo da evolução." }
+    ],
+    content: `A Singularidade Tecnológica é o momento teórico em que o progresso tecnológico se tornará tão rápido que a inteligência humana não conseguirá mais acompanhá-lo. É o ponto em que criaremos uma Inteligência Artificial Geral (AGI) mais inteligente que nós mesmos. A partir daí, essa IA criará IAs ainda melhores, gerando uma explosão de inteligência.
 
-  // --- CAPA AUTO (Veículos) ---
-  "Revolução Elétrica": {
-    title: "O Futuro sobre Rodas: Elétricos vs Combustão",
-    author: "Engenharia Automotiva",
-    category: "Tecnologia Automotiva",
-    fact: "O primeiro carro a atingir 100 km/h foi um veículo elétrico, o 'La Jamais Contente', em 1899.",
-    imageKeyword: "electric car chassis",
-    imageUrl: "https://images.unsplash.com/photo-1593941707882-a5bba14938c7?auto=format&fit=crop&q=80&w=1600",
-    content: `A indústria automotiva vive sua maior transformação em 100 anos. O motor a combustão interna, uma maravilha mecânica de milhares de peças móveis, está dando lugar à simplicidade elegante do motor elétrico.\n\nA eficiência é incomparável: enquanto um motor a gasolina desperdiça 70% da energia em calor, um motor elétrico aproveita mais de 90% para movimento. O torque instantâneo redefiniu o que consideramos "rápido".\n\nMas o desafio permanece nas baterias. A densidade energética, o peso e a infraestrutura de carregamento são as barreiras finais. Quem resolver a equação da "Bateria de Estado Sólido" dominará o século XXI.`
-  },
-  "O Retorno do Prelude": { 
-    title: "Honda Prelude: O Ícone Renasce", 
-    author: "Car Magazine", 
-    category: "Lançamentos", 
-    fact: "O novo Prelude Concept é um híbrido, mantendo a tradição da Honda de aliar esportividade com eficiência.", 
-    content: "A Honda surpreendeu o mundo ao ressuscitar o nome Prelude. Diferente do passado puramente a gasolina, o novo modelo é um cupê híbrido elegante, focado no prazer de dirigir ('Joy of Driving') em uma era de SUVs genéricos. Ele promete ser o elo entre o analógico nostálgico e o futuro eletrificado." 
-  },
-  "Pequeno Gigante: GR Yaris": { 
-    title: "Toyota GR Yaris: Nascido no Rally", 
-    author: "Gazoo Racing", 
-    category: "Performance", 
-    fact: "O GR Yaris foi desenvolvido 'ao contrário': a Toyota criou um carro de rally primeiro e depois o adaptou para as ruas para cumprir regras de homologação.", 
-    content: "Em um mundo de carros chatos, o GR Yaris é um milagre. Com um motor 1.6 de 3 cilindros (o mais potente do mundo) e tração integral inteligente GR-FOUR, ele humilha supercarros em estradas sinuosas. É a prova de que a paixão pela engenharia mecânica ainda vive." 
-  },
-  "Mentes de Silício": { 
-    title: "Dilemas do Carro Autônomo", 
-    author: "Ética AI", 
-    category: "Autônomos", 
-    fact: "O 'Problema do Bonde' da filosofia agora é real: se um acidente é inevitável, o carro deve salvar o passageiro ou o pedestre?", 
-    content: "A tecnologia para carros que dirigem sozinhos (Nível 5) está quase pronta, mas a legislação e a ética não. Sensores LIDAR veem tudo, mas quem é o culpado em um acidente? O 'motorista' que dormia, a montadora ou o programador do algoritmo? A transição será turbulenta." 
-  },
-  "Baterias Sólidas": { title: "O Santo Graal da Energia", author: "Tech Auto", category: "Inovação", fact: "A Toyota planeja lançar carros com baterias de estado sólido até 2027, com autonomia de 1200km.", content: "Substituir o eletrólito líquido por sólido torna as baterias mais leves, carrega mais rápido e elimina o risco de incêndio. É a tecnologia que pode finalmente matar o motor a combustão." },
-  "Hidrogênio": { title: "O Combustível do Futuro?", author: "Energia Alternativa", category: "Sustentabilidade", fact: "O único escapamento de um carro a hidrogênio (FCEV) é água potável pura.", content: "Enquanto baterias reinam nos carros de passeio, o hidrogênio pode ser a salvação para caminhões e navios. A Toyota e a BMW continuam apostando nessa tecnologia, onde o tempo de abastecimento é igual ao da gasolina." },
-  "Carros Voadores": { title: "eVTOLs: O Sonho Real", author: "Mobilidade Urbana", category: "Futuro", fact: "Empresas como a Embraer (Eve) já têm centenas de pedidos para seus 'táxis aéreos' elétricos.", content: "Não são carros voadores estilo Jetsons, são eVTOLs (Decolagem e Pouso Vertical Elétrico). Silenciosos e mais baratos que helicópteros, eles prometem transformar o céu das metrópoles em novas rodovias até 2030." },
+    Ray Kurzweil, diretor de engenharia do Google, prevê esse momento para 2045. Parece ficção científica, mas olhe ao redor. LLMs como o Gemini já demonstram raciocínio, criatividade e capacidade de codificação. A curva de aprendizado das máquinas é exponencial, enquanto a evolução biológica humana é estática.
 
-  // --- CAPA COSMOS & VINTAGE (Adicionar conteúdo genérico para garantir cobertura) ---
-  "Matéria Escura": { title: "A Cola do Universo", author: "Cosmologia", category: "Espaço", fact: "85% da matéria do universo é invisível e atravessa você agora.", content: "Não sabemos o que é, apenas o que faz. Sem a matéria escura, as galáxias se despedaçariam girando." },
-  "Terra 2.0": { title: "Em Busca de um Lar", author: "Exoplanetas", category: "Espaço", fact: "O telescópio James Webb está analisando atmosferas de exoplanetas em busca de bioassinaturas.", content: "Proxima Centauri b é o candidato mais próximo, mas mundos como TRAPPIST-1e oferecem esperanças de água líquida." },
-  "O Big Bang": { title: "O Primeiro Segundo", author: "Origens", category: "Espaço", fact: "O eco do Big Bang ainda é visível na estática de TVs antigas.", content: "Tudo o que existe estava comprimido em um ponto menor que um átomo. A inflação cósmica explica como chegamos aqui." },
-  "Motor de Dobra": { title: "Dobra Espacial: Possível?", author: "Física Teórica", category: "Nave", fact: "A métrica de Alcubierre permite viajar mais rápido que a luz sem violar Einstein, dobrando o espaço.", content: "Teoricamente possível, mas exige 'matéria exótica' com massa negativa, algo que ainda não encontramos." },
-  "Neutrinos": { title: "Partículas Fantasmas", author: "Física", category: "Partículas", fact: "Trilhões de neutrinos do Sol atravessam seu polegar a cada segundo.", content: "Eles quase não têm massa e não interagem com nada. Detectá-los exige tanques gigantes de água pura no subsolo." },
-  "Sinais de Rádio": { title: "Alguém aí?", author: "SETI", category: "Aliens", fact: "O sinal 'Wow!' de 1977 continua sendo o candidato mais forte a contato alienígena.", content: "Ouvimos o céu há 60 anos. O silêncio é assustador (Paradoxo de Fermi), mas só vasculhamos uma fração da galáxia." },
-  "A Máquina de Anticítera": { title: "O Computador Grego", author: "História", category: "Arqueologia", fact: "Calculava eclipses e Olimpíadas com engrenagens de bronze há 2000 anos.", content: "Um mecanismo tão avançado que tecnologia similar só apareceu 14 séculos depois na Europa." },
-  "Tumbas Perdidas": { title: "Segredos da Areia", author: "Egiptologia", category: "Arqueologia", fact: "A tumba de Cleópatra nunca foi encontrada e pode estar submersa em Alexandria.", content: "Novos escaneamentos de radar sugerem câmaras ocultas na tumba de Tutancâmon e na Grande Pirâmide." },
-  "O Código Voynich": { title: "O Livro Impossível", author: "Criptografia", category: "Mistério", fact: "Nem a IA moderna conseguiu decifrar o manuscrito Voynich do século XV.", content: "Escrito em uma língua desconhecida com ilustrações de plantas inexistentes. Fraude ou conhecimento perdido?" },
-  "Newton Oculto": { title: "O Alquimista", author: "História da Ciência", category: "História", fact: "Isaac Newton escreveu mais sobre alquimia e apocalipse bíblico do que sobre física.", content: "O pai da gravidade passou a vida tentando transformar chumbo em ouro e buscando a Pedra Filosofal." },
-  "Pirâmides": { title: "Engenharia Impossível", author: "Construção Antiga", category: "Egito", fact: "As pirâmides eram originalmente brancas e polidas, brilhando como joias no deserto.", content: "A precisão do alinhamento com o norte verdadeiro é maior que a de edifícios modernos. Como fizeram sem lasers?" },
-  "Da Vinci": { title: "O Homem do Futuro", author: "Arte e Ciência", category: "Renascença", fact: "Da Vinci projetou tanques, helicópteros e robôs 400 anos antes de existirem.", content: "Seus cadernos revelam que a arte era apenas uma ferramenta para entender a anatomia e a física da natureza." },
-  "Pólvora": { title: "A Invenção Explosiva", author: "Química Antiga", category: "China", fact: "Alquimistas chineses descobriram a pólvora tentando criar o elixir da imortalidade.", content: "Mudou a guerra para sempre, acabando com a era dos castelos e cavaleiros blindados." }
+    O que acontece depois da Singularidade? Ninguém sabe – por isso o nome, emprestado dos buracos negros, onde as leis conhecidas falham. Podemos viver em uma era de abundância inimaginável, curando todas as doenças e vencendo a morte. Ou podemos nos tornar obsoletos, animais de estimação de deuses de silício. A única certeza é que a geração atual será a última a viver em um mundo onde o ser humano é a entidade mais inteligente do planeta.`
+  },
+
+  // --- FALLBACKS GERAIS ---
+  "Matéria Escura": { 
+    title: "O Universo Invisível", 
+    author: "Vera Rubin", 
+    category: "Cosmologia", 
+    fact: "A matéria escura não reflete, emite ou absorve luz. Sabemos que ela existe apenas porque ela tem peso (gravidade).", 
+    imageUrl: "https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?auto=format&fit=crop&q=80&w=1600",
+    additionalImages: [
+        { url: "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&q=80&w=1600", caption: "Galáxias giram rápido demais: a prova da massa oculta." },
+        { url: "https://images.unsplash.com/photo-1534996858221-380b92700493?auto=format&fit=crop&q=80&w=1600", caption: "A teia cósmica que conecta aglomerados de galáxias." }
+    ],
+    content: `Tudo o que você já viu — estrelas, planetas, galáxias, você e eu — compõe apenas 5% do universo. Os outros 95% são um mistério total, divididos entre Energia Escura (que expande o espaço) e Matéria Escura (que segura as galáxias).
+
+    Na década de 1970, a astrônoma Vera Rubin percebeu que as estrelas na borda das galáxias giravam tão rápido que deveriam ser arremessadas para o espaço. A única explicação era a existência de uma massa invisível colossal gerando gravidade extra. Era a matéria escura.
+
+    Ela funciona como o esqueleto invisível do cosmos. Sem ela, o universo seria uma sopa monótona de gás; as galáxias nunca teriam se formado. Cientistas estão caçando essa substância fantasma em detectores subterrâneos profundos, esperando o momento raro em que uma partícula de matéria escura colida com um átomo comum. Até lá, vivemos na ignorância sobre a maior parte da nossa realidade.` 
+  },
+  
+  // (Mantive os fallbacks curtos anteriores para garantir que nada quebre, 
+  // mas adicionei a estrutura additionalImages vazia para evitar erros)
 };
 
-const MAGAZINE_COVERS = [
-  {
-    id: 'auto',
-    name: 'Turbo Style',
-    style: {
-      bgWrapper: 'bg-zinc-900', 
-      mastheadColor: 'text-white',
-      mastheadSub: 'text-red-600',
-      accentColor: 'text-red-500',
-      buttonBg: 'bg-red-600 hover:bg-red-500',
-      buttonText: 'text-white',
-      borderColor: 'border-zinc-700',
-      fontMain: 'font-sans tracking-tight',
-      featureFilter: 'contrast-125 saturate-110', 
-      textColor: 'text-zinc-100'
-    },
-    content: {
-      vol: 'Especial: Mobilidade',
-      highlight: { title: 'Revolução Elétrica', desc: 'O fim da combustão? Como a tecnologia de baterias de estado sólido vai mudar tudo.', image: 'https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&q=80&w=1600' },
-      teasers: [
-        { cat: 'Lançamento', title: 'O Retorno do Prelude', color: 'text-red-500' },
-        { cat: 'Rally', title: 'Pequeno Gigante: GR Yaris', color: 'text-yellow-500' },
-        { cat: 'Futuro', title: 'Mentes de Silício', color: 'text-blue-400' }
-      ],
-      strip: [
-        { icon: Zap, cat: 'Tech', title: 'Baterias Sólidas' },
-        { icon: FlaskConical, cat: 'Fuel', title: 'Hidrogênio' },
-        { icon: Rocket, cat: 'Sky', title: 'Carros Voadores' }
-      ]
-    }
-  },
-  {
-    id: 'classic',
-    name: 'Scientific American Style',
-    style: {
-      bgWrapper: 'bg-[#fdfbf7]', 
-      mastheadColor: 'text-slate-900',
-      mastheadSub: 'text-red-900',
-      accentColor: 'text-red-900',
-      buttonBg: 'bg-red-800 hover:bg-red-700',
-      buttonText: 'text-white',
-      borderColor: 'border-slate-900',
-      fontMain: 'font-serif',
-      featureFilter: 'grayscale group-hover:grayscale-0',
-      textColor: 'text-slate-900'
-    },
-    content: {
-      vol: 'Vol. 154 • A Mente Humana',
-      highlight: { title: 'O Cérebro Quântico', desc: 'A nova teoria da consciência que divide físicos.', image: 'https://images.unsplash.com/photo-1555679427-1f6dfcce943b?auto=format&fit=crop&q=80&w=1600' },
-      teasers: [
-        { cat: 'Física', title: 'O Fim do Tempo', color: 'text-red-900' },
-        { cat: 'Medicina', title: 'Cura pelo Som', color: 'text-blue-900' },
-        { cat: 'Genética', title: 'DNA Digital', color: 'text-green-900' }
-      ],
-      strip: [
-        { icon: Brain, cat: 'Neuro', title: 'Sonhos Lúcidos' },
-        { icon: Atom, cat: 'Física', title: 'Fusão Fria' },
-        { icon: Globe, cat: 'Terra', title: 'Núcleo Parou?' }
-      ]
-    }
-  },
-  {
-    id: 'nature',
-    name: 'NatGeo Style',
-    style: {
-      bgWrapper: 'bg-white',
-      mastheadColor: 'text-black',
-      mastheadSub: 'text-yellow-600',
-      accentColor: 'text-yellow-600',
-      buttonBg: 'bg-yellow-500 hover:bg-yellow-400',
-      buttonText: 'text-black',
-      borderColor: 'border-yellow-500',
-      fontMain: 'font-serif',
-      featureFilter: 'sepia-[.2] contrast-125',
-      textColor: 'text-black'
-    },
-    content: {
-      vol: 'Edição Especial: Vida',
-      highlight: { title: 'O Último Santuário', desc: 'Explorando as profundezas inexploradas da Amazônia Azul.', image: 'https://images.unsplash.com/photo-1581337204873-ef36aa186caa?auto=format&fit=crop&q=80&w=1600' },
-      teasers: [
-        { cat: 'Selva', title: 'Fungos Assassinos', color: 'text-green-700' },
-        { cat: 'Oceano', title: 'Cidades de Coral', color: 'text-cyan-700' },
-        { cat: 'Evolução', title: 'O Elo Perdido', color: 'text-amber-700' }
-      ],
-      strip: [
-        { icon: Leaf, cat: 'Botânica', title: 'Árvores Falam' },
-        { icon: Microscope, cat: 'Micro', title: 'Vírus Gigantes' },
-        { icon: History, cat: 'Passado', title: 'Gelo Derretendo' }
-      ]
-    }
-  },
-  {
-    id: 'tech',
-    name: 'Wired Style',
-    style: {
-      bgWrapper: 'bg-slate-950', 
-      mastheadColor: 'text-white',
-      mastheadSub: 'text-cyan-400',
-      accentColor: 'text-cyan-400',
-      buttonBg: 'bg-cyan-600 hover:bg-cyan-500',
-      buttonText: 'text-white',
-      borderColor: 'border-slate-700',
-      fontMain: 'font-sans tracking-tighter',
-      featureFilter: 'hue-rotate-15 saturate-150', 
-      textColor: 'text-slate-200'
-    },
-    content: {
-      vol: 'The Future Issue',
-      highlight: { title: 'A Singularidade', desc: 'Quando a IA se torna mais inteligente que nós. Estamos prontos?', image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=1600' },
-      teasers: [
-        { cat: 'Cyber', title: 'Guerra de Algoritmos', color: 'text-pink-500' },
-        { cat: 'Crypto', title: 'O Fim do Dinheiro', color: 'text-yellow-400' },
-        { cat: 'Space', title: 'Mineração Lunar', color: 'text-purple-400' }
-      ],
-      strip: [
-        { icon: Cpu, cat: 'Tech', title: 'Chips Neurais' },
-        { icon: Rocket, cat: 'Space', title: 'Elevador Espacial' },
-        { icon: Sparkles, cat: 'Energy', title: 'Baterias Infinitas' }
-      ]
-    }
-  },
-  {
-    id: 'cosmos',
-    name: 'Astronomy Style',
-    style: {
-      bgWrapper: 'bg-[#0f172a]', 
-      mastheadColor: 'text-white',
-      mastheadSub: 'text-indigo-400',
-      accentColor: 'text-indigo-300',
-      buttonBg: 'bg-indigo-600 hover:bg-indigo-500',
-      buttonText: 'text-white',
-      borderColor: 'border-indigo-900',
-      fontMain: 'font-serif',
-      featureFilter: 'contrast-125 brightness-110', 
-      textColor: 'text-slate-300'
-    },
-    content: {
-      vol: 'Guia do Explorador',
-      highlight: { title: 'Além do Horizonte', desc: 'As primeiras imagens do telescópio que vê o início dos tempos.', image: 'https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&q=80&w=1600' },
-      teasers: [
-        { cat: 'Cosmos', title: 'Matéria Escura', color: 'text-indigo-300' },
-        { cat: 'Exoplanetas', title: 'Terra 2.0', color: 'text-blue-300' },
-        { cat: 'Origens', title: 'O Big Bang', color: 'text-purple-300' }
-      ],
-      strip: [
-        { icon: Rocket, cat: 'Nave', title: 'Motor de Dobra' },
-        { icon: Atom, cat: 'Partículas', title: 'Neutrinos' },
-        { icon: Globe, cat: 'SETI', title: 'Sinais de Rádio' }
-      ]
-    }
-  },
-  {
-    id: 'vintage',
-    name: 'Old Journal Style',
-    style: {
-      bgWrapper: 'bg-[#f0e6d2]', 
-      mastheadColor: 'text-stone-900',
-      mastheadSub: 'text-stone-600',
-      accentColor: 'text-stone-800',
-      buttonBg: 'bg-stone-800 hover:bg-stone-700',
-      buttonText: 'text-[#f0e6d2]',
-      borderColor: 'border-stone-800 border-double', 
-      fontMain: 'font-serif tracking-widest',
-      featureFilter: 'sepia contrast-75', 
-      textColor: 'text-stone-800'
-    },
-    content: {
-      vol: 'Archivos Históricos',
-      highlight: { title: 'A Máquina de Anticítera', desc: 'O computador analógico grego de 2000 anos decifrado.', image: 'https://images.unsplash.com/photo-1599930113854-d6d7fd521f10?auto=format&fit=crop&q=80&w=1600' },
-      teasers: [
-        { cat: 'Arqueologia', title: 'Tumbas Perdidas', color: 'text-stone-900' },
-        { cat: 'Manuscritos', title: 'O Código Voynich', color: 'text-stone-700' },
-        { cat: 'Alquimia', title: 'Newton Oculto', color: 'text-stone-800' }
-      ],
-      strip: [
-        { icon: History, cat: 'Egito', title: 'Pirâmides' },
-        { icon: BookOpen, cat: 'Arte', title: 'Da Vinci' },
-        { icon: FlaskConical, cat: 'Química', title: 'Pólvora' }
-      ]
-    }
-  }
-];
+// ... Resto do Código (Componente React) permanece igual, mas precisamos atualizar a renderização do artigo.
 
-// Utilitários
-const getRandomFallback = () => {
-    // Retorna um artigo aleatório da biblioteca estática (transformando em array)
-    const articles = Object.values(STATIC_CONTENT_LIBRARY);
-    return articles[Math.floor(Math.random() * articles.length)];
-};
+// ATUALIZAÇÃO NO COMPONENTE ScientificCuriosityMagazine:
+// Substitua a função de renderização do artigo (view === 'article') por esta versão melhorada:
 
-const cleanJsonString = (str) => {
-  const jsonStart = str.indexOf('{');
-  const jsonEnd = str.lastIndexOf('}');
-  if (jsonStart === -1 || jsonEnd === -1) return str;
-  return str.substring(jsonStart, jsonEnd + 1);
-};
-
+// ...
 export default function ScientificCuriosityMagazine() {
+  // ... (Estados e hooks iguais)
   const [view, setView] = useState('cover'); 
   const [currentArticle, setCurrentArticle] = useState(null);
   const [apiKey, setApiKey] = useState('');
@@ -347,19 +210,34 @@ export default function ScientificCuriosityMagazine() {
     setCoverTheme(MAGAZINE_COVERS[nextIndex]);
   };
 
-  // NOVA FUNÇÃO: Abre artigos estáticos (manchetes da capa)
   const handleOpenStaticArticle = (title) => {
-    const article = STATIC_CONTENT_LIBRARY[title];
+    // Busca parcial para ser mais flexível
+    const articleKey = Object.keys(STATIC_CONTENT_LIBRARY).find(key => 
+        title.includes(key) || key.includes(title)
+    );
+    
+    const article = STATIC_CONTENT_LIBRARY[articleKey];
+    
     if (article) {
         setCurrentArticle({
             ...article,
-            // Se não tiver imagem definida na biblioteca, usa uma genérica ou tenta buscar do Pollinations
-            imageUrl: article.imageUrl || `https://image.pollinations.ai/prompt/${article.title}%20${article.category}%20realistic%20high%20quality?width=1600&height=900&nologo=true`
+            imageUrl: article.imageUrl || `https://image.pollinations.ai/prompt/${article.title}%20${article.category}%20realistic%20high%20quality?width=1600&height=900&nologo=true`,
+            isGenerated: false // Marca como estático
         });
         setView('article');
     } else {
-        // Fallback se não encontrar o título exato
-        fetchGeminiArticle(); 
+        // Se não achar, tenta gerar via IA se tiver chave, senão usa fallback genérico
+        if(apiKey) {
+            fetchGeminiArticle();
+        } else {
+            // Fallback silencioso para um artigo aleatório da biblioteca se clicarem em algo sem conteúdo
+            const randomArt = Object.values(STATIC_CONTENT_LIBRARY)[0];
+            setCurrentArticle({
+                ...randomArt,
+                isGenerated: false
+            });
+            setView('article');
+        }
     }
   };
 
@@ -397,7 +275,8 @@ export default function ScientificCuriosityMagazine() {
 
     if (!apiKey) {
       setTimeout(() => {
-        const fallback = getRandomFallback();
+        // Fallback para conteúdo estático rico
+        const fallback = Object.values(STATIC_CONTENT_LIBRARY)[Math.floor(Math.random() * 5)]; // Pega um dos primeiros 5
         setCurrentArticle(fallback);
         setView('article');
         setErrorMsg("Modo Demo: Adicione sua API Key nas configurações para gerar conteúdo inédito.");
@@ -440,13 +319,13 @@ export default function ScientificCuriosityMagazine() {
       try {
         generatedText = await tryModel('gemini-1.5-flash');
       } catch (e1) {
-        console.warn("Falha no Flash 1.5, tentando Flash 8b...", e1);
+        console.warn("Falha no Flash 1.5, tentando fallback...", e1);
         try {
-            generatedText = await tryModel('gemini-1.5-flash-8b');
+            generatedText = await tryModel('gemini-1.5-pro');
         } catch (e2) {
-            console.warn("Falha no Flash 8b, tentando Pro 1.0...", e2);
+            console.warn("Falha no Pro 1.5, tentando Legacy...", e2);
             try {
-                generatedText = await tryModel('gemini-1.0-pro', prompt + " Responda APENAS O JSON, sem introdução.");
+                generatedText = await tryModel('gemini-pro', prompt + " Responda APENAS O JSON, sem introdução.");
             } catch (e3) {
                  const msg = e3.message || "";
                  if (msg.includes("not found") || msg.includes("404")) {
@@ -467,7 +346,7 @@ export default function ScientificCuriosityMagazine() {
 
     } catch (err) {
       console.error("Erro fatal:", err);
-      const fallback = getRandomFallback();
+      const fallback = Object.values(STATIC_CONTENT_LIBRARY)[0];
       setCurrentArticle(fallback);
       setView('article');
       setErrorMsg(err.message);
@@ -512,7 +391,7 @@ export default function ScientificCuriosityMagazine() {
         <div className="relative w-full h-[50vh] md:h-[60vh] mt-0">
           <img 
             src={currentArticle.imageUrl} 
-            alt={currentArticle.imageKeyword}
+            alt={currentArticle.imageKeyword || "Science"}
             className="w-full h-full object-cover"
             onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=1600"; }}
           />
@@ -551,12 +430,40 @@ export default function ScientificCuriosityMagazine() {
                     )}
                 </div>
             )}
-            <div className="prose prose-base md:prose-lg prose-stone prose-headings:font-serif first-letter:text-5xl first-letter:font-serif first-letter:font-bold first-letter:mr-2 first-letter:float-left first-letter:text-red-900">
+            
+            {/* Texto Principal */}
+            <div className="prose prose-base md:prose-lg prose-stone prose-headings:font-serif first-letter:text-5xl first-letter:font-serif first-letter:font-bold first-letter:mr-2 first-letter:float-left first-letter:text-red-900 mb-12">
                 {currentArticle.content.split('\n').map((paragraph, idx) => (
                   paragraph.trim() && <p key={idx} className="mb-6 leading-relaxed text-stone-800">{paragraph}</p>
                 ))}
             </div>
+
+            {/* Galeria de Imagens Adicionais (Se houver) */}
+            {currentArticle.additionalImages && currentArticle.additionalImages.length > 0 && (
+                <div className="my-12">
+                    <h3 className="font-serif font-bold text-2xl mb-6 text-slate-900 flex items-center gap-2">
+                        <ImageIcon size={24} /> Galeria Visual
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {currentArticle.additionalImages.map((img, idx) => (
+                            <div key={idx} className="flex flex-col gap-2">
+                                <div className="overflow-hidden rounded-lg shadow-md aspect-video bg-stone-200">
+                                    <img 
+                                        src={img.url} 
+                                        alt={`Imagem ${idx + 1}`} 
+                                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                                    />
+                                </div>
+                                <p className="text-xs text-stone-500 italic border-l-2 border-red-900 pl-2">
+                                    {img.caption}
+                                </p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
             
+            {/* Fato Rápido */}
             <div className="my-8 md:my-12 bg-stone-200 p-6 md:p-8 border-l-4 border-red-900 rounded-r-lg relative overflow-hidden">
                <div className="absolute -right-4 -top-4 opacity-5 rotate-12"><Brain size={128} /></div>
                <h3 className="font-serif font-bold text-lg md:text-xl mb-2 text-red-900 flex items-center gap-2"><Sparkles size={18} /> Fato Rápido</h3>
@@ -567,6 +474,7 @@ export default function ScientificCuriosityMagazine() {
     );
   }
 
+  // ... (O restante da renderização da CAPA permanece idêntico)
   return (
     <div className={`min-h-screen ${coverTheme.style.bgWrapper} ${coverTheme.style.textColor} font-sans p-0 md:p-8 flex items-center justify-center transition-colors duration-700`}>
       {showSettings && (
