@@ -1,50 +1,12 @@
-import { Brain, Atom, Globe, Leaf, Cpu, Rocket, History, Zap, FlaskConical } from 'lucide-react';
+import { 
+  Brain, Atom, Globe, Leaf, Cpu, Rocket, History, Zap, FlaskConical, 
+  Microscope, Sparkles, BookOpen 
+} from 'lucide-react';
 
 /**
  * 📚 BIBLIOTECA DE CONTEÚDO ESTÁTICO (COMPLETA E EXPANDIDA)
  */
 export const STATIC_CONTENT_LIBRARY = {
-  // --- CAPA CLASSIC (Scientific American) ---
-  "O Cérebro Quântico": {
-    title: "Consciência: Colapso da Função de Onda?",
-    author: "Dr. Roger Penrose",
-    category: "Física Quântica",
-    fact: "Microtúbulos possuem simetria e ressonância compatíveis com a manutenção de coerência quântica, protegendo o sistema do 'ruído' térmico do cérebro.",
-    imageKeyword: "quantum brain neural network",
-    imageUrl: "https://images.unsplash.com/photo-1555679427-1f6dfcce943b?auto=format&fit=crop&q=80&w=1600",
-    additionalImages: [
-        { url: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&q=80&w=1600", caption: "Estrutura dos microtúbulos: reticulados de proteína tubulina." },
-        { url: "https://images.unsplash.com/photo-1507413245164-6160d8298b31?auto=format&fit=crop&q=80&w=1600", caption: "A rede neural clássica vs a rede quântica proposta." }
-    ],
-    content: `A teoria clássica da neurociência trata o cérebro como um sistema determinístico de potenciais de ação eletroquímicos. Porém, o físico Roger Penrose argumenta que a consciência possui características "não-computáveis" que um sistema binário clássico não pode replicar.
-
-    A hipótese "Orch-OR" (Redução Objetiva Orquestrada) propõe que a computação quântica ocorre dentro dos microtúbulos, estruturas do citoesqueleto dos neurônios. Em um computador quântico, a informação existe em superposição (0 e 1 ao mesmo tempo) até que uma medição cause o colapso da função de onda. Penrose sugere que esse "colapso" dentro do cérebro gera os momentos discretos de experiência consciente ("qualia").
-
-    A maior crítica sempre foi a "decoerência": sistemas quânticos geralmente exigem zero absoluto (-273°C) para funcionar, e o cérebro é quente e úmido. No entanto, novas descobertas em biologia quântica (como o tunelamento quântico em enzimas e na fotossíntese) mostram que a vida desenvolveu mecanismos para proteger estados quânticos do ruído térmico, tornando a teoria de Penrose biologicamente plausível.`
-  },
-  "O Fim do Tempo": {
-    title: "Entropia e a Seta do Tempo",
-    author: "Julian Barbour",
-    category: "Termodinâmica",
-    fact: "A Segunda Lei da Termodinâmica é a única lei fundamental da física que não é reversível no tempo, criando a distinção entre passado e futuro.",
-    imageKeyword: "surreal clock melting",
-    imageUrl: "https://images.unsplash.com/photo-1502134249126-9f3755a50d78?auto=format&fit=crop&q=80&w=1600",
-    additionalImages: [
-        { url: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=1600", caption: "O Big Bang: o estado de mínima entropia inicial." },
-        { url: "https://images.unsplash.com/photo-1484589065579-248aad0d8b13?auto=format&fit=crop&q=80&w=1600", caption: "Morte Térmica: o destino de máxima entropia do universo." }
-    ],
-    content: `Na escala microscópica, as leis da física são simétricas no tempo. Um filme de dois átomos colidindo faz sentido tanto rodando para frente quanto para trás. Então, por que lembramos do passado e não do futuro? Por que um copo quebrado nunca se remonta espontaneamente?
-
-    A resposta reside na Termodinâmica e no conceito de Entropia (uma medida estatística de desordem). O universo começou em um estado de entropia extremamente baixa (alta ordem) no Big Bang. Desde então, a entropia só aumenta. Essa transição do ordenado para o desordenado é o que percebemos como a "seta do tempo".
-
-    Julian Barbour leva isso além, propondo que o tempo é uma ilusão criada pela nossa mente ao processar "snapshots" estáticos do universo (o "Universo Bloco"). Se o universo atingir o equilíbrio térmico (Morte Térmica), onde a entropia é máxima e nada mais muda, a dimensão do tempo efetivamente deixará de existir, pois não haverá eventos para marcar sua passagem. O tempo é, portanto, uma propriedade emergente da mudança, não uma dimensão fundamental.`
-  },
-  "Cura pelo Som": { title: "Ultrassom Focado (HIFU)", author: "Medicina", category: "Biofísica", fact: "O som pode gerar calor intenso em um ponto preciso dentro do corpo.", content: "Ondas sonoras são energia mecânica. Ao focar feixes de ultrassom em um ponto, a energia cozinha tumores sem cortes, uma cirurgia não-invasiva revolucionária." },
-  "DNA Digital": { title: "Armazenamento em DNA", author: "Bio-Tech", category: "Genética", fact: "1 grama de DNA pode armazenar 215 petabytes de dados.", content: "O DNA é o disco rígido da natureza. Cientistas já codificaram filmes em bases nitrogenadas (A,C,T,G). É o futuro do arquivamento de dados de longo prazo." },
-  "Sonhos Lúcidos": { title: "Consciência no Sono REM", author: "Neurociência", category: "Sono", fact: "O córtex pré-frontal lógico ativa-se durante sonhos lúcidos.", content: "É um estado híbrido entre vigília e sono. Estudos mostram ondas gama (40Hz) típicas de foco mental ocorrendo enquanto o corpo dorme." },
-  "Fusão Fria": { title: "Reações Nucleares LENR", author: "Física", category: "Energia", fact: "Efeitos quânticos podem permitir fusão sem calor extremo.", content: "A fusão a frio busca usar catalisadores para fundir átomos em temperatura ambiente, prometendo energia infinita e limpa, embora ainda seja controversa." },
-  "Núcleo Parou?": { title: "Oscilação do Núcleo Terrestre", author: "Geofísica", category: "Terra", fact: "O núcleo interno da Terra gira em velocidade diferente da crosta.", content: "Dados sísmicos mostram que a rotação do núcleo interno oscila em ciclos de 70 anos, afetando a duração do dia em milissegundos." },
-
   // --- CAPA AUTO (Veículos) ---
   "Revolução Elétrica": {
     title: "Eletromagnetismo Aplicado: O Fim da Combustão",
@@ -114,6 +76,47 @@ export const STATIC_CONTENT_LIBRARY = {
   "Baterias Sólidas": { title: "Eletroquímica de Estado Sólido", author: "Lab Tech", category: "Química", fact: "Eletrólitos sólidos de cerâmica ou polímero previnem a formação de dendritos de lítio, que são os causadores de curtos-circuitos internos e incêndios em baterias líquidas.", content: "A bateria de estado sólido substitui o solvente orgânico líquido inflamável por um condutor iônico sólido. Isso aumenta a janela de estabilidade eletroquímica, permitindo o uso de anodos de lítio metálico puro em vez de grafite, o que pode dobrar a densidade energética (Wh/kg)." },
   "Hidrogênio": { title: "Célula de Combustível: Eletrólise Reversa", author: "Energia H2", category: "Físico-Química", fact: "A reação na célula de combustível (2H2 + O2 → 2H2O) libera elétrons que formam a corrente elétrica, tendo como único subproduto vapor de água.", content: "Carros a hidrogênio (FCEV) não queimam o gás. Eles realizam uma 'queima fria' eletroquímica. O hidrogênio passa pelo ânodo e perde elétrons (oxidação). Esses elétrons são forçados a passar por um circuito externo (motor), enquanto os prótons H+ atravessam uma membrana polimérica (PEM) para se reencontrar com o oxigênio no cátodo, formando água." },
   "Carros Voadores": { title: "eVTOLs e a Física do Voo Distribuído", author: "AeroDynamics", category: "Engenharia Aeroespacial", fact: "O uso de múltiplos rotores elétricos pequenos permite controle de atitude instantâneo variando o torque de cada motor, eliminando a complexidade mecânica dos helicópteros (prato oscilante).", content: "eVTOLs (Electric Vertical Take-off and Landing) dependem de alta densidade de potência. Diferente de aviões que usam asas para sustentação eficiente (L/D ratio), a decolagem vertical exige empuxo bruto maior que o peso (T/W > 1). A propulsão elétrica distribuída (DEP) aumenta a redundância e segurança: se um motor falha, os outros compensam eletronicamente em milissegundos." },
+
+  // --- CAPA CLASSIC (Scientific American) ---
+  "O Cérebro Quântico": {
+    title: "Consciência: Colapso da Função de Onda?",
+    author: "Dr. Roger Penrose",
+    category: "Física Quântica",
+    fact: "Microtúbulos possuem simetria e ressonância compatíveis com a manutenção de coerência quântica, protegendo o sistema do 'ruído' térmico do cérebro.",
+    imageKeyword: "quantum brain neural network",
+    imageUrl: "https://images.unsplash.com/photo-1555679427-1f6dfcce943b?auto=format&fit=crop&q=80&w=1600",
+    additionalImages: [
+        { url: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&q=80&w=1600", caption: "Estrutura dos microtúbulos: reticulados de proteína tubulina." },
+        { url: "https://images.unsplash.com/photo-1507413245164-6160d8298b31?auto=format&fit=crop&q=80&w=1600", caption: "A rede neural clássica vs a rede quântica proposta." }
+    ],
+    content: `A teoria clássica da neurociência trata o cérebro como um sistema determinístico de potenciais de ação eletroquímicos. Porém, o físico Roger Penrose argumenta que a consciência possui características "não-computáveis" que um sistema binário clássico não pode replicar.
+
+    A hipótese "Orch-OR" (Redução Objetiva Orquestrada) propõe que a computação quântica ocorre dentro dos microtúbulos, estruturas do citoesqueleto dos neurônios. Em um computador quântico, a informação existe em superposição (0 e 1 ao mesmo tempo) até que uma medição cause o colapso da função de onda. Penrose sugere que esse "colapso" dentro do cérebro gera os momentos discretos de experiência consciente ("qualia").
+
+    A maior crítica sempre foi a "decoerência": sistemas quânticos geralmente exigem zero absoluto (-273°C) para funcionar, e o cérebro é quente e úmido. No entanto, novas descobertas em biologia quântica (como o tunelamento quântico em enzimas e na fotossíntese) mostram que a vida desenvolveu mecanismos para proteger estados quânticos do ruído térmico, tornando a teoria de Penrose biologicamente plausível.`
+  },
+  "O Fim do Tempo": {
+    title: "Entropia e a Seta do Tempo",
+    author: "Julian Barbour",
+    category: "Termodinâmica",
+    fact: "A Segunda Lei da Termodinâmica é a única lei fundamental da física que não é reversível no tempo, criando a distinção entre passado e futuro.",
+    imageKeyword: "surreal clock melting",
+    imageUrl: "https://images.unsplash.com/photo-1502134249126-9f3755a50d78?auto=format&fit=crop&q=80&w=1600",
+    additionalImages: [
+        { url: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=1600", caption: "O Big Bang: o estado de mínima entropia inicial." },
+        { url: "https://images.unsplash.com/photo-1484589065579-248aad0d8b13?auto=format&fit=crop&q=80&w=1600", caption: "Morte Térmica: o destino de máxima entropia do universo." }
+    ],
+    content: `Na escala microscópica, as leis da física são simétricas no tempo. Um filme de dois átomos colidindo faz sentido tanto rodando para frente quanto para trás. Então, por que lembramos do passado e não do futuro? Por que um copo quebrado nunca se remonta espontaneamente?
+
+    A resposta reside na Termodinâmica e no conceito de Entropia (uma medida estatística de desordem). O universo começou em um estado de entropia extremamente baixa (alta ordem) no Big Bang. Desde então, a entropia só aumenta. Essa transição do ordenado para o desordenado é o que percebemos como a "seta do tempo".
+
+    Julian Barbour leva isso além, propondo que o tempo é uma ilusão criada pela nossa mente ao processar "snapshots" estáticos do universo (o "Universo Bloco"). Se o universo atingir o equilíbrio térmico (Morte Térmica), onde a entropia é máxima e nada mais muda, a dimensão do tempo efetivamente deixará de existir, pois não haverá eventos para marcar sua passagem. O tempo é, portanto, uma propriedade emergente da mudança, não uma dimensão fundamental.`
+  },
+  "Cura pelo Som": { title: "Ultrassom Focado (HIFU)", author: "Medicina", category: "Biofísica", fact: "O som pode gerar calor intenso em um ponto preciso dentro do corpo.", content: "Ondas sonoras são energia mecânica. Ao focar feixes de ultrassom em um ponto, a energia cozinha tumores sem cortes, uma cirurgia não-invasiva revolucionária." },
+  "DNA Digital": { title: "Armazenamento em DNA", author: "Bio-Tech", category: "Genética", fact: "1 grama de DNA pode armazenar 215 petabytes de dados.", content: "O DNA é o disco rígido da natureza. Cientistas já codificaram filmes em bases nitrogenadas (A,C,T,G). É o futuro do arquivamento de dados de longo prazo." },
+  "Sonhos Lúcidos": { title: "Consciência no Sono REM", author: "Neurociência", category: "Sono", fact: "O córtex pré-frontal lógico ativa-se durante sonhos lúcidos.", content: "É um estado híbrido entre vigília e sono. Estudos mostram ondas gama (40Hz) típicas de foco mental ocorrendo enquanto o corpo dorme." },
+  "Fusão Fria": { title: "Reações Nucleares LENR", author: "Física", category: "Energia", fact: "Efeitos quânticos podem permitir fusão sem calor extremo.", content: "A fusão a frio busca usar catalisadores para fundir átomos em temperatura ambiente, prometendo energia infinita e limpa, embora ainda seja controversa." },
+  "Núcleo Parou?": { title: "Oscilação do Núcleo Terrestre", author: "Geofísica", category: "Terra", fact: "O núcleo interno da Terra gira em velocidade diferente da crosta.", content: "Dados sísmicos mostram que a rotação do núcleo interno oscila em ciclos de 70 anos, afetando a duração do dia em milissegundos." },
 
   // --- CAPA NATURE (NatGeo) ---
   "O Último Santuário": {
