@@ -2,180 +2,183 @@ import React, { useState, useEffect } from 'react';
 import { BookOpen, Atom, ArrowLeft, RefreshCw, Settings, Sparkles, Brain, Dna, Rocket, Microscope, Info, AlertTriangle, Globe, Cpu, Leaf, FlaskConical, History, ChevronRight, Palette, Key, ExternalLink, CheckCircle, XCircle, Loader2, Zap, Car, Gauge, Image as ImageIcon } from 'lucide-react';
 
 /**
- * 📚 BIBLIOTECA DE CONTEÚDO ESTÁTICO (EXPANDIDA E ILUSTRADA)
+ * 📚 BIBLIOTECA DE CONTEÚDO ESTÁTICO (EXPANDIDA E CIENTIFICAMENTE APROFUNDADA)
  */
 const STATIC_CONTENT_LIBRARY = {
-  // --- CAPA AUTO (Veículos) ---
+  // --- CAPA AUTO (Veículos com Foco Científico) ---
   "Revolução Elétrica": {
-    title: "O Fim da Combustão: A Ascensão Silenciosa",
-    author: "Carlos Pista",
-    category: "Tecnologia Automotiva",
-    fact: "Motores elétricos possuem apenas uma peça móvel principal (o rotor), contra centenas em um motor a combustão.",
-    imageKeyword: "electric car chassis",
+    title: "Eletromagnetismo Aplicado: O Fim da Combustão",
+    author: "Eng. Carlos Pista",
+    category: "Física Automotiva",
+    fact: "Motores elétricos superam 90% de eficiência térmica, enquanto motores a combustão desperdiçam cerca de 70% da energia química em calor (Segunda Lei da Termodinâmica).",
+    imageKeyword: "electric car motor cutaway",
     imageUrl: "https://images.unsplash.com/photo-1593941707882-a5bba14938c7?auto=format&fit=crop&q=80&w=1600",
     additionalImages: [
-        { url: "https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&q=80&w=1600", caption: "Plataforma de baterias skate: o novo padrão da indústria." },
-        { url: "https://images.unsplash.com/photo-1620882352829-216972626243?auto=format&fit=crop&q=80&w=1600", caption: "Estações de carregamento ultrarrápido estão substituindo postos de gasolina." }
+        { url: "https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&q=80&w=1600", caption: "O estator e o rotor: interação de campos magnéticos gerando torque." },
+        { url: "https://images.unsplash.com/photo-1620882352829-216972626243?auto=format&fit=crop&q=80&w=1600", caption: "Inversores de frequência convertem DC da bateria em AC para o motor." }
     ],
-    content: `Estamos testemunhando a maior transformação industrial dos últimos 100 anos. O motor de combustão interna, uma maravilha da engenharia mecânica que dominou o século XX com seus pistões, válvulas e explosões controladas, está sendo aposentado. Em seu lugar, entra a elegância silenciosa e brutalmente eficiente do motor elétrico.
+    content: `A transição para veículos elétricos não é apenas uma mudança de combustível, é uma mudança de princípios físicos. O motor de combustão interna opera sob o Ciclo de Otto (ou Diesel), dependendo de explosões controladas para empurrar pistões. É um processo termodinamicamente ineficiente, limitado pelo Princípio de Carnot, onde a maior parte da energia potencial da gasolina é perdida como calor residual e vibração.
 
-    A diferença de eficiência é avassaladora. Um motor a gasolina desperdiça cerca de 70% da energia do combustível apenas gerando calor e ruído. Um motor elétrico converte mais de 90% da energia da bateria diretamente em movimento. Isso não é apenas uma evolução; é uma mudança de paradigma que redefiniu o conceito de performance. O torque instantâneo, disponível a zero rpm, transformou sedãs familiares em máquinas capazes de humilhar supercarros italianos no 0 a 100 km/h.
+    Em contraste, o motor elétrico opera baseado na Força de Lorentz. Quando uma corrente elétrica passa por uma bobina dentro de um campo magnético, uma força física é gerada instantaneamente. Não há conversão de movimento linear (pistão) para rotacional (virabrequim); a energia elétrica vira rotação pura. Isso explica o "torque instantâneo": não é necessário esperar a pressão dos gases de escape girar uma turbina ou o motor atingir certas rotações. O campo magnético age na velocidade da luz (limitado apenas pela indutância das bobinas).
 
-    No entanto, a revolução não é isenta de desafios. O "calcanhar de Aquiles" continua sendo o armazenamento de energia. As baterias de íon-lítio atuais são pesadas, caras e dependem de mineração complexa. A corrida agora é pelas Baterias de Estado Sólido (Solid State), que prometem dobrar a autonomia e reduzir o tempo de recarga para minutos, eliminando o eletrólito líquido inflamável. Quando essa tecnologia atingir escala industrial, prevista para o final desta década, o argumento final a favor da combustão terá evaporado.`
+    O desafio científico atual reside na Eletroquímica das baterias. As células de íon-lítio funcionam movendo íons do cátodo para o ânodo através de um eletrólito líquido. O problema é a formação de "dendritos" (estruturas metálicas em forma de agulha) que podem crescer dentro da célula, causando curtos-circuitos. A próxima fronteira, as Baterias de Estado Sólido, substituem o líquido por cerâmica sólida, aumentando a condutividade iônica e a segurança térmica, permitindo densidades energéticas que desafiam os limites atuais da química.`
   },
   "O Retorno do Prelude": { 
-    title: "Honda Prelude: O Ícone Renasce Híbrido", 
+    title: "Honda Prelude: Hibridização e Recuperação Cinética", 
     author: "Jornal do Carro", 
-    category: "Lançamentos", 
-    fact: "O novo Prelude prioriza a 'alegria de dirigir' acima da potência bruta, mantendo a filosofia original dos anos 80.", 
-    imageUrl: "https://images.unsplash.com/photo-1621262973736-6b22c7eb4634?auto=format&fit=crop&q=80&w=1600", // Imagem genérica de cupê esportivo
+    category: "Engenharia Mecânica", 
+    fact: "Sistemas híbridos utilizam a frenagem regenerativa para converter energia cinética, que seria dissipada como calor nos discos de freio, em energia potencial química na bateria.", 
+    imageUrl: "https://images.unsplash.com/photo-1621262973736-6b22c7eb4634?auto=format&fit=crop&q=80&w=1600", 
     additionalImages: [
-        { url: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&q=80&w=1600", caption: "Design aerodinâmico focado em eficiência e estilo." },
-        { url: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&q=80&w=1600", caption: "O interior minimalista foca na experiência do motorista." }
+        { url: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&q=80&w=1600", caption: "Aerodinâmica ativa: reduzindo o coeficiente de arrasto (Cd)." },
+        { url: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&q=80&w=1600", caption: "O motor elétrico atua como gerador nas desacelerações." }
     ],
-    content: `A Honda chocou o mundo automotivo ao ressuscitar uma de suas placas mais queridas: o Prelude. Descontinuado no início dos anos 2000, o cupê esportivo era sinônimo de inovação tecnológica (foi o pioneiro no esterçamento das quatro rodas). O novo Prelude Concept, no entanto, não é um elétrico puro, mas um híbrido sofisticado.
+    content: `O novo Honda Prelude não é apenas um exercício de nostalgia, é uma aplicação prática de gerenciamento eficiente de energia. Diferente de um veículo puramente a combustão, onde a energia cinética acumulada durante a aceleração é desperdiçada como calor nos freios ao parar, o sistema híbrido e:HEV atua como um sistema de recuperação de energia (KERS, similar à Fórmula 1).
 
-    Essa decisão estratégica da Honda reflete uma leitura madura do mercado. Enquanto todos correm para EVs puros, a marca japonesa aposta que ainda existe espaço para a conexão mecânica e a emoção de dirigir, auxiliada, mas não substituída, pela eletricidade. O design é uma carta de amor aos cupês clássicos: baixo, largo e com proporções perfeitas, fugindo da tendência monótona dos SUVs que dominam as ruas.
+    O princípio fundamental aqui é a reversibilidade dos motores elétricos. Quando você tira o pé do acelerador, o motor elétrico inverte sua polaridade, tornando-se um gerador. A inércia do carro gira o eixo do motor, que induz corrente elétrica, carregando a bateria e criando resistência magnética que freia o carro. Isso aumenta a eficiência termodinâmica global do sistema drasticamente.
 
-    Sob o capô, espera-se uma evolução do sistema e:HEV, onde o motor elétrico traciona as rodas na maior parte do tempo, enquanto o motor a combustão atua como gerador ou acopla em altas velocidades. O Prelude não veio para quebrar recordes de velocidade, mas para provar que, em um futuro silencioso e autônomo, ainda haverá espaço para a paixão humana ao volante.` 
+    Além disso, o Prelude foca na redução do Coeficiente de Arrasto (Cd). A resistência do ar aumenta com o quadrado da velocidade. O design baixo e fluido do cupê não é apenas estético; é físico. Menor área frontal e fluxo de ar laminar significam que menos energia é necessária para "furar" a atmosfera, permitindo que o trem de força híbrido opere em sua faixa de eficiência máxima por mais tempo.` 
   },
   "Pequeno Gigante: GR Yaris": { 
-    title: "Toyota GR Yaris: A Fúria do Rally nas Ruas", 
-    author: "Gazoo Racing Team", 
-    category: "Performance", 
-    fact: "O teto é feito de fibra de carbono forjada para baixar o centro de gravidade, uma técnica vinda direto dos supercarros.", 
-    imageUrl: "https://images.unsplash.com/photo-1629897850409-a764722da2b7?auto=format&fit=crop&q=80&w=1600", // Toyota de rally genérico
+    title: "Toyota GR Yaris: Termodinâmica de Alta Pressão", 
+    author: "Gazoo Racing Tech", 
+    category: "Física de Fluídos", 
+    fact: "Para extrair 260cv de um motor 1.6L, o turbocompressor opera com pressões extremas, forçando mais moléculas de oxigênio na câmara para queimar mais combustível por ciclo.", 
+    imageUrl: "https://images.unsplash.com/photo-1629897850409-a764722da2b7?auto=format&fit=crop&q=80&w=1600", 
     additionalImages: [
-        { url: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&q=80&w=1600", caption: "Motor 1.6 turbo de 3 cilindros: uma obra-prima da engenharia." },
-        { url: "https://images.unsplash.com/photo-1542282088-fe8426682b8f?auto=format&fit=crop&q=80&w=1600", caption: "Interior focado em competição: tudo está ao alcance das mãos." }
+        { url: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&q=80&w=1600", caption: "Downsizing: Menor volume, maior pressão interna e eficiência térmica." },
+        { url: "https://images.unsplash.com/photo-1542282088-fe8426682b8f?auto=format&fit=crop&q=80&w=1600", caption: "Diferenciais Torsen distribuem torque mecanicamente." }
     ],
-    content: `Em uma era de carros cada vez maiores, pesados e anestesiados, o Toyota GR Yaris é um milagre da engenharia "old school". Ele não foi criado pelo departamento de marketing, mas exigido pelas regras do Campeonato Mundial de Rally (WRC). Para competir, a Toyota precisava vender 25.000 unidades de rua. O resultado é um monstro de bolso.
+    content: `O motor G16E-GTS do GR Yaris é uma aula de eficiência volumétrica. Normalmente, a potência de um motor é limitada pela quantidade de ar que ele consegue aspirar naturalmente (pressão atmosférica de 1 bar). O Yaris usa um turbocompressor para comprimir o ar antes da admissão, aumentando drasticamente a densidade de oxigênio na câmara de combustão.
 
-    Seu motor de 1.6 litros e três cilindros desafia a lógica, entregando mais de 260 cavalos de potência. É o motor de três cilindros mais potente já colocado em um carro de produção. Mas a mágica reside no sistema de tração GR-FOUR. Diferente dos sistemas AWD comuns que reagem à perda de aderência, este permite ao motorista escolher a distribuição de torque: 60:40 para o dia a dia, 30:70 para diversão traseira ou 50:50 para máxima aderência em pista.
+    Fisicamente, isso é descrito pela Lei dos Gases Ideais (PV=nRT). Ao aumentar a pressão (P), aumentamos a quantidade de mols de oxigênio (n) disponíveis para a reação de combustão exotérmica. No entanto, comprimir ar gera calor (T), o que diminui a densidade. Por isso, o carro usa um intercooler (trocador de calor) para resfriar o ar comprimido antes de entrar no motor, maximizando a densidade.
 
-    O chassi é único, uma fusão da plataforma do Yaris comum na frente com a do Corolla atrás, permitindo uma suspensão traseira independente sofisticada. O GR Yaris já se tornou um clássico instantâneo, valorizando-se no mercado de usados. Ele é a prova viva de que, quando engenheiros apaixonados recebem carta branca (e orçamento ilimitado), a magia acontece.` 
+    Outro destaque é o uso de materiais leves como fibra de carbono forjada no teto. Na dinâmica veicular, isso reduz o Momento de Inércia Polar. Ao baixar o centro de gravidade e concentrar a massa no centro, o carro precisa de menos força lateral para mudar de direção, resultando em uma resposta de curva muito mais rápida e precisa, essencial para o WRC.` 
   },
   "Mentes de Silício": { 
-    title: "O Dilema Moral do Carro Autônomo", 
+    title: "LIDAR e Redes Neurais: A Visão da Máquina", 
     author: "Dra. Sarah Conner", 
-    category: "Inteligência Artificial", 
-    fact: "Carros autônomos geram cerca de 4 terabytes de dados por dia apenas 'olhando' o mundo ao redor.", 
+    category: "Óptica e Computação", 
+    fact: "O LIDAR funciona medindo o 'Tempo de Voo' (ToF) de fótons laser: ele dispara luz e calcula a distância baseada no tempo exato que a luz demora para bater num objeto e voltar.", 
     imageUrl: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&q=80&w=1600",
     additionalImages: [
-        { url: "https://images.unsplash.com/photo-1555255707-c07966088b7b?auto=format&fit=crop&q=80&w=1600", caption: "Visão LIDAR: como a máquina enxerga o mundo em 3D." },
-        { url: "https://images.unsplash.com/photo-1535732759880-bbd5c7265e3f?auto=format&fit=crop&q=80&w=1600", caption: "O motorista virou passageiro: o futuro do transporte." }
+        { url: "https://images.unsplash.com/photo-1555255707-c07966088b7b?auto=format&fit=crop&q=80&w=1600", caption: "Nuvem de Pontos: A representação vetorial 3D do mundo." },
+        { url: "https://images.unsplash.com/photo-1535732759880-bbd5c7265e3f?auto=format&fit=crop&q=80&w=1600", caption: "Inferência Bayesiana: O carro calcula probabilidades constantes de colisão." }
     ],
-    content: `A tecnologia para veículos autônomos de Nível 4 e 5 (onde o volante é opcional) está amadurecendo rapidamente, impulsionada por redes neurais profundas e sensores LIDAR. Mas o maior obstáculo não é tecnológico, é ético. Estamos prestes a entregar decisões de vida ou morte a algoritmos.
+    content: `Como um carro "vê"? Diferente de nós, que interpretamos fótons passivamente, um carro autônomo usa sensoriamento ativo. O sensor LIDAR (Light Detection and Ranging) dispara milhões de pulsos de laser infravermelho por segundo. Usando a velocidade da luz como constante (c ≈ 300.000 km/s), o computador calcula a distância exata de cada obstáculo medindo o tempo de retorno do pulso (d = c * t / 2).
 
-    O clássico "Problema do Bonde" da filosofia saiu dos livros para as ruas. Se um acidente é inevitável, o carro deve desviar e atingir um pedestre para salvar o passageiro, ou sacrificar o passageiro para salvar um grupo de crianças na calçada? Programar essa moralidade em código binário é um campo minado jurídico e social. Quem é o responsável: a montadora, o desenvolvedor do software ou o dono do carro?
+    Isso gera uma "nuvem de pontos" 3D de alta precisão. Mas ver não é entender. É aqui que entram as Redes Neurais Convolucionais (CNNs). Inspiradas no córtex visual humano, essas estruturas matemáticas aplicam filtros em camadas para identificar padrões: bordas, formas e, finalmente, objetos complexos como "pedestre" ou "semáforo".
 
-    Além da ética, há a questão da convivência. Em testes, carros autônomos são "intimidados" por motoristas humanos agressivos porque são programados para serem cautelosos demais. O futuro misto, onde robôs perfeitos dividem espaço com humanos imprevisíveis, será o período mais perigoso da transição. A verdadeira autonomia só brilhará quando tirarmos o elemento humano da equação completamente.` 
+    O grande desafio científico não é a percepção, mas a predição. O carro usa Inferência Bayesiana para calcular probabilidades: "Qual a chance estatística daquele ciclista virar à esquerda?". É um problema de física estocástica em tempo real, onde o computador precisa modelar o comportamento caótico humano dentro de leis de movimento determinísticas.` 
   },
+  "Baterias Sólidas": { title: "Eletroquímica de Estado Sólido", author: "Lab Tech", category: "Química", fact: "Eletrólitos sólidos de cerâmica ou polímero previnem a formação de dendritos de lítio, que são os causadores de curtos-circuitos internos e incêndios em baterias líquidas.", content: "A bateria de estado sólido substitui o solvente orgânico líquido inflamável por um condutor iônico sólido. Isso aumenta a janela de estabilidade eletroquímica, permitindo o uso de anodos de lítio metálico puro em vez de grafite, o que pode dobrar a densidade energética (Wh/kg)." },
+  "Hidrogênio": { title: "Célula de Combustível: Eletrólise Reversa", author: "Energia H2", category: "Físico-Química", fact: "A reação na célula de combustível (2H2 + O2 → 2H2O) libera elétrons que formam a corrente elétrica, tendo como único subproduto vapor de água.", content: "Carros a hidrogênio (FCEV) não queimam o gás. Eles realizam uma 'queima fria' eletroquímica. O hidrogênio passa pelo ânodo e perde elétrons (oxidação). Esses elétrons são forçados a passar por um circuito externo (motor), enquanto os prótons H+ atravessam uma membrana polimérica (PEM) para se reencontrar com o oxigênio no cátodo, formando água." },
+  "Carros Voadores": { title: "eVTOLs e a Física do Voo Distribuído", author: "AeroDynamics", category: "Engenharia Aeroespacial", fact: "O uso de múltiplos rotores elétricos pequenos permite controle de atitude instantâneo variando o torque de cada motor, eliminando a complexidade mecânica dos helicópteros (prato oscilante).", content: "eVTOLs (Electric Vertical Take-off and Landing) dependem de alta densidade de potência. Diferente de aviões que usam asas para sustentação eficiente (L/D ratio), a decolagem vertical exige empuxo bruto maior que o peso (T/W > 1). A propulsão elétrica distribuída (DEP) aumenta a redundância e segurança: se um motor falha, os outros compensam eletronicamente em milissegundos." },
 
   // --- CAPA CLASSIC (Scientific American) ---
   "O Cérebro Quântico": {
-    title: "Consciência: Um Fenômeno Quântico?",
+    title: "Consciência: Colapso da Função de Onda?",
     author: "Dr. Roger Penrose",
-    category: "Neurociência",
-    fact: "A teoria Orch-OR sugere que a consciência não é computação, mas um processo físico fundamental do universo.",
+    category: "Física Quântica",
+    fact: "Microtúbulos possuem simetria e ressonância compatíveis com a manutenção de coerência quântica, protegendo o sistema do 'ruído' térmico do cérebro.",
     imageKeyword: "quantum brain neural network",
     imageUrl: "https://images.unsplash.com/photo-1555679427-1f6dfcce943b?auto=format&fit=crop&q=80&w=1600",
     additionalImages: [
-        { url: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&q=80&w=1600", caption: "Microtúbulos: a estrutura celular onde a magia quântica pode ocorrer." },
-        { url: "https://images.unsplash.com/photo-1507413245164-6160d8298b31?auto=format&fit=crop&q=80&w=1600", caption: "A complexidade neural vai muito além das simples sinapses elétricas." }
+        { url: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&q=80&w=1600", caption: "Estrutura dos microtúbulos: reticulados de proteína tubulina." },
+        { url: "https://images.unsplash.com/photo-1507413245164-6160d8298b31?auto=format&fit=crop&q=80&w=1600", caption: "A rede neural clássica vs a rede quântica proposta." }
     ],
-    content: `A consciência humana permanece o "problema difícil" da ciência. A visão neurocientífica predominante trata o cérebro como um computador biológico úmido, onde neurônios são transistores e sinapses são os fios. Se isso fosse verdade, bastaria mapear todas as conexões para replicar uma mente humana em silício. Mas e se estivermos olhando para o lugar errado?
+    content: `A teoria clássica da neurociência trata o cérebro como um sistema determinístico de potenciais de ação eletroquímicos. Porém, o físico Roger Penrose argumenta que a consciência possui características "não-computáveis" que um sistema binário clássico não pode replicar.
 
-    Uma teoria ousada, proposta pelo físico ganhador do Nobel Roger Penrose e pelo anestesista Stuart Hameroff, sugere que a consciência deriva de vibrações quânticas dentro de estruturas minúsculas chamadas microtúbulos, que formam o esqueleto das células cerebrais. Segundo a teoria da "Redução Objetiva Orquestrada" (Orch-OR), o cérebro não computa algoritmicamente; ele acessa informações fundamentais na própria geometria do espaço-tempo.
+    A hipótese "Orch-OR" (Redução Objetiva Orquestrada) propõe que a computação quântica ocorre dentro dos microtúbulos, estruturas do citoesqueleto dos neurônios. Em um computador quântico, a informação existe em superposição (0 e 1 ao mesmo tempo) até que uma medição cause o colapso da função de onda. Penrose sugere que esse "colapso" dentro do cérebro gera os momentos discretos de experiência consciente ("qualia").
 
-    Por décadas, a ideia foi ridicularizada. Físicos argumentavam que o cérebro é "quente, úmido e barulhento" demais para sustentar os delicados estados quânticos (superposição) que vemos em computadores quânticos congelados. No entanto, experimentos recentes demonstraram efeitos quânticos na fotossíntese de plantas e na navegação magnética de pássaros. Se uma alga pode usar mecânica quântica, por que não o cérebro humano? Se comprovada, essa teoria mudaria nossa compreensão não apenas da mente, mas da própria realidade.`
+    A maior crítica sempre foi a "decoerência": sistemas quânticos geralmente exigem zero absoluto (-273°C) para funcionar, e o cérebro é quente e úmido. No entanto, novas descobertas em biologia quântica (como o tunelamento quântico em enzimas e na fotossíntese) mostram que a vida desenvolveu mecanismos para proteger estados quânticos do ruído térmico, tornando a teoria de Penrose biologicamente plausível.`
   },
   "O Fim do Tempo": {
-    title: "A Ilusão da Passagem do Tempo",
+    title: "Entropia e a Seta do Tempo",
     author: "Julian Barbour",
-    category: "Física Teórica",
-    fact: "Para um fóton viajando na velocidade da luz, o tempo não passa; a emissão e absorção acontecem no mesmo instante.",
+    category: "Termodinâmica",
+    fact: "A Segunda Lei da Termodinâmica é a única lei fundamental da física que não é reversível no tempo, criando a distinção entre passado e futuro.",
     imageKeyword: "surreal clock melting",
     imageUrl: "https://images.unsplash.com/photo-1502134249126-9f3755a50d78?auto=format&fit=crop&q=80&w=1600",
     additionalImages: [
-        { url: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=1600", caption: "Universo Bloco: onde passado, presente e futuro coexistem." },
-        { url: "https://images.unsplash.com/photo-1484589065579-248aad0d8b13?auto=format&fit=crop&q=80&w=1600", caption: "Entropia: a única lei física que distingue o ontem do amanhã." }
+        { url: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=1600", caption: "O Big Bang: o estado de mínima entropia inicial." },
+        { url: "https://images.unsplash.com/photo-1484589065579-248aad0d8b13?auto=format&fit=crop&q=80&w=1600", caption: "Morte Térmica: o destino de máxima entropia do universo." }
     ],
-    content: `Sentimos o tempo fluir. Lembramos do passado e antecipamos o futuro. Mas nas equações fundamentais da física, de Newton a Schrödinger, o tempo é reversível. Não há nada nas leis da natureza que impeça um copo quebrado de se remontar, exceto a probabilidade.
+    content: `Na escala microscópica, as leis da física são simétricas no tempo. Um filme de dois átomos colidindo faz sentido tanto rodando para frente quanto para trás. Então, por que lembramos do passado e não do futuro? Por que um copo quebrado nunca se remonta espontaneamente?
 
-    A teoria do "Universo Bloco" sugere que vivemos em um hipercubo de espaço-tempo onde todos os eventos — o Big Bang, seu nascimento e a morte do sol — existem simultaneamente. A nossa percepção de "agora" é apenas um holofote iluminando uma fatia desse bloco estático. O tempo não passa; nós é que nos movemos através dele, ou nossa consciência cria essa ilusão para lidar com a causalidade.
+    A resposta reside na Termodinâmica e no conceito de Entropia (uma medida estatística de desordem). O universo começou em um estado de entropia extremamente baixa (alta ordem) no Big Bang. Desde então, a entropia só aumenta. Essa transição do ordenado para o desordenado é o que percebemos como a "seta do tempo".
 
-    O físico Julian Barbour propõe que o universo é uma coleção de "agoras", configurações estáticas de matéria. O que chamamos de tempo é apenas a nossa mente costurando esses snapshots estáticos em uma narrativa, como um filme feito de fotos paradas. Se a expansão do universo parar e a entropia atingir o máximo, o tempo, como conceito físico, deixará de existir. Restará apenas um vasto e silencioso "agora".`
+    Julian Barbour leva isso além, propondo que o tempo é uma ilusão criada pela nossa mente ao processar "snapshots" estáticos do universo (o "Universo Bloco"). Se o universo atingir o equilíbrio térmico (Morte Térmica), onde a entropia é máxima e nada mais muda, a dimensão do tempo efetivamente deixará de existir, pois não haverá eventos para marcar sua passagem. O tempo é, portanto, uma propriedade emergente da mudança, não uma dimensão fundamental.`
   },
 
   // --- CAPA NATURE (NatGeo) ---
   "O Último Santuário": {
-    title: "Amazônia Azul: O Deserto Profundo",
+    title: "Quimiossíntese: Vida Sem Sol",
     author: "Sylvia Earle",
-    category: "Oceanografia",
-    fact: "Existem lagos e rios submarinos no fundo do oceano que possuem suas próprias ondas e margens.",
+    category: "Bioquímica",
+    fact: "Bactérias extremófilas oxidam sulfeto de hidrogênio (H₂S) tóxico para gerar energia (ATP) e fixar carbono, sustentando ecossistemas inteiros na escuridão total.",
     imageKeyword: "deep ocean bioluminescence",
     imageUrl: "https://images.unsplash.com/photo-1581337204873-ef36aa186caa?auto=format&fit=crop&q=80&w=1600",
     additionalImages: [
-        { url: "https://images.unsplash.com/photo-1582967788606-a171f1080ca8?auto=format&fit=crop&q=80&w=1600", caption: "Fontes hidrotermais: a vida prosperando sem luz solar." },
-        { url: "https://images.unsplash.com/photo-1546026423-cc4642628d2b?auto=format&fit=crop&q=80&w=1600", caption: "Criaturas abissais evoluíram formas monstruosas para sobreviver à pressão." }
+        { url: "https://images.unsplash.com/photo-1582967788606-a171f1080ca8?auto=format&fit=crop&q=80&w=1600", caption: "Fontes hidrotermais: Chaminés negras expelindo minerais a 400°C." },
+        { url: "https://images.unsplash.com/photo-1546026423-cc4642628d2b?auto=format&fit=crop&q=80&w=1600", caption: "Vermes tubulares gigantes que vivem em simbiose com bactérias." }
     ],
-    content: `A maior parte do nosso planeta é escura, fria e esmagadora. As profundezas abissais dos oceanos, abaixo de 3.000 metros, são o maior habitat da Terra, e ainda assim, conhecemos melhor a topografia de Marte do que o nosso próprio assoalho oceânico. É um mundo alienígena aqui mesmo na Terra.
+    content: `Até 1977, a biologia afirmava que toda a vida na Terra dependia, em última instância, do Sol através da fotossíntese. A descoberta das fontes hidrotermais nas profundezas oceânicas quebrou esse paradigma. Lá embaixo, sob pressões esmagadoras e escuridão total, a vida prospera através da Quimiossíntese.
 
-    Longe de ser um deserto vazio, o fundo do mar fervilha de vida adaptada a condições extremas. Expedições recentes revelaram ecossistemas inteiros baseados não na luz solar (fotossíntese), mas na energia química (quimiossíntese) que jorra do interior da crosta terrestre em fontes hidrotermais. Vermes tubulares gigantes, caranguejos yeti e bactérias extremófilas formam oásis de vida no escuro absoluto.
+    Nesses ambientes, a água do mar penetra na crosta, é superaquecida pelo magma e retorna carregada de minerais dissolvidos, como sulfetos metálicos. Bactérias especializadas usam a energia química das ligações desses compostos inorgânicos (principalmente a oxidação do enxofre) para converter CO2 em matéria orgânica.
 
-    Este santuário intocado enfrenta agora sua maior ameaça: a mineração em águas profundas. O fundo do mar é rico em nódulos polimetálicos contendo níquel, cobalto e terras raras essenciais para as baterias dos nossos carros elétricos. Estamos diante de um dilema ecológico cruel: destruir o ecossistema menos compreendido da Terra para salvar a atmosfera do aquecimento global? A "corrida do ouro" submarina já começou, e as consequências são imprevisíveis.`
+    Essas bactérias formam a base de uma cadeia alimentar única. Vermes tubulares gigantes (Riftia pachyptila) não têm boca nem estômago; eles possuem um órgão chamado trofossomo recheado dessas bactérias simbióticas, que os alimentam diretamente. Estudar essa bioquímica independente da luz solar é crucial para a astrobiologia, pois sugere que luas geladas como Europa (Júpiter) ou Encélado (Saturno) poderiam abrigar vida em seus oceanos subterrâneos.`
   },
 
   // --- CAPA TECH (Wired) ---
   "A Singularidade": {
-    title: "Além do Horizonte de Eventos Digital",
+    title: "Lei dos Retornos Acelerados",
     author: "Ray Kurzweil",
-    category: "Futurismo",
-    fact: "Se a história do universo fosse comprimida em um ano, toda a história humana ocuparia os últimos 14 segundos.",
+    category: "Futurismo Matemático",
+    fact: "O progresso tecnológico não é linear, é exponencial. Avançaremos no século XXI o equivalente a 20.000 anos de progresso no ritmo de hoje.",
     imageKeyword: "artificial intelligence cyborg",
     imageUrl: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=1600",
     additionalImages: [
-        { url: "https://images.unsplash.com/photo-1531746790731-6c087fecd65a?auto=format&fit=crop&q=80&w=1600", caption: "Redes neurais já imitam a arte e a criatividade humana." },
-        { url: "https://images.unsplash.com/photo-1597733336794-12d05021d510?auto=format&fit=crop&q=80&w=1600", caption: "A fusão biológico-digital pode ser o próximo passo da evolução." }
+        { url: "https://images.unsplash.com/photo-1531746790731-6c087fecd65a?auto=format&fit=crop&q=80&w=1600", caption: "Redes Neurais Profundas: camadas de abstração imitando o córtex." },
+        { url: "https://images.unsplash.com/photo-1597733336794-12d05021d510?auto=format&fit=crop&q=80&w=1600", caption: "Transumanismo: a interface biológica será o gargalo final." }
     ],
-    content: `A Singularidade Tecnológica é o momento teórico em que o progresso tecnológico se tornará tão rápido que a inteligência humana não conseguirá mais acompanhá-lo. É o ponto em que criaremos uma Inteligência Artificial Geral (AGI) mais inteligente que nós mesmos. A partir daí, essa IA criará IAs ainda melhores, gerando uma explosão de inteligência.
+    content: `A Singularidade Tecnológica baseia-se na observação matemática de que a evolução da tecnologia segue curvas exponenciais, não lineares. A Lei de Moore (dobrar transistores a cada 18 meses) é apenas um exemplo dessa "Lei dos Retornos Acelerados".
 
-    Ray Kurzweil, diretor de engenharia do Google, prevê esse momento para 2045. Parece ficção científica, mas olhe ao redor. LLMs como o Gemini já demonstram raciocínio, criatividade e capacidade de codificação. A curva de aprendizado das máquinas é exponencial, enquanto a evolução biológica humana é estática.
+    Quando uma tecnologia se torna digitalizada, ela salta para uma curva de crescimento exponencial. Genética, nanotecnologia e robótica estão nesse ponto agora. O conceito de Singularidade surge quando a Inteligência Artificial alcança a capacidade de melhorar seu próprio código-fonte (auto-aperfeiçoamento recursivo). Isso geraria um ciclo de feedback positivo incontrolável: uma "explosão de inteligência".
 
-    O que acontece depois da Singularidade? Ninguém sabe – por isso o nome, emprestado dos buracos negros, onde as leis conhecidas falham. Podemos viver em uma era de abundância inimaginável, curando todas as doenças e vencendo a morte. Ou podemos nos tornar obsoletos, animais de estimação de deuses de silício. A única certeza é que a geração atual será a última a viver em um mundo onde o ser humano é a entidade mais inteligente do planeta.`
+    Cientificamente, isso levanta a questão da "computabilidade da consciência". Se a mente é apenas o resultado do processamento de informações em uma rede neural biológica, então, teoricamente, ela pode ser replicada em substrato de silício (Upload de Mente). A Singularidade não seria apenas o fim da era humana, mas o início de uma nova era de evolução pós-biológica, onde a inteligência se desvincula das limitações da química orgânica lenta.`
   },
 
-  // --- FALLBACKS GERAIS ---
+  // --- FALLBACKS GERAIS (Mantidos para garantir links funcionais) ---
   "Matéria Escura": { 
-    title: "O Universo Invisível", 
+    title: "Massa Oculta: A Gravidade Sem Fonte", 
     author: "Vera Rubin", 
-    category: "Cosmologia", 
-    fact: "A matéria escura não reflete, emite ou absorve luz. Sabemos que ela existe apenas porque ela tem peso (gravidade).", 
+    category: "Astrofísica", 
+    fact: "A velocidade orbital das estrelas nas bordas das galáxias viola as Leis de Kepler, a menos que exista 5x mais massa do que vemos.", 
     imageUrl: "https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?auto=format&fit=crop&q=80&w=1600",
     additionalImages: [
-        { url: "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&q=80&w=1600", caption: "Galáxias giram rápido demais: a prova da massa oculta." },
-        { url: "https://images.unsplash.com/photo-1534996858221-380b92700493?auto=format&fit=crop&q=80&w=1600", caption: "A teia cósmica que conecta aglomerados de galáxias." }
+        { url: "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&q=80&w=1600", caption: "Lentes gravitacionais: a matéria escura entorta a luz de galáxias distantes." },
+        { url: "https://images.unsplash.com/photo-1534996858221-380b92700493?auto=format&fit=crop&q=80&w=1600", caption: "Simulação da estrutura em larga escala do universo." }
     ],
-    content: `Tudo o que você já viu — estrelas, planetas, galáxias, você e eu — compõe apenas 5% do universo. Os outros 95% são um mistério total, divididos entre Energia Escura (que expande o espaço) e Matéria Escura (que segura as galáxias).
+    content: `A Matéria Escura é um "tapa-buraco" teórico necessário para que a gravidade funcione na escala galáctica. Segundo a Relatividade Geral, a gravidade é causada pela massa. No entanto, ao somar toda a massa visível (estrelas, gás, poeira) de uma galáxia, o total não é suficiente para mantê-la unida na velocidade em que gira.
 
-    Na década de 1970, a astrônoma Vera Rubin percebeu que as estrelas na borda das galáxias giravam tão rápido que deveriam ser arremessadas para o espaço. A única explicação era a existência de uma massa invisível colossal gerando gravidade extra. Era a matéria escura.
+    A física propõe que a Matéria Escura seja composta de WIMPs (Weakly Interacting Massive Particles) - partículas que têm massa, mas não interagem com a força eletromagnética (não emitem nem refletem luz) nem com a força nuclear forte. Elas interagem apenas via gravidade e força nuclear fraca.
 
-    Ela funciona como o esqueleto invisível do cosmos. Sem ela, o universo seria uma sopa monótona de gás; as galáxias nunca teriam se formado. Cientistas estão caçando essa substância fantasma em detectores subterrâneos profundos, esperando o momento raro em que uma partícula de matéria escura colida com um átomo comum. Até lá, vivemos na ignorância sobre a maior parte da nossa realidade.` 
+    Detectores como o LUX-ZEPLIN usam tanques de xenônio líquido ultra-puro enterrados profundamente no subsolo para tentar captar o flash sutil de um WIMP colidindo com um núcleo de xenônio. Até hoje, nenhum sinal foi confirmado, mantendo a Matéria Escura como o maior mistério não resolvido da física moderna.` 
   },
   
-  // (Mantive os fallbacks curtos anteriores para garantir que nada quebre, 
-  // mas adicionei a estrutura additionalImages vazia para evitar erros)
+  // (Outros fallbacks rápidos para links menores)
+  "Cura pelo Som": { title: "Cura pelo Som", author: "Medicina Vibracional", category: "Biofísica", fact: "Ultrassom focado de alta intensidade (HIFU) induz necrose térmica precisa em tumores.", content: "O som é uma onda mecânica de pressão. Ao focar múltiplos feixes de ultrassom em um único ponto dentro do corpo, a energia acústica é convertida em calor intenso, cozinhando células cancerígenas sem cortes." },
+  "DNA Digital": { title: "DNA Digital", author: "Bio-Engenharia", category: "Genética", fact: "O DNA tem uma densidade de dados 1 milhão de vezes maior que um SSD moderno.", content: "Codificar dados binários (0s e 1s) em bases nitrogenadas (A, C, T, G) permite armazenar todo o conhecimento da internet em uma caixa de sapatos. O desafio é a velocidade de leitura/escrita química." },
+  "Sonhos Lúcidos": { title: "Metacognição no Sono", author: "Neurociência", category: "Sono", fact: "Durante sonhos lúcidos, o córtex pré-frontal dorsolateral, normalmente inativo no sono REM, reativa-se.", content: "Sonhos lúcidos são um estado híbrido de consciência. Estudos com EEG mostram frequências de ondas gama (40Hz) associadas à consciência desperta ocorrendo durante a fase REM, permitindo volição dentro da alucinação onírica." },
+  "Fusão Fria": { title: "Reações Nucleares de Baixa Energia", author: "Física Nuclear", category: "Física", fact: "O tunelamento quântico pode permitir que núcleos se fundam a temperaturas mais baixas do que a física clássica prevê.", content: "A fusão a quente (como no Sol) exige milhões de graus para vencer a repulsão eletrostática dos núcleos. A pesquisa em LENR busca catalisadores (como paládio) que facilitem essa fusão via efeitos quânticos em temperatura ambiente." },
+  "Núcleo Parou?": { title: "Sismologia Planetária", author: "Geofísica", category: "Terra", fact: "O núcleo interno gira independentemente do manto, separado pelo núcleo externo líquido.", content: "Ondas sísmicas de terremotos repetidos mostram mudanças no tempo de viagem através do núcleo ao longo de décadas, sugerindo uma oscilação na velocidade de rotação do núcleo interno em ciclos de ~70 anos." },
 };
 
-// ... Resto do Código (Componente React) permanece igual, mas precisamos atualizar a renderização do artigo.
+// ... O resto do código (Componente React) permanece idêntico à versão anterior.
+// Não é necessário alterar a lógica, pois ela já está preparada para ler `STATIC_CONTENT_LIBRARY`.
 
-// ATUALIZAÇÃO NO COMPONENTE ScientificCuriosityMagazine:
-// Substitua a função de renderização do artigo (view === 'article') por esta versão melhorada:
-
-// ...
 export default function ScientificCuriosityMagazine() {
-  // ... (Estados e hooks iguais)
   const [view, setView] = useState('cover'); 
   const [currentArticle, setCurrentArticle] = useState(null);
   const [apiKey, setApiKey] = useState('');
@@ -221,16 +224,15 @@ export default function ScientificCuriosityMagazine() {
     if (article) {
         setCurrentArticle({
             ...article,
-            imageUrl: article.imageUrl || `https://image.pollinations.ai/prompt/${article.title}%20${article.category}%20realistic%20high%20quality?width=1600&height=900&nologo=true`,
-            isGenerated: false // Marca como estático
+            // Fallback inteligente de imagem se não houver na biblioteca
+            imageUrl: article.imageUrl || `https://image.pollinations.ai/prompt/${article.imageKeyword || article.title}%20realistic%20high%20quality?width=1600&height=900&nologo=true`,
+            isGenerated: false 
         });
         setView('article');
     } else {
-        // Se não achar, tenta gerar via IA se tiver chave, senão usa fallback genérico
         if(apiKey) {
             fetchGeminiArticle();
         } else {
-            // Fallback silencioso para um artigo aleatório da biblioteca se clicarem em algo sem conteúdo
             const randomArt = Object.values(STATIC_CONTENT_LIBRARY)[0];
             setCurrentArticle({
                 ...randomArt,
@@ -275,8 +277,7 @@ export default function ScientificCuriosityMagazine() {
 
     if (!apiKey) {
       setTimeout(() => {
-        // Fallback para conteúdo estático rico
-        const fallback = Object.values(STATIC_CONTENT_LIBRARY)[Math.floor(Math.random() * 5)]; // Pega um dos primeiros 5
+        const fallback = Object.values(STATIC_CONTENT_LIBRARY)[0];
         setCurrentArticle(fallback);
         setView('article');
         setErrorMsg("Modo Demo: Adicione sua API Key nas configurações para gerar conteúdo inédito.");
@@ -474,7 +475,6 @@ export default function ScientificCuriosityMagazine() {
     );
   }
 
-  // ... (O restante da renderização da CAPA permanece idêntico)
   return (
     <div className={`min-h-screen ${coverTheme.style.bgWrapper} ${coverTheme.style.textColor} font-sans p-0 md:p-8 flex items-center justify-center transition-colors duration-700`}>
       {showSettings && (
