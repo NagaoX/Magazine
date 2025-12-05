@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { BookOpen, Atom, ArrowLeft, RefreshCw, Settings, Sparkles, Brain, Dna, Rocket, Microscope, Info, AlertTriangle, Globe, Cpu, Leaf, FlaskConical, History, ChevronRight, Palette, Key, ExternalLink } from 'lucide-react';
+import { BookOpen, Atom, ArrowLeft, RefreshCw, Settings, Sparkles, Brain, Dna, Rocket, Microscope, Info, AlertTriangle, Globe, Cpu, Leaf, FlaskConical, History, ChevronRight, Palette, Key, ExternalLink, CheckCircle, XCircle, Loader2 } from 'lucide-react';
 
 /**
  * 🎨 TEMAS DE CAPA (MAGAZINE COVERS)
- * 5 Estilos inspirados em revistas científicas reais
  */
 const MAGAZINE_COVERS = [
   {
     id: 'classic',
     name: 'Scientific American Style',
     style: {
-      bgWrapper: 'bg-[#fdfbf7]', // Papel off-white
+      bgWrapper: 'bg-[#fdfbf7]', 
       mastheadColor: 'text-slate-900',
       mastheadSub: 'text-red-900',
       accentColor: 'text-red-900',
@@ -18,7 +17,7 @@ const MAGAZINE_COVERS = [
       buttonText: 'text-white',
       borderColor: 'border-slate-900',
       fontMain: 'font-serif',
-      featureFilter: 'grayscale group-hover:grayscale-0', // Clássico P&B que vira cor
+      featureFilter: 'grayscale group-hover:grayscale-0',
       textColor: 'text-slate-900'
     },
     content: {
@@ -46,9 +45,9 @@ const MAGAZINE_COVERS = [
       accentColor: 'text-yellow-600',
       buttonBg: 'bg-yellow-500 hover:bg-yellow-400',
       buttonText: 'text-black',
-      borderColor: 'border-yellow-500', // Borda amarela icônica
+      borderColor: 'border-yellow-500',
       fontMain: 'font-serif',
-      featureFilter: 'sepia-[.2] contrast-125', // Cores vibrantes
+      featureFilter: 'sepia-[.2] contrast-125',
       textColor: 'text-black'
     },
     content: {
@@ -70,15 +69,15 @@ const MAGAZINE_COVERS = [
     id: 'tech',
     name: 'Wired Style',
     style: {
-      bgWrapper: 'bg-slate-950', // Fundo escuro
+      bgWrapper: 'bg-slate-950', 
       mastheadColor: 'text-white',
       mastheadSub: 'text-cyan-400',
       accentColor: 'text-cyan-400',
       buttonBg: 'bg-cyan-600 hover:bg-cyan-500',
       buttonText: 'text-white',
       borderColor: 'border-slate-700',
-      fontMain: 'font-sans tracking-tighter', // Sans serif moderna
-      featureFilter: 'hue-rotate-15 saturate-150', // Look Cyberpunk
+      fontMain: 'font-sans tracking-tighter',
+      featureFilter: 'hue-rotate-15 saturate-150', 
       textColor: 'text-slate-200'
     },
     content: {
@@ -100,7 +99,7 @@ const MAGAZINE_COVERS = [
     id: 'cosmos',
     name: 'Astronomy Style',
     style: {
-      bgWrapper: 'bg-[#0f172a]', // Azul meia-noite
+      bgWrapper: 'bg-[#0f172a]', 
       mastheadColor: 'text-white',
       mastheadSub: 'text-indigo-400',
       accentColor: 'text-indigo-300',
@@ -108,7 +107,7 @@ const MAGAZINE_COVERS = [
       buttonText: 'text-white',
       borderColor: 'border-indigo-900',
       fontMain: 'font-serif',
-      featureFilter: 'contrast-125 brightness-110', // Estrelas brilhantes
+      featureFilter: 'contrast-125 brightness-110', 
       textColor: 'text-slate-300'
     },
     content: {
@@ -130,15 +129,15 @@ const MAGAZINE_COVERS = [
     id: 'vintage',
     name: 'Old Journal Style',
     style: {
-      bgWrapper: 'bg-[#f0e6d2]', // Papel envelhecido
+      bgWrapper: 'bg-[#f0e6d2]', 
       mastheadColor: 'text-stone-900',
       mastheadSub: 'text-stone-600',
       accentColor: 'text-stone-800',
       buttonBg: 'bg-stone-800 hover:bg-stone-700',
       buttonText: 'text-[#f0e6d2]',
-      borderColor: 'border-stone-800 border-double', // Borda dupla clássica
+      borderColor: 'border-stone-800 border-double', 
       fontMain: 'font-serif tracking-widest',
-      featureFilter: 'sepia contrast-75', // Foto antiga
+      featureFilter: 'sepia contrast-75', 
       textColor: 'text-stone-800'
     },
     content: {
@@ -159,29 +158,30 @@ const MAGAZINE_COVERS = [
 ];
 
 /**
- * DADOS DE FALLBACK DO ARTIGO
+ * UTILS
  */
-const FALLBACK_ARTICLES = [
-  {
-    id: 1,
-    title: "O Gato que Está e Não Está",
-    author: "Dr. Erwin Schrödinger (Simulação)",
-    category: "Física Quântica",
-    fact: "O experimento mental original foi criado para mostrar o quão absurda a mecânica quântica parecia, não para ser levado literalmente.",
-    imageKeyword: "quantum physics",
-    content: `A mecânica quântica desafia nossa intuição de maneiras que parecem beirar a magia. No centro desse estranhamento está o princípio da superposição, onde uma partícula pode existir em múltiplos estados simultaneamente até que seja observada. É como se uma moeda girando no ar fosse cara e coroa ao mesmo tempo, definindo-se apenas quando atinge a palma da sua mão.
-
-    O famoso paradoxo do Gato de Schrödinger ilustra isso macroscopicamente: um gato dentro de uma caixa selada com um mecanismo radioativo mortal estaria, teoricamente, vivo e morto ao mesmo tempo até a caixa ser aberta. Embora não apliquemos isso a gatos reais, partículas subatômicas comportam-se exatamente assim, formando a base da computação quântica moderna.
-
-    Essa dualidade levanta questões profundas sobre a natureza da realidade. Se a observação define o estado da matéria, qual é o papel da consciência no universo? Físicos continuam debatendo se a realidade existe independentemente de nós ou se somos co-criadores do cosmos a cada olhar.`,
-    imageUrl: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&q=80&w=1600"
-  },
-  // ...
-];
-
-// Utilitários
 const getRandomFallback = () => {
-    return FALLBACK_ARTICLES[0]; // Garante retorno mesmo se array vazio
+    const fallback = [
+        {
+            title: "O Gato que Está e Não Está",
+            author: "Dr. Erwin Schrödinger (Simulação)",
+            category: "Física Quântica",
+            fact: "O experimento mental original foi criado para mostrar o quão absurda a mecânica quântica parecia, não para ser levado literalmente.",
+            imageKeyword: "quantum physics",
+            imageUrl: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&q=80&w=1600",
+            content: `A mecânica quântica desafia nossa intuição de maneiras que parecem beirar a magia. No centro desse estranhamento está o princípio da superposição, onde uma partícula pode existir em múltiplos estados simultaneamente até que seja observada.\n\nO famoso paradoxo do Gato de Schrödinger ilustra isso macroscopicamente: um gato dentro de uma caixa selada com um mecanismo radioativo mortal estaria, teoricamente, vivo e morto ao mesmo tempo até a caixa ser aberta.\n\nEssa dualidade levanta questões profundas sobre a natureza da realidade. Se a observação define o estado da matéria, qual é o papel da consciência no universo?`
+        },
+        {
+            title: "CRISPR: A Tesoura da Vida",
+            author: "Jennifer Doudna (Simulação)",
+            category: "Biologia Genética",
+            fact: "A tecnologia CRISPR foi adaptada de um mecanismo de defesa natural que as bactérias usam para combater vírus.",
+            imageKeyword: "dna structure",
+            imageUrl: "https://images.unsplash.com/photo-1530210124550-912dc1381cb8?auto=format&fit=crop&q=80&w=1600",
+            content: `Imagine poder editar o código da vida como quem corrige um texto no computador. O sistema CRISPR-Cas9 tornou isso realidade. Originalmente um sistema imunológico bacteriano, cientistas o transformaram em uma ferramenta de precisão.\n\nAs implicações são vertiginosas. Já estamos curando doenças genéticas que antes eram sentenças de morte, como a anemia falciforme. No horizonte, vislumbramos a possibilidade de eliminar a malária modificando mosquitos.\n\nContudo, o poder de reescrever a genética traz dilemas éticos monumentais. Onde traçamos a linha entre cura e aprimoramento? Bebês projetados e desigualdade genética são debates urgentes.`
+        }
+    ];
+    return fallback[Math.floor(Math.random() * fallback.length)];
 };
 
 const cleanJsonString = (str) => {
@@ -192,13 +192,15 @@ const cleanJsonString = (str) => {
 };
 
 export default function ScientificCuriosityMagazine() {
-  const [view, setView] = useState('cover'); // 'cover', 'article', 'loading'
+  const [view, setView] = useState('cover'); 
   const [currentArticle, setCurrentArticle] = useState(null);
   const [apiKey, setApiKey] = useState('');
   const [showSettings, setShowSettings] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
   const [isApiError, setIsApiError] = useState(false); 
-  const [errorType, setErrorType] = useState(''); // 'permission', 'quota', 'invalid'
+  const [errorType, setErrorType] = useState(''); 
+  const [testStatus, setTestStatus] = useState('idle'); // idle, testing, success, error
+  const [testMessage, setTestMessage] = useState('');
   
   const [coverTheme, setCoverTheme] = useState(MAGAZINE_COVERS[0]);
 
@@ -215,12 +217,41 @@ export default function ScientificCuriosityMagazine() {
     setShowSettings(false);
     setIsApiError(false);
     setErrorMsg(null);
+    setTestStatus('idle'); // Reset test on close
   };
 
   const cycleCover = () => {
     const currentIndex = MAGAZINE_COVERS.findIndex(c => c.id === coverTheme.id);
     const nextIndex = (currentIndex + 1) % MAGAZINE_COVERS.length;
     setCoverTheme(MAGAZINE_COVERS[nextIndex]);
+  };
+
+  // NOVA FUNÇÃO: Testa a conexão sem gerar artigo completo
+  const testConnection = async () => {
+    if (!apiKey) {
+        setTestStatus('error');
+        setTestMessage("Campo de chave vazio.");
+        return;
+    }
+    setTestStatus('testing');
+    try {
+        // Tenta um "ping" simples no modelo mais básico
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ contents: [{ parts: [{ text: "Hello" }] }] })
+        });
+        
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.error?.message || `Erro ${response.status}`);
+        }
+        setTestStatus('success');
+        setTestMessage("Conexão OK! Sua chave está funcionando.");
+    } catch (e) {
+        setTestStatus('error');
+        setTestMessage(e.message);
+    }
   };
 
   /**
@@ -278,24 +309,24 @@ export default function ScientificCuriosityMagazine() {
         // Tentativa 1: Flash 1.5 (Padrão atual)
         generatedText = await tryModel('gemini-1.5-flash');
       } catch (e1) {
-        console.warn("Falha no Flash 1.5, tentando fallback...", e1);
+        console.warn("Falha no Flash 1.5, tentando Flash 8b...", e1);
         try {
-            // Tentativa 2: Pro 1.5 (Se o Flash falhar)
-            generatedText = await tryModel('gemini-1.5-pro');
+            // Tentativa 2: Flash 1.5 8b (Mais novo e leve)
+            generatedText = await tryModel('gemini-1.5-flash-8b');
         } catch (e2) {
-            console.warn("Falha no Pro 1.5, tentando Legacy...", e2);
+            console.warn("Falha no Flash 8b, tentando Pro 1.0...", e2);
             try {
                 // Tentativa 3: Pro Legacy (1.0)
-                generatedText = await tryModel('gemini-pro', prompt + " Responda APENAS O JSON, sem introdução.");
+                generatedText = await tryModel('gemini-1.0-pro', prompt + " Responda APENAS O JSON, sem introdução.");
             } catch (e3) {
                  // Análise final do erro
                  const msg = e3.message || "";
                  if (msg.includes("not found") || msg.includes("404")) {
                      setErrorType('permission');
-                     throw new Error("CHAVE DE TIPO ERRADO: Esta chave não tem permissão para usar a 'Generative Language API'.");
+                     throw new Error("CHAVE DE TIPO ERRADO: Esta chave não tem permissão (API não ativada ou endpoint errado).");
                  } else if (msg.includes("400") || msg.includes("INVALID_ARGUMENT")) {
                      setErrorType('invalid');
-                     throw new Error("CHAVE INVÁLIDA: A chave copiada está incorreta ou incompleta.");
+                     throw new Error("CHAVE INVÁLIDA: A chave copiada está incorreta.");
                  }
                  throw new Error(`Falha na conexão. Detalhes: ${msg}`);
             }
@@ -374,19 +405,19 @@ export default function ScientificCuriosityMagazine() {
                 <div className={`border-l-4 p-4 mb-8 text-sm flex flex-col gap-2 ${isApiError ? 'bg-red-50 border-red-500 text-red-900' : 'bg-amber-50 border-amber-500 text-amber-800'}`}>
                     <div className="flex items-center gap-2 font-bold">
                         <AlertTriangle size={16} /> 
-                        {errorType === 'permission' ? "Chave de Tipo Errado" : "Erro na Geração"}
+                        {errorType === 'permission' ? "Erro de Permissão" : "Erro na Geração"}
                     </div>
                     <p>{errorMsg}</p>
                     {errorType === 'permission' && (
                         <div className="flex flex-col gap-2 mt-2">
-                            <p className="text-xs">Sua chave foi criada no lugar errado (Google Cloud/Vertex). Você precisa de uma chave do <strong>Google AI Studio</strong>.</p>
+                            <p className="text-xs">Sua chave foi criada no local errado ou a API não foi ativada.</p>
                             <a 
                                 href="https://aistudio.google.com/app/apikey" 
                                 target="_blank" 
                                 rel="noopener noreferrer"
                                 className="inline-flex items-center justify-center gap-1 px-3 py-2 bg-red-100 hover:bg-red-200 rounded text-red-900 font-bold text-xs border border-red-300 transition-colors"
                             >
-                                1. Clique para Criar Chave Correta <ExternalLink size={12} />
+                                1. Obter Chave Correta (AI Studio) <ExternalLink size={12} />
                             </a>
                         </div>
                     )}
@@ -417,23 +448,45 @@ export default function ScientificCuriosityMagazine() {
               <Key size={20} /> Configurar API
             </h3>
             <p className="text-sm text-stone-600 mb-4">Insira sua Google Gemini API Key para gerar artigos infinitos.</p>
-            <input 
-              type="password" 
-              placeholder="Cole sua API Key aqui (começa com AIza...)"
-              defaultValue={apiKey}
-              className="w-full border border-stone-300 text-slate-900 p-3 mb-4 focus:outline-none focus:border-red-900 font-mono text-sm"
-              onChange={(e) => setApiKey(e.target.value)}
-            />
+            
+            <div className="flex gap-2 mb-4">
+                <input 
+                type="password" 
+                placeholder="Cole sua API Key aqui..."
+                defaultValue={apiKey}
+                className="flex-1 border border-stone-300 text-slate-900 p-3 focus:outline-none focus:border-red-900 font-mono text-sm"
+                onChange={(e) => {setApiKey(e.target.value); setTestStatus('idle');}}
+                />
+                <button 
+                    onClick={testConnection}
+                    className="bg-slate-200 hover:bg-slate-300 text-slate-800 px-4 font-bold text-xs uppercase tracking-wide transition-colors flex items-center justify-center min-w-[80px]"
+                    disabled={testStatus === 'testing'}
+                >
+                    {testStatus === 'testing' ? <Loader2 size={16} className="animate-spin"/> : "Testar"}
+                </button>
+            </div>
+
+            {testStatus === 'success' && (
+                <div className="mb-4 p-3 bg-green-50 border border-green-200 text-green-800 text-xs flex items-center gap-2">
+                    <CheckCircle size={16} className="text-green-600"/> {testMessage}
+                </div>
+            )}
+            {testStatus === 'error' && (
+                <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-800 text-xs flex items-start gap-2 break-all">
+                    <XCircle size={16} className="text-red-600 mt-0.5 shrink-0"/> <span>{testMessage}</span>
+                </div>
+            )}
+
             <div className="flex justify-end gap-2">
               <button onClick={() => setShowSettings(false)} className="px-4 py-2 text-sm text-slate-600 hover:bg-stone-100">Cancelar</button>
               <button onClick={() => handleSaveKey(apiKey)} className="px-4 py-2 bg-red-900 text-white text-sm font-bold">Salvar Editor</button>
             </div>
+            
             <div className="mt-4 pt-4 border-t border-stone-200">
                 <p className="text-xs text-stone-500 mb-2 font-bold">Problemas comuns:</p>
                 <ul className="text-xs text-stone-500 list-disc pl-4 space-y-1">
                     <li>Erro "404 Not Found": Chave errada (Vertex AI).</li>
-                    <li>Crie a chave no <strong>Google AI Studio</strong>.</li>
-                    <li><a href="https://aistudio.google.com/app/apikey" target="_blank" className="underline text-blue-600 font-bold">Criar Chave Nova Agora</a></li>
+                    <li><a href="https://aistudio.google.com/app/apikey" target="_blank" className="underline text-blue-600 font-bold">Criar Chave Correta no AI Studio</a></li>
                 </ul>
             </div>
           </div>
