@@ -5,6 +5,7 @@ import {
 
 /**
  * 📚 BIBLIOTECA DE CONTEÚDO ESTÁTICO (COMPLETA E EXPANDIDA)
+ * Contém os artigos científicos detalhados para todas as manchetes.
  */
 export const STATIC_CONTENT_LIBRARY = {
   // --- CAPA AUTO (Veículos) ---
@@ -13,11 +14,11 @@ export const STATIC_CONTENT_LIBRARY = {
     author: "Eng. Carlos Pista",
     category: "Física Automotiva",
     fact: "Motores elétricos superam 90% de eficiência térmica, enquanto motores a combustão desperdiçam cerca de 70% da energia química em calor (Segunda Lei da Termodinâmica).",
-    imageKeyword: "electric car motor cutaway",
-    imageUrl: "https://images.unsplash.com/photo-1593941707882-a5bba14938c7?auto=format&fit=crop&q=80&w=1600",
+    imageKeyword: "electric car chassis platform battery",
+    imageUrl: "https://image.pollinations.ai/prompt/electric%20car%20skateboard%20chassis%20platform%20battery%20pack%20technical%20cutaway%203d%20render%20realistic?width=1600&height=900&nologo=true",
     additionalImages: [
-        { url: "https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&q=80&w=1600", caption: "Plataforma skate: baterias no assoalho baixam o centro de gravidade." },
-        { url: "https://images.unsplash.com/photo-1620882352829-216972626243?auto=format&fit=crop&q=80&w=1600", caption: "Inversores de frequência convertem DC da bateria em AC para o motor." }
+        { url: "https://image.pollinations.ai/prompt/electric%20motor%20stator%20rotor%20copper%20windings%20technical%20closeup?width=1600&height=900&nologo=true", caption: "O estator e o rotor: interação de campos magnéticos gerando torque." },
+        { url: "https://image.pollinations.ai/prompt/electric%20car%20fast%20charging%20station%20futuristic%20night%20glowing%20cables?width=1600&height=900&nologo=true", caption: "Inversores de frequência convertem DC da bateria em AC para o motor." }
     ],
     content: `A transição para veículos elétricos não é apenas uma mudança de combustível, é uma mudança de princípios físicos. O motor de combustão interna opera sob o Ciclo de Otto (ou Diesel), dependendo de explosões controladas para empurrar pistões. É um processo termodinamicamente ineficiente, limitado pelo Princípio de Carnot, onde a maior parte da energia potencial da gasolina é perdida como calor residual e vibração.
 
@@ -30,10 +31,11 @@ export const STATIC_CONTENT_LIBRARY = {
     author: "Jornal do Carro", 
     category: "Engenharia Mecânica", 
     fact: "Sistemas híbridos utilizam a frenagem regenerativa para converter energia cinética, que seria dissipada como calor nos discos de freio, em energia potencial química na bateria.", 
-    imageUrl: "https://images.unsplash.com/photo-1621262973736-6b22c7eb4634?auto=format&fit=crop&q=80&w=1600", 
+    // Imagem corrigida para refletir o Honda Prelude Concept (Cupê branco futurista)
+    imageUrl: "https://image.pollinations.ai/prompt/Honda%20Prelude%20Concept%202024%20white%20coupe%20sleek%20modern%20car%20studio%20lighting%20front%20angle%20realistic%204k?width=1600&height=900&nologo=true", 
     additionalImages: [
-        { url: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&q=80&w=1600", caption: "Aerodinâmica ativa: reduzindo o coeficiente de arrasto (Cd)." },
-        { url: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&q=80&w=1600", caption: "O motor elétrico atua como gerador nas desacelerações." }
+        { url: "https://image.pollinations.ai/prompt/car%20aerodynamics%20wind%20tunnel%20smoke%20streamlines%20low%20drag%20coefficient?width=1600&height=900&nologo=true", caption: "Aerodinâmica ativa: reduzindo o coeficiente de arrasto (Cd)." },
+        { url: "https://image.pollinations.ai/prompt/hybrid%20car%20powertrain%20engine%20and%20electric%20motor%20x-ray%20view?width=1600&height=900&nologo=true", caption: "O motor elétrico atua como gerador nas desacelerações." }
     ],
     content: `O novo Honda Prelude não é apenas um exercício de nostalgia, é uma aplicação prática de gerenciamento eficiente de energia. Diferente de um veículo puramente a combustão, onde a energia cinética acumulada durante a aceleração é desperdiçada como calor nos freios ao parar, o sistema híbrido e:HEV atua como um sistema de recuperação de energia (KERS, similar à Fórmula 1).
 
@@ -46,10 +48,11 @@ export const STATIC_CONTENT_LIBRARY = {
     author: "Gazoo Racing Tech", 
     category: "Física de Fluídos", 
     fact: "Para extrair 260cv de um motor 1.6L, o turbocompressor opera com pressões extremas, forçando mais moléculas de oxigênio na câmara para queimar mais combustível por ciclo.", 
-    imageUrl: "https://images.unsplash.com/photo-1629897850409-a764722da2b7?auto=format&fit=crop&q=80&w=1600", 
+    // Imagem corrigida para refletir o Toyota GR Yaris (Hatchback de Rally, largo e agressivo)
+    imageUrl: "https://image.pollinations.ai/prompt/Toyota%20GR%20Yaris%20white%20rally%20hatchback%20drifting%20on%20tarmac%20action%20shot%20smoke%20realistic%204k?width=1600&height=900&nologo=true", 
     additionalImages: [
-        { url: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&q=80&w=1600", caption: "Downsizing: Menor volume, maior pressão interna e eficiência térmica." },
-        { url: "https://images.unsplash.com/photo-1542282088-fe8426682b8f?auto=format&fit=crop&q=80&w=1600", caption: "Diferenciais Torsen distribuem torque mecanicamente." }
+        { url: "https://image.pollinations.ai/prompt/car%20engine%20turbocharger%20red%20hot%20glowing%20technical%20closeup?width=1600&height=900&nologo=true", caption: "Downsizing: Menor volume, maior pressão interna e eficiência térmica." },
+        { url: "https://image.pollinations.ai/prompt/car%20chassis%20suspension%20differential%20technical%20view?width=1600&height=900&nologo=true", caption: "Diferenciais Torsen distribuem torque mecanicamente." }
     ],
     content: `O motor G16E-GTS do GR Yaris é uma aula de eficiência volumétrica. Normalmente, a potência de um motor é limitada pela quantidade de ar que ele consegue aspirar naturalmente (pressão atmosférica de 1 bar). O Yaris usa um turbocompressor para comprimir o ar antes da admissão, aumentando drasticamente a densidade de oxigênio na câmara de combustão.
 
@@ -62,10 +65,10 @@ export const STATIC_CONTENT_LIBRARY = {
     author: "Dra. Sarah Conner", 
     category: "Óptica e Computação", 
     fact: "O LIDAR funciona medindo o 'Tempo de Voo' (ToF) de fótons laser: ele dispara luz e calcula a distância baseada no tempo exato que a luz demora para bater num objeto e voltar.", 
-    imageUrl: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&q=80&w=1600",
+    imageUrl: "https://image.pollinations.ai/prompt/autonomous%20car%20lidar%20vision%20point%20cloud%20city%20street%20night%20view?width=1600&height=900&nologo=true",
     additionalImages: [
-        { url: "https://images.unsplash.com/photo-1555255707-c07966088b7b?auto=format&fit=crop&q=80&w=1600", caption: "Nuvem de Pontos: A representação vetorial 3D do mundo." },
-        { url: "https://images.unsplash.com/photo-1535732759880-bbd5c7265e3f?auto=format&fit=crop&q=80&w=1600", caption: "Inferência Bayesiana: O carro calcula probabilidades constantes de colisão." }
+        { url: "https://image.pollinations.ai/prompt/lidar%20sensor%203d%20scan%20city%20wireframe%20view?width=1600&height=900&nologo=true", caption: "Nuvem de Pontos: A representação vetorial 3D do mundo." },
+        { url: "https://image.pollinations.ai/prompt/self%20driving%20car%20interior%20futuristic%20passenger%20reading?width=1600&height=900&nologo=true", caption: "Inferência Bayesiana: O carro calcula probabilidades constantes de colisão." }
     ],
     content: `Como um carro "vê"? Diferente de nós, que interpretamos fótons passivamente, um carro autônomo usa sensoriamento ativo. O sensor LIDAR (Light Detection and Ranging) dispara milhões de pulsos de laser infravermelho por segundo. Usando a velocidade da luz como constante (c ≈ 300.000 km/s), o computador calcula a distância exata de cada obstáculo medindo o tempo de retorno do pulso (d = c * t / 2).
 
